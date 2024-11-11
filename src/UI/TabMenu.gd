@@ -15,7 +15,6 @@ class_name TabMenu
 # TODO functional / pretty
 # remove seeks/watches on logout (also chat rooms?)
 # timer goes *slightly* too fast currently
-# login remember me button
 # disable things when not logged in
 # highlight active player on play / undo
 # click through pieces

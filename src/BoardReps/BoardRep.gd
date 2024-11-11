@@ -143,6 +143,7 @@ func resign():
 
 func end(msg: String):
 	if not active: return
+	GUI.active = false
 	GUI.notify(msg, false)
 	active = false
 	canPlay = false
