@@ -8,7 +8,8 @@ class_name TabMenu
 # verify game start message / makeGame function
 # find all remaining TODOs
 
-# TODO functional 
+# TODO functional
+# handle board right click 
 # add load tps/ptn
 # add general settings?
 

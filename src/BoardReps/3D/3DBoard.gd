@@ -38,11 +38,15 @@ var dragLength: float
 @export var capShape: Shape3D
 
 @export var highlightMaterial: ShaderMaterial
+@export var hoverMaterial: ShaderMaterial
+
 
 func _ready():
 	super()
 	
 	Piece3D.highlight = highlightMaterial
+	Piece3D.hover = hoverMaterial
+
 	
 	$Collider.input_event.connect(inputEvent)
 	
@@ -147,6 +151,14 @@ func putReserve(id: int):
 		z = (1 + (id-2*caps)/20) * (-1 if id % 2 == 1 else 1)
 		
 	pieces[id].position = Vector3(x, y, z)
+
+
+func highlight(id: int):
+	pieces[id].highlighted = true
+
+
+func deHighlight(id: int):
+	pieces[id].highlighted = false
 
 
 func setWall(id: int, wall: bool):

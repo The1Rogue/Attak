@@ -1,10 +1,16 @@
 extends StaticBody3D
 class_name Piece3D
 
+static var hover: ShaderMaterial
 static var highlight: ShaderMaterial
 static var dragThreshHold: float = 8
 
 var selected: bool = false
+var highlighted: bool = false:
+	set(v):
+		highlighted = v
+		mesh.material_overlay = highlight if v else null
+
 
 var dragLength: float = 0
 
@@ -22,13 +28,12 @@ func _init(m: Mesh, shape: Shape3D, id: int):
 	collider.shape = shape
 	add_child(collider)
 
-
 func _mouse_enter() -> void:
-	mesh.material_overlay = highlight
+	mesh.material_overlay = hover
 
 
 func _mouse_exit() -> void:
-	mesh.material_overlay = null
+	mesh.material_overlay = highlight if highlighted else null
 
 
 func _input_event(camera: Camera3D, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:

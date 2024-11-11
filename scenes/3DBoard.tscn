@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://c4esmjnf630vc"]
+[gd_scene load_steps=20 format=3 uid="uid://c4esmjnf630vc"]
 
 [ext_resource type="Script" path="res://src/Cam.gd" id="1_4aj53"]
 [ext_resource type="Script" path="res://src/BoardReps/3D/3DBoard.gd" id="2_4p11y"]
@@ -18,7 +18,16 @@ height = 1.0
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vv3ke"]
 render_priority = 0
 shader = ExtResource("7_fpqoa")
-shader_parameter/color = Color(0, 0, 1, 1)
+shader_parameter/offset = 0.02
+shader_parameter/scale = 1.1
+shader_parameter/color = Color(0.1632, 0.559413, 0.68, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mtql4"]
+render_priority = 0
+shader = ExtResource("7_fpqoa")
+shader_parameter/offset = 0.02
+shader_parameter/scale = 1.1
+shader_parameter/color = Color(0, 1, 0.383333, 1)
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_2c6g0"]
 
@@ -62,7 +71,7 @@ stretch = true
 transparent_bg = true
 handle_input_locally = false
 physics_object_picking = true
-size = Vector2i(500, 500)
+size = Vector2i(996, 648)
 render_target_update_mode = 4
 
 [node name="3DBoard" type="Node3D" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("GUI")]
@@ -74,6 +83,7 @@ blackCapMesh = ExtResource("6_in0fr")
 flatShape = SubResource("BoxShape3D_v7jt8")
 capShape = SubResource("CylinderShape3D_evu4o")
 highlightMaterial = SubResource("ShaderMaterial_vv3ke")
+hoverMaterial = SubResource("ShaderMaterial_mtql4")
 GUI = NodePath("../../../Control")
 
 [node name="Collider" type="StaticBody3D" parent="SubViewportContainer/SubViewport/3DBoard"]

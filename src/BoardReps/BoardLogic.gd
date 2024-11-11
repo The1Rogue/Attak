@@ -40,7 +40,9 @@ func setState(state: GameState):
 			deselectPile(currentState())
 	selection = NONE
 	
-	deHighlight()
+	for i in (caps+flats)*2:
+		deHighlight(i)
+
 	for i in state.highlights:
 		highlight(i)
 	
@@ -80,12 +82,12 @@ func setWall(id: int, wall: bool):
 	pass
 
 
-func deHighlight():
-	pass #TODO implement
+func deHighlight(id: int):
+	pass
 
 
 func highlight(id: int):
-	pass #TODO implement
+	pass
 
 
 func select(id: int):
@@ -195,7 +197,7 @@ func clickTile(tile: Vector2i):
 			selection = NONE
 			selectPile(tile, pile)
 	
-	else: #TODO handle reselection / deselection?
+	else:
 		var currentTile = startingTile + drops.size() * direction
 		
 		if pile.type != GameState.FLAT and tile != currentTile: 
