@@ -1,0 +1,37 @@
+[gd_resource type="Theme" load_steps=8 format=3 uid="uid://3w4qd4ooj08t"]
+
+[ext_resource type="FontFile" uid="uid://dt1agg411md3s" path="res://assets/UbuntuMono-Regular.ttf" id="1_kk87t"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1dkqw"]
+bg_color = Color(2.5028e-06, 0.659891, 0.845455, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_66hnr"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rrfbf"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8asyw"]
+bg_color = Color(0.16851, 0.1558, 0.41, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h6d2u"]
+bg_color = Color(0.12909, 0.1222, 0.26, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1k277"]
+bg_color = Color(0.0674278, 0.622616, 1, 1)
+
+[resource]
+default_font = ExtResource("1_kk87t")
+Button/styles/pressed = SubResource("StyleBoxFlat_1dkqw")
+LabelBlack/base_type = &"Label"
+LabelBlack/colors/font_color = Color(1, 1, 1, 1)
+LabelBlack/styles/normal = SubResource("StyleBoxFlat_66hnr")
+LabelWhite/base_type = &"Label"
+LabelWhite/colors/font_color = Color(0, 0, 0, 1)
+LabelWhite/styles/normal = SubResource("StyleBoxFlat_rrfbf")
+LineEdit/styles/focus = SubResource("StyleBoxFlat_8asyw")
+LineEdit/styles/normal = SubResource("StyleBoxFlat_h6d2u")
+TabButton/base_type = &"Button"
+TabButton/font_sizes/font_size = 24
+TabButton/styles/normal = SubResource("StyleBoxFlat_1k277")
+VBoxContainer/constants/separation = 5

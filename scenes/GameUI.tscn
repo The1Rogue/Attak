@@ -1,0 +1,100 @@
+[gd_scene load_steps=6 format=3 uid="uid://c7t0t4lbjup7v"]
+
+[ext_resource type="Script" path="res://src/UI/gameUI.gd" id="1_se5o0"]
+[ext_resource type="AudioStream" uid="uid://ldoi1rp6n3uc" path="res://assets/Audio/move.mp3" id="2_01mhf"]
+[ext_resource type="AudioStream" uid="uid://bpj8ynej22wb0" path="res://assets/Audio/start.mp3" id="3_w2mks"]
+[ext_resource type="AudioStream" uid="uid://b4iq1l0gsxhlw" path="res://assets/Audio/end.mp3" id="4_a031y"]
+[ext_resource type="AudioStream" uid="uid://bemdkj8eexdkx" path="res://assets/Audio/time.mp3" id="5_0n4oc"]
+
+[node name="GameUI" type="VBoxContainer"]
+custom_minimum_size = Vector2(120, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+script = ExtResource("1_se5o0")
+move = ExtResource("2_01mhf")
+start = ExtResource("3_w2mks")
+end = ExtResource("4_a031y")
+time = ExtResource("5_0n4oc")
+
+[node name="PlayerWhite" type="Label" parent="."]
+layout_mode = 2
+theme_type_variation = &"LabelWhite"
+text = "Player White
+"
+horizontal_alignment = 1
+
+[node name="PlayerWhiteTime" type="Label" parent="."]
+layout_mode = 2
+theme_type_variation = &"LabelWhite"
+text = "00:00
+"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+
+[node name="Undo" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+toggle_mode = true
+text = "Undo"
+
+[node name="Draw" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+toggle_mode = true
+text = "Draw"
+
+[node name="Resign" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "Resign"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="PtnDisplay" type="GridContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+columns = 3
+
+[node name="PlayerBlack" type="Label" parent="."]
+layout_mode = 2
+theme_type_variation = &"LabelBlack"
+text = "Player Black
+"
+horizontal_alignment = 1
+
+[node name="PlayerBlackTime" type="Label" parent="."]
+layout_mode = 2
+theme_type_variation = &"LabelBlack"
+text = "00:00
+"
+horizontal_alignment = 1
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="Popup" type="Node" parent="."]
+
+[node name="Panel" type="PanelContainer" parent="Popup"]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -50.0
+offset_top = -98.0
+offset_right = 50.0
+offset_bottom = -58.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Label" type="Label" parent="Popup/Panel"]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1

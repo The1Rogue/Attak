@@ -1,0 +1,10 @@
+[gd_resource type="BoxMesh" load_steps=3 format=3 uid="uid://daablsfdehx7a"]
+
+[ext_resource type="Texture2D" uid="uid://dvqhgspdhjh42" path="res://assets/3DPieces/textures/pixelFlatWhite.png" id="1_neu1d"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0ihcp"]
+albedo_texture = ExtResource("1_neu1d")
+texture_filter = 0
+
+[resource]
+material = SubResource("StandardMaterial3D_0ihcp")
