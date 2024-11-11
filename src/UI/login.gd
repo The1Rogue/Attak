@@ -6,6 +6,7 @@ const loginResource = "user://playtakLogin.res"
 @onready var login: VBoxContainer = $Login
 @onready var userEntry: LineEdit = $Login/User
 @onready var passEntry: LineEdit = $Login/Pass
+@onready var remember: CheckBox = $Login/Remember
 @onready var confirm: Button = $Login/Button
 
 @onready var settings: VBoxContainer = $Settings
@@ -40,8 +41,8 @@ func signin(user:String, passw: String):
 		menuButton.text = interface.activeUsername
 		get_parent().select(get_parent().get_child(5)) #bit convoluted maybe but eh
 		
-		if not ResourceLoader.exists(loginResource) and user != "Guest": 
-			ResourceSaver.save(Login.new(interface.activeUsername, login.password), loginResource)
+		if user != "Guest" and remember.button_pressed:
+			ResourceSaver.save(Login.new(interface.activeUsername, passw), loginResource)
 
 
 func submit():

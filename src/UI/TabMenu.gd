@@ -6,7 +6,6 @@ class_name TabMenu
 # watch game correct chat
 # verify last 2 entries on gamelist add message
 # verify game start message / makeGame function
-# export
 # find all remaining TODOs
 
 # TODO functional 
