@@ -56,7 +56,7 @@ func _ready():
 
 func makeBoard(flats: int, caps: int):
 	for i in pieces:
-		remove_child(i)
+		board.remove_child(i)
 		i.queue_free()
 	pieces = []
 	
@@ -68,7 +68,7 @@ func makeBoard(flats: int, caps: int):
 	
 	for i in board.get_children():
 		if i is Label3D:
-			board.remove_child(i)
+			pieceHolder.remove_child(i)
 	
 	var l
 	for i in size:
