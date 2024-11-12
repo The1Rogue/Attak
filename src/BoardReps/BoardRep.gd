@@ -23,6 +23,8 @@ var plyView: int = -1
 @export var GUI: GameUI
 
 func _ready():
+	GUI.clickPly.connect(setPly)
+
 	GUI.drawButton.toggled.connect(pressDraw)
 	GUI.undoButton.toggled.connect(pressUndo)
 	GUI.resignButton.pressed.connect(resign)
@@ -33,8 +35,13 @@ func setup(game: GameData):
 	history = []
 	plyView = -1
 	
+	if players[WHITE] != null: players[WHITE].onMove.disconnect(play)
+	if players[BLACK] != null and players[BLACK] != players[WHITE]: players[BLACK].onMove.disconnect(play)
+	
+	if players[WHITE] is Interface: players[WHITE].timeSync.disconnect(sync)
+	if players[BLACK] is Interface and players[WHITE] != players[BLACK]: players[BLACK].timeSync.disconnect(sync)
+	
 	GUI.setup(game)
-	GUI.clickPly.connect(setPly)
 	
 	if game.playerWhite == null: game.playerWhite = self
 	elif game.playerBlack == null: game.playerBlack = self
