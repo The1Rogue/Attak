@@ -248,3 +248,69 @@ func clickTile(tile: Vector2i):
 				selection = NONE
 				direction = Vector2i.ZERO 
 				onMove.emit(self, spread)
+
+
+func rightClickReserve():
+	if not canPlay or plyView != history.size() - 1: return
+	match selection:
+		RESERVE:
+			deselectReserve()
+		PILE:
+			deselectPile(currentState())
+	selection = NONE
+
+
+func rightClickTile(tile: Vector2i):
+	if not canPlay or plyView != history.size() - 1: return
+
+	match selection:
+		RESERVE:
+			deselectReserve()
+			selection = NONE
+		PILE:
+			var currentTile = startingTile + drops.size() * direction
+			var delta = tile - startingTile
+			
+			if tile == currentTile:
+				if drops.size() == 0:
+					var pile = currentState().getPile(tile)
+					if selectedPile.size() < size and selectedPile.size() < pile.size():
+						selectedPile.push_front(pile.pieces[-selectedPile.size() - 1])
+						select(selectedPile[0])
+				
+				elif drops[-1] > 1:
+					drops[-1] -= 1
+					totals -= 1
+					select(selectedPile[totals])
+				
+				else:
+					assert(drops[-1] == 1, "IMPOSSIBLE STATE")
+					drops.pop_back()
+					totals -= 1
+					select(selectedPile[totals])
+					currentTile = startingTile + drops.size() * direction
+					var l
+					if drops.size() > 0:
+						l = drops[-1]
+					else:
+						l = 0
+						direction = Vector2i.ZERO
+						
+					var pile = currentState().getPile(tile)
+					for i in selectedPile.size() - totals:
+						putPiece(selectedPile[totals + i], Vector3(currentTile.x, pile.size() + l + i , currentTile.y))
+			
+			elif delta.sign() == direction and delta.length() < drops.size():
+				for x in drops.size() - delta.length():
+					var l = drops.pop_back()
+					totals -= l
+					for i in l:
+						select(selectedPile[totals + i])
+						
+				var pile = currentState().getPile(tile)
+				for i in selectedPile.size() - totals:
+						putPiece(selectedPile[totals + i], Vector3(tile.x, pile.size() + drops[-1] + i , tile.y))
+				
+			else:
+				deselectPile(currentState())
+				selection = NONE

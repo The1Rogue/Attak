@@ -17,7 +17,7 @@ var dragLength: float = 0
 var id: int
 var mesh: MeshInstance3D
 
-signal click(Piece3D)
+signal click(piece: Piece3D, isRight: bool)
 
 func _init(m: Mesh, shape: Shape3D, id: int):
 	self.id = id
@@ -38,8 +38,11 @@ func _mouse_exit() -> void:
 
 func _input_event(camera: Camera3D, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
 	if event is InputEventMouseButton:
-		if not event.pressed and event.button_index == MOUSE_BUTTON_LEFT and dragLength < dragThreshHold:
-			click.emit(self)
+		if not event.pressed and dragLength < dragThreshHold:
+			if event.button_index == MOUSE_BUTTON_LEFT:
+				click.emit(self, false)
+			elif event.button_index == MOUSE_BUTTON_RIGHT:
+				click.emit(self, true)
 	
 	elif event is InputEventMouseMotion:
 		if event.button_mask & MOUSE_BUTTON_MASK_LEFT != 0:

@@ -177,11 +177,17 @@ func deselect(id: int):
 
 func inputEvent(camera: Camera3D, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
 	if event is InputEventMouseButton:
-		if not event.pressed and event.button_index == MOUSE_BUTTON_LEFT and dragLength < dragThreshHold:
-			var tile = vecToTile(event_position)
-			if tile.x >= 0 and tile.x < size and tile.y >= 0 and tile.y < size:
-				clickTile(tile)
-	
+		if not event.pressed and dragLength < dragThreshHold:
+			if event.button_index == MOUSE_BUTTON_LEFT:
+				var tile = vecToTile(event_position)
+				if tile.x >= 0 and tile.x < size and tile.y >= 0 and tile.y < size:
+					clickTile(tile)
+			elif event.button_index == MOUSE_BUTTON_RIGHT:
+				var tile = vecToTile(event_position)
+				if tile.x >= 0 and tile.x < size and tile.y >= 0 and tile.y < size:
+					rightClickTile(tile)
+			
+		
 	elif event is InputEventMouseMotion:
 		if event.button_mask & MOUSE_BUTTON_MASK_LEFT != 0:
 			dragLength += event.relative.length()
@@ -190,9 +196,11 @@ func inputEvent(camera: Camera3D, event: InputEvent, event_position: Vector3, no
 			dragLength = 0
 
 
-func clickPiece(piece: Piece3D):
+func clickPiece(piece: Piece3D, isRight: bool):
 	var tile = vecToTile(piece.position)
 	if tile.x < 0 or tile.x > size or tile.y < 0 or tile.y > size:
-		clickReserve(piece.id % 2, GameState.CAP if piece.id < caps*2 else GameState.FLAT)
+		if not isRight: clickReserve(piece.id % 2, GameState.CAP if piece.id < caps*2 else GameState.FLAT)
+		else: rightClickReserve()
 	else:
-		clickTile(tile)
+		if not isRight: clickTile(tile)
+		else: rightClickTile(tile)

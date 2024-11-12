@@ -17,7 +17,6 @@ class_name TabMenu
 # remove seeks/watches on logout (also chat rooms?)
 # timer goes *slightly* too fast currently
 # disable things when not logged in
-# highlight active player on play / undo
 # click through pieces
 # add game details (komi, time etc)
 # show online count
