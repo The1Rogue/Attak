@@ -56,7 +56,7 @@ func _ready():
 
 func makeBoard(flats: int, caps: int):
 	for i in pieces:
-		board.remove_child(i)
+		pieceHolder.remove_child(i)
 		i.queue_free()
 	pieces = []
 	
