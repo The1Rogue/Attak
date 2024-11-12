@@ -23,9 +23,21 @@ config/windows_native_icon="res://Attak.ico"
 
 Globals="*res://src/Globals.gd"
 
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/handheld/orientation=6
+
 [gui]
 
 theme/custom="res://baseTheme.tres"
+
+[importer_defaults]
+
+texture={
+"compress/mode": 4
+}
 
 [rendering]
 

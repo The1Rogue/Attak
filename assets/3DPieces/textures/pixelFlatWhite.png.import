@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dvqhgspdhjh42"
-path.bptc="res://.godot/imported/pixelFlatWhite.png-dd5f56a9c8753d48352ae7aaabd2df35.bptc.ctex"
+path="res://.godot/imported/pixelFlatWhite.png-dd5f56a9c8753d48352ae7aaabd2df35.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/3DPieces/textures/pixelFlatWhite.png"
-dest_files=["res://.godot/imported/pixelFlatWhite.png-dd5f56a9c8753d48352ae7aaabd2df35.bptc.ctex"]
+dest_files=["res://.godot/imported/pixelFlatWhite.png-dd5f56a9c8753d48352ae7aaabd2df35.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=4
 compress/high_quality=true
 compress/lossy_quality=0.7
 compress/hdr_compression=1

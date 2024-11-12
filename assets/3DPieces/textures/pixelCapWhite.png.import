@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dnnmbxc7ldkil"
-path.bptc="res://.godot/imported/pixelCapWhite.png-8d1a753171238fdd36cb6a19c51034e6.bptc.ctex"
+path="res://.godot/imported/pixelCapWhite.png-8d1a753171238fdd36cb6a19c51034e6.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/3DPieces/textures/pixelCapWhite.png"
-dest_files=["res://.godot/imported/pixelCapWhite.png-8d1a753171238fdd36cb6a19c51034e6.bptc.ctex"]
+dest_files=["res://.godot/imported/pixelCapWhite.png-8d1a753171238fdd36cb6a19c51034e6.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=4
 compress/high_quality=true
 compress/lossy_quality=0.7
 compress/hdr_compression=1

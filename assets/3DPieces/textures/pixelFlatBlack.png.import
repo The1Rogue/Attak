@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://but45bxykf7rf"
-path.bptc="res://.godot/imported/pixelFlatBlack.png-7efac43a9eaf04529c4592c7ebb55e6b.bptc.ctex"
+path="res://.godot/imported/pixelFlatBlack.png-7efac43a9eaf04529c4592c7ebb55e6b.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/3DPieces/textures/pixelFlatBlack.png"
-dest_files=["res://.godot/imported/pixelFlatBlack.png-7efac43a9eaf04529c4592c7ebb55e6b.bptc.ctex"]
+dest_files=["res://.godot/imported/pixelFlatBlack.png-7efac43a9eaf04529c4592c7ebb55e6b.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=4
 compress/high_quality=true
 compress/lossy_quality=0.7
 compress/hdr_compression=1

@@ -23,6 +23,7 @@ var totals: int = 0 #sum of drops
 var drops: Array[int] = []
 var direction: Vector2i = Vector2i.ZERO 
 
+
 func setup(game: GameData):
 	super(game)
 	size = game.size

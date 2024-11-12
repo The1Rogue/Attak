@@ -7,7 +7,7 @@ uniform vec3 color : source_color = vec3(0,0,1);
 
 void vertex() {
 	VERTEX *= scale;
-	
+
 	//this shifts the box ever so slightly to the camera, which makes it look better on the board
 	//thanks to random internet guy for this, i dont wanna figure it out, it works
 	vec3 world_position = vec4(MODEL_MATRIX * vec4(VERTEX,1)).xyz;
