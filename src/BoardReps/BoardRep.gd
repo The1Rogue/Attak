@@ -154,3 +154,11 @@ func end(msg: String):
 	GUI.notify(msg, false)
 	active = false
 	canPlay = false
+
+func _unhandled_key_input(event):
+	if event is InputEventKey and not event.pressed:
+		if event.keycode == KEY_LEFT and plyView > 0:
+			setPly(plyView - 1)
+		elif event.keycode == KEY_RIGHT and plyView < history.size()-1:
+			setPly(plyView + 1)
+			
