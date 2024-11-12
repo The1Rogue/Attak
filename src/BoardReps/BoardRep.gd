@@ -44,7 +44,7 @@ func setup(game: GameData):
 	GUI.setup(game)
 	
 	if game.playerWhite == null: game.playerWhite = self
-	elif game.playerBlack == null: game.playerBlack = self
+	if game.playerBlack == null: game.playerBlack = self
 	players[WHITE] = game.playerWhite
 	players[BLACK] = game.playerBlack
 	players[WHITE].onMove.connect(play)
@@ -154,6 +154,7 @@ func end(msg: String):
 	GUI.notify(msg, false)
 	active = false
 	canPlay = false
+
 
 func _unhandled_key_input(event):
 	if event is InputEventKey and not event.pressed:

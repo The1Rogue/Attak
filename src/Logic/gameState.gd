@@ -28,7 +28,7 @@ enum {
 enum {
 	FLAT = 0,
 	WALL = 1,
-	CAP = 2,
+	CAP = 2
 }
 
 enum {
@@ -64,6 +64,21 @@ class Reserves extends Resource:
 class Pile extends Resource:
 	@export var pieces: Array[int] = [] #low index is bottom
 	@export var type: int = FLAT
+
+	static func fromTps(tps: String, reserves: Reserves) -> Pile:
+		var s: PackedStringArray = tps.split("")
+		var p = Pile.new()
+		if s[-1] == "S":
+			s.resize(s.size()-1) #imagine if packedstring array had a pop function....
+			p.type = WALL
+		elif s[-1] == "C":
+			s.resize(s.size()-1)
+			p.type = CAP
+		for i in s.size():
+			if not s[i].to_int() in [1,2]: 
+				return null
+			p.pieces.append(reserves.getPiece(p.type if i == s.size()-1 else FLAT, s[i].to_int() - 1))
+		return p 
 
 	func take(n:int) -> Pile:
 		var top = Pile.new()
@@ -112,9 +127,40 @@ static func emptyState(size: int, flats: int, caps: int, komi: float) -> GameSta
 	
 	return state
 
-
-static func fromTPS() -> GameState:
-	return null #TODO
+# 1,x5/x,1,x4/x,1,12C,1,1,x/x,1,1C,2,x2/x,2,2,2,x2/x5,2 2 8
+static func fromTPS(tps: String, flats: int, caps: int) -> GameState:
+	var s = tps.split(" ")
+	var rows = s[0].split("/")
+	var state = GameState.new()
+	state.size = rows.size()
+	state.ply = s[2].to_int() * 2 + s[1].to_int() - 3
+	
+	state.flats = flats if flats != -1 else NewSeek.standardFlats[state.size-3]
+	state.caps = caps if caps != -1 else NewSeek.standardCaps[state.size-3]
+	
+	state.reserves = Reserves.make(state.flats, state.caps)
+	
+	state.board = []
+	for x in state.size:
+		state.board.append([])
+		for y in state.size:
+			state.board[x].append(Pile.new())
+	
+	var count:int = 0
+	for row in rows:
+		for c in row.split(","):
+			if c[0] == "x":
+				count += c[1].to_int() if c.length() > 1 else 1
+			else:
+				var p = Pile.fromTps(c, state.reserves)
+				if p == null: 
+					return null
+				state.board[count % state.size][state.size - 1 - count/state.size] = p
+				count += 1
+	if count != state.size**2:
+		return null
+	
+	return state
 
 
 func getPile(tile: Vector2i):

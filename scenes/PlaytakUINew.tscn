@@ -330,7 +330,7 @@ custom_arrow_step = 0.5
 [node name="TextEdit" type="TextEdit" parent="Menu/New Game/TabContainer/scratch/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "PTN / TPS"
+placeholder_text = "PTN"
 
 [node name="Enter" type="Button" parent="Menu/New Game/TabContainer/scratch"]
 layout_mode = 2

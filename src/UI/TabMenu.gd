@@ -4,16 +4,14 @@ class_name TabMenu
 # BUG:
 # timer goes *slightly* too fast currently
 
-
 # TEST:
 # watch game correct chat
 # verify last 2 entries on gamelist add message
 # verify game start message / makeGame function
 # find all remaining TODOs
-# Web export
 
 # TODO functional
-# add load tps/ptn
+# set correct game ply based on TPS / choose what to do with ptn clock / result
 # add general settings?
 
 # TODO functional / pretty

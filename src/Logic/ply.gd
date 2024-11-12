@@ -15,7 +15,7 @@ static func tileStr(tile: Vector2i) -> String:
 	return char(tile.x + "a".unicode_at(0)) + char(tile.y + "1".unicode_at(0)) 
 
 
-static func fromPTN(ptn: String, oldState) -> Ply:
+static func fromPTN(ptn: String) -> Ply:
 	var m = Globals.ptnRegex.search(ptn)
 	if m == null: return null
 	

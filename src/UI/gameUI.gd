@@ -55,8 +55,8 @@ func setup(game: GameData):
 	i = 0
 	WhiteName.text = game.playerWhiteName
 	BlackName.text = game.playerBlackName
-	timeWhite = game.time
-	timeBlack = game.time
+	timeWhite = game.time * 1000
+	timeBlack = game.time * 1000
 	WhiteTime.text = msToTime(timeWhite)
 	BlackTime.text = msToTime(timeBlack)
 
