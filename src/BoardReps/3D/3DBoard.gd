@@ -68,7 +68,7 @@ func makeBoard(flats: int, caps: int):
 	
 	for i in board.get_children():
 		if i is Label3D:
-			pieceHolder.remove_child(i)
+			board.remove_child(i)
 	
 	var l
 	for i in size:
