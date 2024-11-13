@@ -69,7 +69,7 @@ func logout():
 	
 	seekMenu.clear()
 	watchMenu.clear()
-	for chat in Chat.rooms:
+	for chat in Chat.rooms.keys():
 		Chat.rooms[chat].remove()
 	Chat.rooms.clear()
 	

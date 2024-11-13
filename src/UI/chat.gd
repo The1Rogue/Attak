@@ -71,5 +71,5 @@ func add_message(user: String, message: String):
 
 func remove():
 	get_parent().remove(self)
-	rooms.erase(name)
+	rooms.erase(room)
 	queue_free()

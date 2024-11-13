@@ -15,7 +15,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("3_ejegg")
 menu = NodePath("Menu")
-loginMenu = NodePath("Menu/Login/Menu")
+loginMenu = NodePath("Menu/Login")
 seekMenu = NodePath("Menu/Join Game (0)")
 watchMenu = NodePath("Menu/Watch Game (0)")
 

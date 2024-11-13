@@ -3,7 +3,6 @@ class_name TabMenu
 
 # BUG:
 # laptop close lid disconnects without closing socket
-# Chat room is not erased properly from dict (reproduce: remove chat, then logout)
 
 # TEST:
 # watch game correct chat
