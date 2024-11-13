@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://c4esmjnf630vc"]
+[gd_scene load_steps=19 format=3 uid="uid://c4esmjnf630vc"]
 
 [ext_resource type="Script" path="res://src/Cam.gd" id="1_4aj53"]
 [ext_resource type="Script" path="res://src/BoardReps/3D/3DBoard.gd" id="2_4p11y"]
@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://dtqgytcgfkvby" path="res://assets/3DPieces/textures/sq.png" id="3_ims2i"]
 [ext_resource type="CylinderMesh" uid="uid://bcraohr53d311" path="res://assets/3DPieces/whiteCap.tres" id="4_ulro6"]
 [ext_resource type="BoxMesh" uid="uid://dqqb28lxr4vbf" path="res://assets/3DPieces/blackFlat.tres" id="5_bmxa4"]
-[ext_resource type="PackedScene" uid="uid://c7t0t4lbjup7v" path="res://scenes/GameUI.tscn" id="5_r40pf"]
 [ext_resource type="CylinderMesh" uid="uid://cksydhk7rhem6" path="res://assets/3DPieces/blackCap.tres" id="6_in0fr"]
 [ext_resource type="Shader" path="res://assets/3DPieces/Highlight3D.gdshader" id="7_fpqoa"]
 
@@ -52,29 +51,7 @@ texture_filter = 0
 material = SubResource("StandardMaterial3D_6pysb")
 size = Vector2(6, 6)
 
-[node name="HSplitContainer" type="HSplitContainer"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Control" parent="." instance=ExtResource("5_r40pf")]
-layout_mode = 2
-
-[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
-custom_minimum_size = Vector2(500, 500)
-layout_mode = 2
-stretch = true
-
-[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
-transparent_bg = true
-handle_input_locally = false
-physics_object_picking = true
-size = Vector2i(1764, 1080)
-render_target_update_mode = 4
-
-[node name="3DBoard" type="Node3D" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("GUI")]
+[node name="3DBoard" type="Node3D"]
 script = ExtResource("2_4p11y")
 whiteFlatMesh = ExtResource("3_gvubj")
 whiteCapMesh = ExtResource("4_ulro6")
@@ -84,33 +61,32 @@ flatShape = SubResource("BoxShape3D_v7jt8")
 capShape = SubResource("CylinderShape3D_evu4o")
 highlightMaterial = SubResource("ShaderMaterial_vv3ke")
 hoverMaterial = SubResource("ShaderMaterial_mtql4")
-GUI = NodePath("../../../Control")
 
-[node name="Collider" type="StaticBody3D" parent="SubViewportContainer/SubViewport/3DBoard"]
+[node name="Collider" type="StaticBody3D" parent="."]
 
-[node name="shape" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/3DBoard/Collider"]
+[node name="shape" type="CollisionShape3D" parent="Collider"]
 shape = SubResource("WorldBoundaryShape3D_2c6g0")
 
-[node name="OmniLight3D" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport/3DBoard"]
+[node name="OmniLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.649519, -0.625, -0.433013, 0.75, 0.433013, 0.5, -0.125, -0.649519, 0.75, 0, 0, 0)
 light_energy = 0.8
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport/3DBoard"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_84367")
 
-[node name="Pieces" type="Node3D" parent="SubViewportContainer/SubViewport/3DBoard"]
+[node name="Pieces" type="Node3D" parent="."]
 
-[node name="board" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/3DBoard"]
+[node name="board" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_ahl31")
 
-[node name="top" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/3DBoard/board"]
+[node name="top" type="MeshInstance3D" parent="board"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.151, 0)
 mesh = SubResource("PlaneMesh_kwwfp")
 skeleton = NodePath("../..")
 
-[node name="Pivot" type="Node3D" parent="SubViewportContainer/SubViewport/3DBoard"]
+[node name="Pivot" type="Node3D" parent="."]
 transform = Transform3D(0.872922, 0.338896, -0.350937, 0, 0.71934, 0.694658, 0.48786, -0.606383, 0.627928, 0, 0, 0)
 
-[node name="Camera3D" type="Camera3D" parent="SubViewportContainer/SubViewport/3DBoard/Pivot"]
+[node name="Camera3D" type="Camera3D" parent="Pivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
 script = ExtResource("1_4aj53")

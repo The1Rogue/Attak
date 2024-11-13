@@ -3,16 +3,21 @@ class_name TabMenu
 
 # BUG:
 # laptop close lid disconnects without closing socket
+# Chat room is not erased properly from dict (reproduce: remove chat, then logout)
 
 # TEST:
+# on start watch game of self, join instead? (check how playtak does this)
 # watch game correct chat
 # verify last 2 entries on gamelist add message
 # verify game start message / makeGame function
 # find all remaining TODOs
 
 # TODO functional
-# choose what to do with ptn clock / result
 # add general settings?
+# auto attempt reconnect on disconnect (and save chats for a bit)
+# 2d board texture scaling (is that needed for 3d too?)
+# 2d prevent tall stack covering stacks behind them
+# 3d decide what to do with border/viewport size
 
 # TODO functional / pretty
 # disable things when not logged in
@@ -21,7 +26,7 @@ class_name TabMenu
 # show online count
 # seperate bot from human seeks
 # show ratings (player, and for seeks)
- 
+
 # TODO pretty
 # add tweens to ui
 # add tweens to board
@@ -33,11 +38,11 @@ class_name TabMenu
 # more detailed seek/watch ui
 
 # TODO low priority
+# choose what to do with ptn clock / result
 # more detailed seek created confirmation / add created seek to seek list?
 # handle server messages/errors/NOKs
 # smash on server move
 # custom new game piece counts
-# 2d board
 # user settings
 
 var active: Control
@@ -92,6 +97,7 @@ func gotoOrMakeChat(interface: PlayTakI, name: String, type: int):
 	else:
 		var c = Chat.new(interface, name, type)
 		addNode(c, "Chat: "+name)
+
 
 func remove(node: TabMenuTab):
 	remove_child(node.tabButton)

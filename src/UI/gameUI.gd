@@ -112,7 +112,7 @@ func addPly(ply: Ply):
 		ptnDisplay.add_child(Control.new()) #empty filler
 	
 	timeWhite.paused = (ply.boardState.ply) % 2 == 1 or ply.boardState.win != GameState.ONGOING
-	timeBlack.paused = (ply.boardState.ply) % 2 == 1 or ply.boardState.win != GameState.ONGOING
+	timeBlack.paused = (ply.boardState.ply) % 2 == 0 or ply.boardState.win != GameState.ONGOING
 
 	var b = Button.new()
 	b.text = ply.toPTN()

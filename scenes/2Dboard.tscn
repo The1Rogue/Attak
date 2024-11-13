@@ -1,0 +1,40 @@
+[gd_scene load_steps=11 format=3 uid="uid://mxvbujo17lyt"]
+
+[ext_resource type="Script" path="res://src/BoardReps/2D/2DBoard.gd" id="1_8duvo"]
+[ext_resource type="Texture2D" uid="uid://dtqgytcgfkvby" path="res://assets/3DPieces/textures/sq.png" id="1_c8rx2"]
+[ext_resource type="Texture2D" uid="uid://c1rbvn07lmwxy" path="res://assets/2DPieces/textures/pixelCapWhite.png" id="3_h3egs"]
+[ext_resource type="Texture2D" uid="uid://clh8xcwq6vfa6" path="res://assets/2DPieces/textures/pixelFlatWhite.png" id="4_qgoon"]
+[ext_resource type="Texture2D" uid="uid://b4o6b2urw3cbo" path="res://assets/2DPieces/textures/pixelCapBlack.png" id="5_8e247"]
+[ext_resource type="Texture2D" uid="uid://brfmd5rv5xakk" path="res://assets/2DPieces/textures/pixelWallWhite.png" id="5_8yspd"]
+[ext_resource type="Texture2D" uid="uid://dtyjrw2uce3qr" path="res://assets/2DPieces/textures/pixelFlatBlack.png" id="6_37ska"]
+[ext_resource type="Texture2D" uid="uid://76jg8rlnk0e0" path="res://assets/2DPieces/textures/pixelWallBlack.png" id="8_x6e7q"]
+[ext_resource type="Shader" path="res://assets/2DPieces/Highlight2D.gdshader" id="9_15882"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m7t6u"]
+shader = ExtResource("9_15882")
+shader_parameter/outline_color = Color(0.164706, 0.560784, 0.678431, 1)
+shader_parameter/progress = 0.05
+
+[node name="2DBoard" type="Node2D"]
+texture_filter = 1
+script = ExtResource("1_8duvo")
+pieceSize = 0.75
+sq = ExtResource("1_c8rx2")
+WhiteCap = ExtResource("3_h3egs")
+WhiteFlat = ExtResource("4_qgoon")
+WhiteWall = ExtResource("5_8yspd")
+BlackCap = ExtResource("5_8e247")
+BlackFlat = ExtResource("6_37ska")
+BlackWall = ExtResource("8_x6e7q")
+highlightMaterial = SubResource("ShaderMaterial_m7t6u")
+
+[node name="Reserves" type="Node2D" parent="."]
+
+[node name="Board" type="Sprite2D" parent="."]
+texture_repeat = 2
+texture = ExtResource("1_c8rx2")
+region_enabled = true
+region_rect = Rect2(0, 0, 80, 80)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(12, 12)

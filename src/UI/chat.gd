@@ -43,7 +43,6 @@ func _ready():
 		exit.pressed.connect(remove)
 		exit.set_anchors_and_offsets_preset(PRESET_CENTER_RIGHT)
 		exit.position.x -= 7
-		print(exit.size)
 
 static func escape_bbcode(bbcode_text):
 	return bbcode_text.replace("[", "[lb]")
