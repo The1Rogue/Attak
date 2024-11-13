@@ -1,4 +1,4 @@
-extends VBoxContainer
+extends TabMenuTab
 class_name NewSeek
 
 const rPTNLine = "^[0-9]+. ([FCS]?[A-Ha-h][1-8]|[1-8]?[A-Ha-h][1-8][<>+-][1-8]*\\*?)(?: ([FCS]?[A-Ha-h][1-8]|[1-8]?[A-Ha-h][1-8][<>+-][1-8]*\\*?))?$"
@@ -64,7 +64,7 @@ func createStandard(index: int):
 	var seek = SeekData.new(opponentStandard.text, interface, opt[0], opt[1] * 60, opt[2], opt[3], opt[4] * 60, color, opt[5] * 2, opt[6], opt[7], opt[8])
 	interface.sendSeek(seek)
 	Globals.gameUI.notify("Seek Created!")
-	
+
 
 func createCustom():
 	var size = sizeCustom.get_selected_id()
@@ -75,6 +75,7 @@ func createCustom():
 	var seek = SeekData.new(opponentCustom.text, interface, size, time.value * 60, inc.value, trigger.value, amount.value * 60, color, komi.value * 2, flats, caps, t)
 	interface.sendSeek(seek)
 	Globals.gameUI.notify("Seek Created!")
+
 
 func createScratch():
 	if notationEntry.text.is_empty():

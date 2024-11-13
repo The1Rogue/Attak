@@ -1,18 +1,16 @@
-extends Control
+extends TabMenuTab
 class_name LoginMenu
 
 const loginResource = "user://playtakLogin.res"
 
-@onready var login: VBoxContainer = $Login
-@onready var userEntry: LineEdit = $Login/User
-@onready var passEntry: LineEdit = $Login/Pass
-@onready var remember: CheckBox = $Login/Remember
-@onready var confirm: Button = $Login/Button
+@onready var login: VBoxContainer = $Menu/Login
+@onready var userEntry: LineEdit = $Menu/Login/User
+@onready var passEntry: LineEdit = $Menu/Login/Pass
+@onready var remember: CheckBox = $Menu/Login/Remember
+@onready var confirm: Button = $Menu/Login/Button
 
-@onready var settings: VBoxContainer = $Settings
-@onready var logoutButton: Button = $Settings/Logout
-
-var menuButton: Button
+@onready var settings: VBoxContainer = $Menu/Settings
+@onready var logoutButton: Button = $Menu/Settings/Logout
 
 @export var interface: PlayTakI
 
@@ -27,18 +25,17 @@ func _ready():
 	if not p.is_node_ready():
 		await get_parent().ready
 		
-	menuButton = p.get_child(get_index() - 1)
 	if ResourceLoader.exists(loginResource):
-		menuButton.disabled = true
+		tabButton.disabled = true
 		var login = ResourceLoader.load(loginResource)
 		signin(login.user, login.password)
-		menuButton.disabled = false
+		tabButton.disabled = false
 
 func signin(user:String, passw: String):
 	if await interface.signIn(user, passw):
 		login.hide()
 		settings.show()
-		menuButton.text = interface.activeUsername
+		tabButton.text = interface.activeUsername
 		get_parent().select(get_parent().get_child(5)) #bit convoluted maybe but eh
 		
 		if user != "Guest" and remember.button_pressed:
@@ -51,7 +48,7 @@ func submit():
 
 
 func logout():
-	menuButton.text = "Login"
+	tabButton.text = "Login"
 	interface.logout()
 	
 	settings.hide()

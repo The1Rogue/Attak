@@ -47,8 +47,10 @@ var active: Control
 
 func _ready() -> void:
 	for child in get_children():
+		if not child is TabMenuTab: continue
 		child.size_flags_vertical |= Control.SIZE_EXPAND
 		var b = Button.new()
+		child.tabButton = b
 		child.hide()
 		b.text = child.name
 		b.pressed.connect(func(): select(child))
@@ -67,7 +69,9 @@ func select(node: Control):
 
 
 func addNode(node: Control, name: String, select: bool = true):
+	if not node is TabMenuTab: return
 	var b = Button.new()
+	node.tabButton = b
 	add_child(b)
 	node.size_flags_vertical |= Control.SIZE_EXPAND
 	b.add_sibling(node)

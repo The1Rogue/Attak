@@ -15,58 +15,61 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("3_ejegg")
 menu = NodePath("Menu")
-loginMenu = NodePath("Menu/Login")
+loginMenu = NodePath("Menu/Login/Menu")
 
 [node name="Menu" type="VBoxContainer" parent="."]
 layout_mode = 2
 script = ExtResource("1_tkoo2")
 
-[node name="Login" type="MarginContainer" parent="Menu" node_paths=PackedStringArray("interface")]
+[node name="Login" type="VBoxContainer" parent="Menu" node_paths=PackedStringArray("interface")]
 layout_mode = 2
 script = ExtResource("3_kjef8")
 interface = NodePath("../..")
 
-[node name="Login" type="VBoxContainer" parent="Menu/Login"]
+[node name="Menu" type="MarginContainer" parent="Menu/Login"]
 layout_mode = 2
 
-[node name="seperator" type="Control" parent="Menu/Login/Login"]
+[node name="Login" type="VBoxContainer" parent="Menu/Login/Menu"]
 layout_mode = 2
 
-[node name="User" type="LineEdit" parent="Menu/Login/Login"]
+[node name="seperator" type="Control" parent="Menu/Login/Menu/Login"]
+layout_mode = 2
+
+[node name="User" type="LineEdit" parent="Menu/Login/Menu/Login"]
 layout_mode = 2
 placeholder_text = "Username"
 
-[node name="Pass" type="LineEdit" parent="Menu/Login/Login"]
+[node name="Pass" type="LineEdit" parent="Menu/Login/Menu/Login"]
 layout_mode = 2
 placeholder_text = "Password"
 secret = true
 
-[node name="Remember" type="CheckBox" parent="Menu/Login/Login"]
+[node name="Remember" type="CheckBox" parent="Menu/Login/Menu/Login"]
 layout_mode = 2
 size_flags_horizontal = 0
 button_pressed = true
 text = " Remember Me  "
 
-[node name="Button" type="Button" parent="Menu/Login/Login"]
+[node name="Button" type="Button" parent="Menu/Login/Menu/Login"]
 layout_mode = 2
 text = "Login"
 
-[node name="seperator2" type="Control" parent="Menu/Login/Login"]
+[node name="seperator2" type="Control" parent="Menu/Login/Menu/Login"]
 layout_mode = 2
 
-[node name="Settings" type="VBoxContainer" parent="Menu/Login"]
+[node name="Settings" type="VBoxContainer" parent="Menu/Login/Menu"]
 visible = false
 layout_mode = 2
 
-[node name="seperator" type="Control" parent="Menu/Login/Settings"]
+[node name="seperator" type="Control" parent="Menu/Login/Menu/Settings"]
 layout_mode = 2
 
-[node name="Logout" type="Button" parent="Menu/Login/Settings"]
+[node name="Logout" type="Button" parent="Menu/Login/Menu/Settings"]
 layout_mode = 2
 text = "Logout
 "
 
-[node name="seperator2" type="Control" parent="Menu/Login/Settings"]
+[node name="seperator2" type="Control" parent="Menu/Login/Menu/Settings"]
 layout_mode = 2
 
 [node name="New Game" type="VBoxContainer" parent="Menu" node_paths=PackedStringArray("interface", "opponentStandard", "colorStandard", "options", "opponentCustom", "colorCustom", "type", "sizeCustom", "komi", "time", "inc", "trigger", "amount", "confirmCustom", "sizeScratch", "flatsScratch", "capsScratch", "notationEntry", "confirmScratch")]
@@ -336,16 +339,12 @@ placeholder_text = "PTN"
 layout_mode = 2
 text = "Create"
 
-[node name="Join Game" type="VBoxContainer" parent="Menu" node_paths=PackedStringArray("interface")]
+[node name="Join Game (0)" type="VBoxContainer" parent="Menu" node_paths=PackedStringArray("interface")]
 layout_mode = 2
 script = ExtResource("2_42r6x")
 interface = NodePath("../..")
 
-[node name="Watch Game" type="VBoxContainer" parent="Menu" node_paths=PackedStringArray("interface")]
+[node name="Watch Game (0)" type="VBoxContainer" parent="Menu" node_paths=PackedStringArray("interface")]
 layout_mode = 2
 script = ExtResource("5_ap4a8")
 interface = NodePath("../..")
-
-[node name="Label" type="Label" parent="Menu/Watch Game"]
-layout_mode = 2
-text = " 0 Games being played "
