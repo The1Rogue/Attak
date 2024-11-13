@@ -75,7 +75,6 @@ func logout():
 	
 	activeUsername = ""
 	activeGame = ""
-	
 
 
 func awaitPacket() -> String:
@@ -216,7 +215,6 @@ func _process(delta: float):
 			_:
 				print("Unparsed Message:")
 				print(packet)
-				print(data)
 
 
 func sendMove(ply: Ply):

@@ -6,11 +6,11 @@ class_name TabMenu
 # Chat room is not erased properly from dict (reproduce: remove chat, then logout)
 
 # TEST:
-# on start watch game of self, join instead? (check how playtak does this)
 # watch game correct chat
 # verify last 2 entries on gamelist add message
 # verify game start message / makeGame function
 # find all remaining TODOs
+# what happens if you accept a new game when one is still active?
 
 # TODO functional
 # add general settings?
