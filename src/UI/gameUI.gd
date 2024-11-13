@@ -4,17 +4,19 @@ class_name GameUI
 
 @onready var WhiteName = $PlayerWhite
 @onready var WhiteTime = $PlayerWhiteTime
-var timeWhite: int = 0
+@onready var timeWhite: Timer  = $TimerWhite
 
 @onready var BlackName = $PlayerBlack
 @onready var BlackTime = $PlayerBlackTime
-var timeBlack: int = 0
+@onready var timeBlack: Timer  = $TimerBlack
 
 @onready var ptnDisplay = $ScrollContainer/PtnDisplay
 
 @onready var audioPlayer: AudioStreamPlayer = $AudioStreamPlayer
 
-@export var criticalTime: int = 30 * 1000
+@export var criticalTime: int = 30
+var whiteCritical: bool = false
+var blackCritical: bool = false
 
 @export_category("audio")
 @export var move: AudioStream
@@ -31,17 +33,15 @@ var PopUpTimer: float = 0
 @onready var drawButton = $HBoxContainer/Draw
 @onready var resignButton = $HBoxContainer/Resign
 
-
 var i = 0
-var active = false
 
+static func timeString(sec: int) -> String:
+	return "%02d:%02d" % [sec / 60, sec % 60]
 
-static func msToTime(ms: int) -> String:
-	var secs = ms / 1000
-	return "%02d:%02d" % [secs / 60, secs % 60]
 
 func _ready() -> void:
 	Globals.gameUI = self
+
 
 func setup(game: GameData):
 	if not self.is_node_ready():
@@ -51,38 +51,40 @@ func setup(game: GameData):
 	for child in ptnDisplay.get_children():
 		ptnDisplay.remove_child(child)
 	
-	active = false
 	i = 0
 	WhiteName.text = game.playerWhiteName
 	BlackName.text = game.playerBlackName
-	timeWhite = game.time * 1000
-	timeBlack = game.time * 1000
-	WhiteTime.text = msToTime(timeWhite)
-	BlackTime.text = msToTime(timeBlack)
+	timeWhite.paused = true
+	timeBlack.paused = true
+	timeWhite.start(game.time)
+	timeBlack.start(game.time)
+	WhiteTime.text = timeString(game.time)
+	BlackTime.text = timeString(game.time)
+	whiteCritical = game.time == 0 #prevent critical sound on not timed game
+	blackCritical = game.time == 0
 
 
 func sync(timeWhite: int, timeBlack: int):
-	self.timeWhite = timeWhite
-	self.timeBlack = timeBlack
-	WhiteTime.text = msToTime(timeWhite)
-	BlackTime.text = msToTime(timeBlack)
+	whiteCritical = false
+	blackCritical = false
+	self.timeWhite.start(timeWhite / 1000.0)
+	self.timeBlack.start(timeBlack / 1000.0)
+	WhiteTime.text = timeString(timeWhite / 1000.0)
+	BlackTime.text = timeString(timeBlack / 1000.0)
 
 
 func _process(delta: float) -> void:
-	var critical
-	if i % 2 == 1:
-		critical = timeBlack > criticalTime
-		timeBlack -= min(timeBlack, delta * 1000)
-		if critical and timeBlack < criticalTime:
+	if not timeWhite.paused:
+		WhiteTime.text = timeString(timeWhite.time_left)
+		if not whiteCritical and timeWhite.time_left < criticalTime:
+			whiteCritical = true
 			audioPlayer.stream = time; audioPlayer.play()
-		BlackTime.text = msToTime(timeBlack)
-		
-	elif active:
-		critical = timeWhite > criticalTime
-		timeWhite -= min(timeWhite, delta * 1000)
-		if critical and timeWhite < criticalTime:
+	
+	elif not timeBlack.paused:
+		BlackTime.text = timeString(timeBlack.time_left)
+		if not blackCritical and timeBlack.time_left < criticalTime:
+			blackCritical = true
 			audioPlayer.stream = time; audioPlayer.play()
-		WhiteTime.text = msToTime(timeWhite)
 		
 	if PopUpTimer > 0:
 		PopUpTimer -= delta
@@ -93,16 +95,18 @@ func _process(delta: float) -> void:
 func addPly(ply: Ply):
 	if ply.boardState.win != GameState.ONGOING:
 		audioPlayer.stream = end;
-		active = false
 	else:
 		audioPlayer.stream = move
-		active = true
 	audioPlayer.play()
 	
 	if i % 2 == 0:
 		var l = Label.new()
 		l.text = str(i/2 + 1) + ". "
 		ptnDisplay.add_child(l)
+	
+	timeWhite.paused = i % 2 == 0 or ply.boardState.win != GameState.ONGOING
+	timeBlack.paused = i % 2 == 1 or ply.boardState.win != GameState.ONGOING
+
 	var b = Button.new()
 	b.text = ply.toPTN()
 	var c = i #this ensures the lambda expression works correctly
@@ -116,6 +120,9 @@ func removeLast():
 	ptnDisplay.remove_child(ptnDisplay.get_child(-1))
 	if i % 2 == 1:
 		ptnDisplay.remove_child(ptnDisplay.get_child(-1))
+		
+	timeWhite.paused = i % 2 == 0
+	timeBlack.paused = i % 2 == 1
 	i -= 1
 
 

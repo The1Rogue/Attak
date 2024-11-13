@@ -2,7 +2,7 @@ extends VBoxContainer
 class_name TabMenu
 
 # BUG:
-# timer goes *slightly* too fast currently
+# remove seeks/watches on logout (also chat rooms?)
 
 # TEST:
 # watch game correct chat
@@ -13,13 +13,14 @@ class_name TabMenu
 # TODO functional
 # set correct game ply based on TPS / choose what to do with ptn clock / result
 # add general settings?
+# close chats
 
 # TODO functional / pretty
-# remove seeks/watches on logout (also chat rooms?)
 # disable things when not logged in
 # click through pieces
 # add game details (komi, time etc)
 # show online count
+# better watch / seek count
 # seperate bot from human seeks
 # show ratings (player, and for seeks)
  

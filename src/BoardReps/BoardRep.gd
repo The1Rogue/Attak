@@ -150,7 +150,8 @@ func resign():
 
 func end(msg: String):
 	if not active: return
-	GUI.active = false
+	GUI.timeWhite.paused = true
+	GUI.timeBlack.paused = true
 	GUI.notify(msg, false)
 	active = false
 	canPlay = false
@@ -162,4 +163,3 @@ func _unhandled_key_input(event):
 			setPly(plyView - 1)
 		elif event.keycode == KEY_RIGHT and plyView < history.size()-1:
 			setPly(plyView + 1)
-			
