@@ -206,6 +206,9 @@ func _process(delta: float):
 					menu.addNode(Chat.rooms[u], "Chat: " + user)
 				Chat.rooms[u].add_message(u, " ".join(data.slice(2)))
 			
+			["Message", ..]:
+				Globals.gameUI.notify(packet.substr(8))
+			
 			["NOK"]:
 				error.emit("NOK")
 			
