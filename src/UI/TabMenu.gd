@@ -11,7 +11,7 @@ class_name TabMenu
 # find all remaining TODOs
 
 # TODO functional
-# set correct game ply based on TPS / choose what to do with ptn clock / result
+# choose what to do with ptn clock / result
 # add general settings?
 # close chats
 
@@ -59,10 +59,12 @@ func _ready() -> void:
 	active = get_child(1)
 	active.show()
 
+
 func select(node: Control):
 	active.hide()
 	active = node
 	active.show()
+
 
 func addNode(node: Control, name: String, select: bool = true):
 	var b = Button.new()
@@ -75,6 +77,7 @@ func addNode(node: Control, name: String, select: bool = true):
 	b.theme_type_variation = &"TabButton"
 	if select:
 		self.select(node)
+
 
 func gotoOrMakeChat(interface: PlayTakI, name: String, type: int):
 	if name in Chat.rooms:

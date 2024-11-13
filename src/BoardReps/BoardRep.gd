@@ -89,7 +89,7 @@ func play(player: Player, ply: Ply):
 		setState(ply.boardState)
 	history.append(ply)
 	
-	var i = history.size() % 2
+	var i = currentPly() % 2
 	
 	canPlay = players[i] == self and active
 	if player == self and players[i] is Interface:
@@ -102,7 +102,7 @@ func undo():
 	history.pop_back()
 	
 	active = true #this is mostly for undoing in scratch games
-	canPlay = players[history.size()%2] == self
+	canPlay = players[currentPly() % 2] == self
 	
 	GUI.removeLast()
 	if plyView == history.size():
@@ -114,12 +114,19 @@ func sync(timeWhite: int, timeBlack: int): #time in ms
 	GUI.sync(timeWhite, timeBlack)
 
 
+func currentPly() -> int:
+	return history[-1].boardState.ply if history.size() > 0 else startState.ply
+
+func currentState() -> GameState:
+	return history[-1].boardState if history.size() > 0 else startState
+
+
 func setState(state: GameState):
 	pass
 
 
 func setPly(ply: int):
-	assert(history.size() > ply, "CANT VIEW PLY BECAUSE IT DOES NOT EXIST")
+	assert(history.size() > ply and ply >= 0, "CANT VIEW PLY BECAUSE IT DOES NOT EXIST")
 	canPlay = (ply == history.size()-1) and (players[1 - ply%2] == self)
 	plyView = ply
 	setState(history[ply].boardState)

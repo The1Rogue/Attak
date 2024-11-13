@@ -99,10 +99,6 @@ func deselect(id: int):
 	pass
 
 
-func currentState() -> GameState:
-	return history[-1].boardState if history.size() > 0 else startState
-
-
 func vecToTile(vec: Vector3) -> Vector2i:
 	return Vector2i(vec.x + size/2.0, size/2.0 - vec.z)
 
@@ -116,7 +112,8 @@ func deselectReserve():
 
 
 func selectPile(tile: Vector2i, pile: GameState.Pile):
-	if pile.is_empty() or history.size() < 2 or history.size() % 2 != pile.pieces[-1] % 2: return #illegal piles filter
+	var c = currentPly()
+	if pile.is_empty() or c < 2 or c % 2 != pile.pieces[-1] % 2: return #illegal piles filter
 	selection = PILE
 	selectedPile = pile.pieces.slice(-size)
 	selectedPileType = pile.type
@@ -142,8 +139,9 @@ func deselectPile(state: GameState):
 
 func clickReserve(color: int, type: int):
 	if not canPlay or plyView != history.size() - 1: return
-	if (color != history.size() % 2) != (history.size() < 2): return #correct color + swap opening
-	if type != GameState.FLAT and history.size() < 2: return #only flats for first move
+	var c = currentPly()
+	if (color != c % 2) != (c < 2): return #correct color + swap opening
+	if type != GameState.FLAT and c < 2: return #only flats for first move
 	
 	var state = currentState()
 	var id = (state.reserves.caps[color]-1) * 2 + color if type == GameState.CAP else (caps + state.reserves.flats[color]-1) * 2 + color
@@ -156,7 +154,7 @@ func clickReserve(color: int, type: int):
 	
 	elif selection == RESERVE:
 		if selectedReserve == id:
-			if type == GameState.CAP or history.size() < 2 or selectedReserveType == GameState.WALL:
+			if type == GameState.CAP or c < 2 or selectedReserveType == GameState.WALL:
 				deselectReserve()
 				selection = NONE
 			else:

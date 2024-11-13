@@ -99,13 +99,20 @@ func addPly(ply: Ply):
 		audioPlayer.stream = move
 	audioPlayer.play()
 	
-	if i % 2 == 0:
+	
+	if ply.boardState.ply % 2 == 1:
 		var l = Label.new()
-		l.text = str(i/2 + 1) + ". "
+		l.text = str((ply.boardState.ply+1)/2) + ". "
 		ptnDisplay.add_child(l)
 	
-	timeWhite.paused = i % 2 == 0 or ply.boardState.win != GameState.ONGOING
-	timeBlack.paused = i % 2 == 1 or ply.boardState.win != GameState.ONGOING
+	elif i == 0:
+		var l = Label.new()
+		l.text = str(ply.boardState.ply/2) + ". "
+		ptnDisplay.add_child(l)
+		ptnDisplay.add_child(Control.new()) #empty filler
+	
+	timeWhite.paused = (ply.boardState.ply) % 2 == 1 or ply.boardState.win != GameState.ONGOING
+	timeBlack.paused = (ply.boardState.ply) % 2 == 1 or ply.boardState.win != GameState.ONGOING
 
 	var b = Button.new()
 	b.text = ply.toPTN()
@@ -118,7 +125,8 @@ func addPly(ply: Ply):
 func removeLast():
 	assert(i > 0, "CANT REMOVE IF THERES NOTHING TO REMOVE")
 	ptnDisplay.remove_child(ptnDisplay.get_child(-1))
-	if i % 2 == 1:
+	var c = ptnDisplay.get_child(-1)
+	if c is Label:
 		ptnDisplay.remove_child(ptnDisplay.get_child(-1))
 		
 	timeWhite.paused = i % 2 == 0
