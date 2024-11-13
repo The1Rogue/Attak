@@ -2,7 +2,7 @@ extends VBoxContainer
 class_name TabMenu
 
 # BUG:
-# remove seeks/watches on logout (also chat rooms?)
+# laptop close lid disconnects without closing socket
 
 # TEST:
 # watch game correct chat
@@ -19,7 +19,6 @@ class_name TabMenu
 # click through pieces
 # add game details (komi, time etc)
 # show online count
-# better watch / seek count
 # seperate bot from human seeks
 # show ratings (player, and for seeks)
  
@@ -64,8 +63,10 @@ func _ready() -> void:
 func select(node: Control):
 	if active != null:
 		active.hide()
+		
 	if active == node:
 		active = null
+		
 	else:
 		active = node
 		active.show()
@@ -91,7 +92,6 @@ func gotoOrMakeChat(interface: PlayTakI, name: String, type: int):
 	else:
 		var c = Chat.new(interface, name, type)
 		addNode(c, "Chat: "+name)
-
 
 func remove(node: TabMenuTab):
 	remove_child(node.tabButton)

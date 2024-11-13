@@ -34,5 +34,13 @@ func remove(id: int):
 	seeks.erase(id)
 
 
+func clear():
+	for id in seeks:
+		remove_child(seeks[id])
+	count = 0
+	tabButton.text = " Join Game (0) "
+	seeks.clear()
+
+
 func accept(id: int):
 	interface.acceptSeek(id)

@@ -5,6 +5,9 @@ const url = "playtak.com:9999"
 
 @export var menu: TabMenu
 @export var loginMenu: LoginMenu
+@export var seekMenu: SeekList
+@export var watchMenu: WatchList
+
 
 var socket: WebSocketPeer = WebSocketPeer.new()
 var active: bool = false
@@ -19,10 +22,6 @@ signal removeSeek(id: int)
 signal addGame(game: GameData, id: int)
 signal removeGame(id: int)
 
-
-func _ready():
-	Chat.rooms["Global"] = Chat.new(self, "Global", Chat.GLOBAL)
-	menu.addNode(Chat.rooms["Global"], "Chat: Global", false)
 
 
 func signInGuest() -> bool:
@@ -48,6 +47,10 @@ func signIn(username: String, password: String) -> bool:
 	if packet.begins_with("Welcome"):
 		active = true
 		activeUsername = packet.substr(8, packet.length()-9)
+		
+		Chat.rooms["Global"] = Chat.new(self, "Global", Chat.GLOBAL)
+		menu.addNode(Chat.rooms["Global"], "Chat: Global", false)
+		
 		print("successfully logged in as %s" % activeUsername)
 		return true
 	
@@ -57,11 +60,22 @@ func signIn(username: String, password: String) -> bool:
 
 
 func logout():
-	assert(active, "CANT LOGOUT IF NOT LOGGED IN")
 	active = false
-	socket.close()
+	if socket.get_ready_state() == WebSocketPeer.STATE_OPEN:
+		socket.close()
+		while socket.get_ready_state() != WebSocketPeer.STATE_CLOSED:
+			await get_tree().create_timer(.1).timeout
+			socket.poll()
+	
+	seekMenu.clear()
+	watchMenu.clear()
+	for chat in Chat.rooms:
+		Chat.rooms[chat].remove()
+	Chat.rooms.clear()
+	
 	activeUsername = ""
 	activeGame = ""
+	
 
 
 func awaitPacket() -> String:
@@ -87,13 +101,8 @@ func _process(delta: float):
 	var state = socket.get_ready_state()
 	if state != WebSocketPeer.STATE_OPEN:
 		print("websocket isnt open while it should be")
-		activeUsername = ""
-		activeGame = ""
 		Globals.gameUI.notify("Disconnected Unexpectedly!")
-		loginMenu.menuButton.text = "Login"
-		loginMenu.settings.hide()
-		loginMenu.login.show()
-		active = false
+		loginMenu.logout()
 		return
 	
 	var packet

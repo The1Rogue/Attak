@@ -7,7 +7,7 @@
 [ext_resource type="Script" path="res://src/UI/login.gd" id="3_kjef8"]
 [ext_resource type="Script" path="res://src/UI/WatchList.gd" id="5_ap4a8"]
 
-[node name="PlayTakUI" type="PanelContainer" node_paths=PackedStringArray("menu", "loginMenu")]
+[node name="PlayTakUI" type="PanelContainer" node_paths=PackedStringArray("menu", "loginMenu", "seekMenu", "watchMenu")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -16,6 +16,8 @@ grow_vertical = 2
 script = ExtResource("3_ejegg")
 menu = NodePath("Menu")
 loginMenu = NodePath("Menu/Login/Menu")
+seekMenu = NodePath("Menu/Join Game (0)")
+watchMenu = NodePath("Menu/Watch Game (0)")
 
 [node name="Menu" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -72,7 +74,7 @@ text = "Logout
 [node name="seperator2" type="Control" parent="Menu/Login/Menu/Settings"]
 layout_mode = 2
 
-[node name="New Game" type="VBoxContainer" parent="Menu" node_paths=PackedStringArray("interface", "opponentStandard", "colorStandard", "options", "opponentCustom", "colorCustom", "type", "sizeCustom", "komi", "time", "inc", "trigger", "amount", "confirmCustom", "sizeScratch", "flatsScratch", "capsScratch", "notationEntry", "confirmScratch")]
+[node name="New Seek" type="VBoxContainer" parent="Menu" node_paths=PackedStringArray("interface", "opponentStandard", "colorStandard", "options", "opponentCustom", "colorCustom", "type", "sizeCustom", "komi", "time", "inc", "trigger", "amount", "confirmCustom", "sizeScratch", "flatsScratch", "capsScratch", "notationEntry", "confirmScratch")]
 layout_mode = 2
 script = ExtResource("3_2oto4")
 interface = NodePath("../..")
@@ -95,32 +97,32 @@ capsScratch = NodePath("TabContainer/scratch/HBoxContainer/GridContainer/Caps2")
 notationEntry = NodePath("TabContainer/scratch/HBoxContainer/TextEdit")
 confirmScratch = NodePath("TabContainer/scratch/Enter")
 
-[node name="TabContainer" type="TabContainer" parent="Menu/New Game"]
+[node name="TabContainer" type="TabContainer" parent="Menu/New Seek"]
 layout_mode = 2
 current_tab = 0
 clip_tabs = false
 
-[node name="standard" type="VBoxContainer" parent="Menu/New Game/TabContainer"]
+[node name="standard" type="VBoxContainer" parent="Menu/New Seek/TabContainer"]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="Opponent_Color" type="HBoxContainer" parent="Menu/New Game/TabContainer/standard"]
+[node name="Opponent_Color" type="HBoxContainer" parent="Menu/New Seek/TabContainer/standard"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Menu/New Game/TabContainer/standard/Opponent_Color"]
+[node name="Label" type="Label" parent="Menu/New Seek/TabContainer/standard/Opponent_Color"]
 layout_mode = 2
 text = "Opponent: "
 
-[node name="Opponent" type="LineEdit" parent="Menu/New Game/TabContainer/standard/Opponent_Color"]
+[node name="Opponent" type="LineEdit" parent="Menu/New Seek/TabContainer/standard/Opponent_Color"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 placeholder_text = "Anyone"
 
-[node name="Label2" type="Label" parent="Menu/New Game/TabContainer/standard/Opponent_Color"]
+[node name="Label2" type="Label" parent="Menu/New Seek/TabContainer/standard/Opponent_Color"]
 layout_mode = 2
 text = "My Color:"
 
-[node name="OptionButton" type="OptionButton" parent="Menu/New Game/TabContainer/standard/Opponent_Color"]
+[node name="OptionButton" type="OptionButton" parent="Menu/New Seek/TabContainer/standard/Opponent_Color"]
 layout_mode = 2
 selected = 0
 allow_reselect = true
@@ -131,7 +133,7 @@ popup/item_1/id = 1
 popup/item_2/text = "Black"
 popup/item_2/id = 2
 
-[node name="ItemList" type="ItemList" parent="Menu/New Game/TabContainer/standard"]
+[node name="ItemList" type="ItemList" parent="Menu/New Seek/TabContainer/standard"]
 custom_minimum_size = Vector2(0, 250)
 layout_mode = 2
 item_count = 8
@@ -144,30 +146,30 @@ item_5/text = "League Game"
 item_6/text = "Beginner Tourney"
 item_7/text = "Intermediate Tourney"
 
-[node name="custom" type="VBoxContainer" parent="Menu/New Game/TabContainer"]
+[node name="custom" type="VBoxContainer" parent="Menu/New Seek/TabContainer"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="GridContainer" type="GridContainer" parent="Menu/New Game/TabContainer/custom"]
+[node name="GridContainer" type="GridContainer" parent="Menu/New Seek/TabContainer/custom"]
 layout_mode = 2
 theme_override_constants/h_separation = 20
 columns = 4
 
-[node name="Opponent" type="Label" parent="Menu/New Game/TabContainer/custom/GridContainer"]
+[node name="Opponent" type="Label" parent="Menu/New Seek/TabContainer/custom/GridContainer"]
 layout_mode = 2
 text = "Opponent:"
 
-[node name="Opponent2" type="LineEdit" parent="Menu/New Game/TabContainer/custom/GridContainer"]
+[node name="Opponent2" type="LineEdit" parent="Menu/New Seek/TabContainer/custom/GridContainer"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 placeholder_text = "Anyone"
 
-[node name="Color" type="Label" parent="Menu/New Game/TabContainer/custom/GridContainer"]
+[node name="Color" type="Label" parent="Menu/New Seek/TabContainer/custom/GridContainer"]
 layout_mode = 2
 text = "My Color:"
 
-[node name="Color2" type="OptionButton" parent="Menu/New Game/TabContainer/custom/GridContainer"]
+[node name="Color2" type="OptionButton" parent="Menu/New Seek/TabContainer/custom/GridContainer"]
 layout_mode = 2
 selected = 0
 allow_reselect = true
@@ -178,11 +180,11 @@ popup/item_1/id = 1
 popup/item_2/text = "Black"
 popup/item_2/id = 2
 
-[node name="Type" type="Label" parent="Menu/New Game/TabContainer/custom/GridContainer"]
+[node name="Type" type="Label" parent="Menu/New Seek/TabContainer/custom/GridContainer"]
 layout_mode = 2
 text = "Game Type:"
 
-[node name="Type2" type="OptionButton" parent="Menu/New Game/TabContainer/custom/GridContainer"]
+[node name="Type2" type="OptionButton" parent="Menu/New Seek/TabContainer/custom/GridContainer"]
 layout_mode = 2
 selected = 0
 allow_reselect = true
@@ -193,11 +195,11 @@ popup/item_1/id = 1
 popup/item_2/text = "Unrated"
 popup/item_2/id = 2
 
-[node name="Size" type="Label" parent="Menu/New Game/TabContainer/custom/GridContainer"]
+[node name="Size" type="Label" parent="Menu/New Seek/TabContainer/custom/GridContainer"]
 layout_mode = 2
 text = "Size:"
 
-[node name="Size2" type="OptionButton" parent="Menu/New Game/TabContainer/custom/GridContainer"]
+[node name="Size2" type="OptionButton" parent="Menu/New Seek/TabContainer/custom/GridContainer"]
 layout_mode = 2
 selected = 0
 allow_reselect = true
@@ -215,85 +217,85 @@ popup/item_4/id = 7
 popup/item_5/text = "8x8"
 popup/item_5/id = 8
 
-[node name="Komi" type="Label" parent="Menu/New Game/TabContainer/custom/GridContainer"]
+[node name="Komi" type="Label" parent="Menu/New Seek/TabContainer/custom/GridContainer"]
 layout_mode = 2
 text = "Komi:"
 
-[node name="Komi2" type="SpinBox" parent="Menu/New Game/TabContainer/custom/GridContainer"]
+[node name="Komi2" type="SpinBox" parent="Menu/New Seek/TabContainer/custom/GridContainer"]
 layout_mode = 2
 max_value = 4.0
 step = 0.5
 value = 2.0
 custom_arrow_step = 0.5
 
-[node name="Filler" type="Control" parent="Menu/New Game/TabContainer/custom/GridContainer"]
+[node name="Filler" type="Control" parent="Menu/New Seek/TabContainer/custom/GridContainer"]
 layout_mode = 2
 
-[node name="Filler2" type="Control" parent="Menu/New Game/TabContainer/custom/GridContainer"]
+[node name="Filler2" type="Control" parent="Menu/New Seek/TabContainer/custom/GridContainer"]
 layout_mode = 2
 
-[node name="Time" type="Label" parent="Menu/New Game/TabContainer/custom/GridContainer"]
+[node name="Time" type="Label" parent="Menu/New Seek/TabContainer/custom/GridContainer"]
 layout_mode = 2
 text = "Time:
 "
 
-[node name="Time2" type="SpinBox" parent="Menu/New Game/TabContainer/custom/GridContainer"]
+[node name="Time2" type="SpinBox" parent="Menu/New Seek/TabContainer/custom/GridContainer"]
 layout_mode = 2
 min_value = 1.0
 value = 15.0
 suffix = "min"
 
-[node name="Incr" type="Label" parent="Menu/New Game/TabContainer/custom/GridContainer"]
+[node name="Incr" type="Label" parent="Menu/New Seek/TabContainer/custom/GridContainer"]
 layout_mode = 2
 text = "Increment:"
 
-[node name="Incr2" type="SpinBox" parent="Menu/New Game/TabContainer/custom/GridContainer"]
+[node name="Incr2" type="SpinBox" parent="Menu/New Seek/TabContainer/custom/GridContainer"]
 layout_mode = 2
 step = 5.0
 value = 10.0
 suffix = "sec"
 
-[node name="Trigger" type="Label" parent="Menu/New Game/TabContainer/custom/GridContainer"]
+[node name="Trigger" type="Label" parent="Menu/New Seek/TabContainer/custom/GridContainer"]
 layout_mode = 2
 text = "Extra Time Trigger:"
 
-[node name="Trigger2" type="SpinBox" parent="Menu/New Game/TabContainer/custom/GridContainer"]
+[node name="Trigger2" type="SpinBox" parent="Menu/New Seek/TabContainer/custom/GridContainer"]
 layout_mode = 2
 max_value = 60.0
 step = 5.0
 prefix = "move"
 
-[node name="Extra" type="Label" parent="Menu/New Game/TabContainer/custom/GridContainer"]
+[node name="Extra" type="Label" parent="Menu/New Seek/TabContainer/custom/GridContainer"]
 layout_mode = 2
 text = "Extra Time"
 
-[node name="Extra2" type="SpinBox" parent="Menu/New Game/TabContainer/custom/GridContainer"]
+[node name="Extra2" type="SpinBox" parent="Menu/New Seek/TabContainer/custom/GridContainer"]
 layout_mode = 2
 max_value = 60.0
 suffix = "min"
 
-[node name="Enter" type="Button" parent="Menu/New Game/TabContainer/custom"]
+[node name="Enter" type="Button" parent="Menu/New Seek/TabContainer/custom"]
 layout_mode = 2
 text = "Create"
 
-[node name="scratch" type="VBoxContainer" parent="Menu/New Game/TabContainer"]
+[node name="scratch" type="VBoxContainer" parent="Menu/New Seek/TabContainer"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Menu/New Game/TabContainer/scratch"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Menu/New Seek/TabContainer/scratch"]
 layout_mode = 2
 alignment = 1
 
-[node name="GridContainer" type="GridContainer" parent="Menu/New Game/TabContainer/scratch/HBoxContainer"]
+[node name="GridContainer" type="GridContainer" parent="Menu/New Seek/TabContainer/scratch/HBoxContainer"]
 layout_mode = 2
 columns = 2
 
-[node name="Size" type="Label" parent="Menu/New Game/TabContainer/scratch/HBoxContainer/GridContainer"]
+[node name="Size" type="Label" parent="Menu/New Seek/TabContainer/scratch/HBoxContainer/GridContainer"]
 layout_mode = 2
 text = "Size:"
 
-[node name="Size2" type="OptionButton" parent="Menu/New Game/TabContainer/scratch/HBoxContainer/GridContainer"]
+[node name="Size2" type="OptionButton" parent="Menu/New Seek/TabContainer/scratch/HBoxContainer/GridContainer"]
 layout_mode = 2
 selected = 0
 allow_reselect = true
@@ -311,31 +313,31 @@ popup/item_4/id = 7
 popup/item_5/text = "8x8"
 popup/item_5/id = 8
 
-[node name="Caps" type="Label" parent="Menu/New Game/TabContainer/scratch/HBoxContainer/GridContainer"]
+[node name="Caps" type="Label" parent="Menu/New Seek/TabContainer/scratch/HBoxContainer/GridContainer"]
 layout_mode = 2
 text = "Caps:"
 
-[node name="Caps2" type="SpinBox" parent="Menu/New Game/TabContainer/scratch/HBoxContainer/GridContainer"]
+[node name="Caps2" type="SpinBox" parent="Menu/New Seek/TabContainer/scratch/HBoxContainer/GridContainer"]
 layout_mode = 2
 value = 1.0
 custom_arrow_step = 0.5
 
-[node name="Flats" type="Label" parent="Menu/New Game/TabContainer/scratch/HBoxContainer/GridContainer"]
+[node name="Flats" type="Label" parent="Menu/New Seek/TabContainer/scratch/HBoxContainer/GridContainer"]
 layout_mode = 2
 text = "Flats:"
 
-[node name="Flats2" type="SpinBox" parent="Menu/New Game/TabContainer/scratch/HBoxContainer/GridContainer"]
+[node name="Flats2" type="SpinBox" parent="Menu/New Seek/TabContainer/scratch/HBoxContainer/GridContainer"]
 layout_mode = 2
 max_value = 200.0
 value = 30.0
 custom_arrow_step = 0.5
 
-[node name="TextEdit" type="TextEdit" parent="Menu/New Game/TabContainer/scratch/HBoxContainer"]
+[node name="TextEdit" type="TextEdit" parent="Menu/New Seek/TabContainer/scratch/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "PTN"
 
-[node name="Enter" type="Button" parent="Menu/New Game/TabContainer/scratch"]
+[node name="Enter" type="Button" parent="Menu/New Seek/TabContainer/scratch"]
 layout_mode = 2
 text = "Create"
 
