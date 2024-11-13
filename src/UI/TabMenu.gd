@@ -13,7 +13,6 @@ class_name TabMenu
 # TODO functional
 # choose what to do with ptn clock / result
 # add general settings?
-# close chats
 
 # TODO functional / pretty
 # disable things when not logged in
@@ -63,13 +62,16 @@ func _ready() -> void:
 
 
 func select(node: Control):
-	active.hide()
-	active = node
-	active.show()
+	if active != null:
+		active.hide()
+	if active == node:
+		active = null
+	else:
+		active = node
+		active.show()
 
 
-func addNode(node: Control, name: String, select: bool = true):
-	if not node is TabMenuTab: return
+func addNode(node: TabMenuTab, name: String, select: bool = true):
 	var b = Button.new()
 	node.tabButton = b
 	add_child(b)
@@ -89,3 +91,9 @@ func gotoOrMakeChat(interface: PlayTakI, name: String, type: int):
 	else:
 		var c = Chat.new(interface, name, type)
 		addNode(c, "Chat: "+name)
+
+
+func remove(node: TabMenuTab):
+	remove_child(node.tabButton)
+	remove_child(node)
+	if node == active: active = null

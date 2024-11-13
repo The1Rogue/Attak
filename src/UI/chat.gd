@@ -9,7 +9,7 @@ var room: String
 var type: int
 
 var textBox: RichTextLabel
-
+var entryBox: LineEdit
 enum {
 	GLOBAL,
 	ROOM,
@@ -22,20 +22,28 @@ func _init(interface: PlayTakI, name: String, type: int = ROOM):
 	self.type = type
 	
 	textBox = RichTextLabel.new()
-	var entry = LineEdit.new()
+	entryBox = LineEdit.new()
 	
-	entry.set_anchors_and_offsets_preset(PRESET_BOTTOM_WIDE)
-	entry.placeholder_text = ">"
+	entryBox.set_anchors_and_offsets_preset(PRESET_BOTTOM_WIDE)
+	entryBox.placeholder_text = ">"
 	textBox.size_flags_vertical |= Control.SIZE_EXPAND
 	
 	add_child(textBox)
-	add_child(entry)
-	entry.text_submitted.connect(send)
+	add_child(entryBox)
+	entryBox.text_submitted.connect(send)
 	rooms[name] = self
 	
-	if type != GLOBAL:
-		pass
 
+func _ready():
+	if type != GLOBAL:
+		var exit = Button.new()
+		exit.text = "X"
+		exit.theme_type_variation = &"ExitButton"
+		tabButton.add_child(exit)
+		exit.pressed.connect(remove)
+		exit.set_anchors_and_offsets_preset(PRESET_CENTER_RIGHT)
+		exit.position.x -= 7
+		print(exit.size)
 
 static func escape_bbcode(bbcode_text):
 	return bbcode_text.replace("[", "[lb]")
@@ -50,7 +58,7 @@ func send(msg: String):
 			interface.socket.send_text("ShoutRoom " + room + " " + msg)
 		PRIVATE:
 			interface.socket.send_text("Tell " + room + " " + msg)
-	get_child(0).clear()
+	entryBox.clear()
 
 
 func add_message(user: String, message: String):
@@ -60,3 +68,9 @@ func add_message(user: String, message: String):
 	textBox.append_text("<"+escape_bbcode(user) + ">: ")
 	textBox.pop()
 	textBox.append_text(escape_bbcode(message) + "\n")
+
+
+func remove():
+	get_parent().remove(self)
+	rooms.erase(name)
+	queue_free()

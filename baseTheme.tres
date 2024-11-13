@@ -1,9 +1,20 @@
-[gd_resource type="Theme" load_steps=8 format=3 uid="uid://3w4qd4ooj08t"]
+[gd_resource type="Theme" load_steps=9 format=3 uid="uid://3w4qd4ooj08t"]
 
 [ext_resource type="FontFile" uid="uid://dt1agg411md3s" path="res://assets/UbuntuMono-Regular.ttf" id="1_kk87t"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1dkqw"]
 bg_color = Color(2.5028e-06, 0.659891, 0.845455, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_28cbl"]
+bg_color = Color(0.355278, 0.1357, 0.59, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+expand_margin_left = 5.0
+expand_margin_top = 1.0
+expand_margin_right = 5.0
+expand_margin_bottom = 1.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_66hnr"]
 bg_color = Color(0, 0, 0, 1)
@@ -23,6 +34,8 @@ bg_color = Color(0.0674278, 0.622616, 1, 1)
 [resource]
 default_font = ExtResource("1_kk87t")
 Button/styles/pressed = SubResource("StyleBoxFlat_1dkqw")
+ExitButton/base_type = &"Button"
+ExitButton/styles/normal = SubResource("StyleBoxFlat_28cbl")
 LabelBlack/base_type = &"Label"
 LabelBlack/colors/font_color = Color(1, 1, 1, 1)
 LabelBlack/styles/normal = SubResource("StyleBoxFlat_66hnr")
