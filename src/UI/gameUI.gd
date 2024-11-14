@@ -180,3 +180,14 @@ func notify(msg: String, ping: bool = true):
 	if ping:
 		audioPlayer.stream = self.ping
 		audioPlayer.play()
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_LEFT and GameLogic.view > 0:
+			GameLogic.setView(GameLogic.view - 1)
+			get_viewport().set_input_as_handled()
+			
+		elif event.keycode == KEY_RIGHT and GameLogic.view < GameLogic.history.size():
+			GameLogic.setView(GameLogic.view + 1)
+			get_viewport().set_input_as_handled()
