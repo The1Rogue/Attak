@@ -8,11 +8,11 @@ class_name TabMenu
 # TEST:
 # watch game correct chat
 # verify last 2 entries on gamelist add message
-# verify game start message / makeGame function
 # find all remaining TODOs
 # what happens if you accept a new game when one is still active?
 
 # TODO functional
+# adaptive ui size (mostly font)
 # default tab in right menu
 # finish removing gameUI from Globals
 # add more general settings
@@ -22,6 +22,7 @@ class_name TabMenu
 # 3d decide what to do with border/viewport size
 
 # TODO functional / pretty
+# make chat names less bulky
 # disable things when not logged in
 # click through pieces
 # show online count
@@ -33,6 +34,7 @@ class_name TabMenu
 # add tweens to board
 # make ui mobile friendly
 # undo/draw buttons show opponent request
+# add result tag to ptn display
 # prettify ui
 # better login success/fail feedback
 # chat message notif sound / notif dot

@@ -99,7 +99,7 @@ func _process(delta: float):
 	var state = socket.get_ready_state()
 	if state != WebSocketPeer.STATE_OPEN:
 		print("websocket isnt open while it should be")
-		Globals.gameUI.notify("Disconnected Unexpectedly!")
+		Notif.message("Disconnected Unexpectedly!")
 		loginMenu.logout()
 		return
 	
@@ -116,17 +116,20 @@ func _process(delta: float):
 					komi.to_int(), flats.to_int(), caps.to_int()
 				)
 				addGame.emit(game, id.to_int())
-			
+				
 			["GameList", "Remove", var id, ..]:
 				removeGame.emit(id.to_int())
-			
+				
 			["Observe", var id, var pw, var pb, var size, var time, var inc, var komi, var flats, var caps, var unrated, var tournament, var triggerMove, var triggerAmount]:
 				activeGame = id
 				var game = GameData.new(
 					size.to_int(), GameData.PLAYTAK, GameData.PLAYTAK, pw, pb, time.to_int(), inc.to_int(), triggerMove.to_int(), triggerAmount.to_int(), komi.to_int(), flats.to_int(), caps.to_int()
 				)
 				GameLogic.doSetup(game)
-
+				var players=[pw,pb]
+				players.sort()
+				socket.send_text("JoinRoom "+"-".join(players))
+				
 			["Game", "Start", ..]:
 				startGame(data)
 			
@@ -206,7 +209,7 @@ func _process(delta: float):
 				Chat.rooms[u].add_message(u, " ".join(data.slice(2)))
 			
 			["Message", ..]:
-				Globals.gameUI.notify(packet.substr(8))
+				Notif.message(packet.substr(8))
 			
 			["NOK"]:
 				print("NOK") #TODO
@@ -227,6 +230,11 @@ func startGame(data: PackedStringArray):
 	GameLogic.drawRequest.connect(sendDraw)
 	GameLogic.undoRequest.connect(sendUndo)
 	GameLogic.resign.connect(resign)
+	
+	var opponent = data[4] if data[7] == "black" else data[6]
+	if not opponent in Chat.rooms:
+		Chat.new(self, opponent, Chat.PRIVATE)
+		menu.addNode(Chat.rooms[opponent], "Chat: " + opponent)
 
 
 func resign():

@@ -81,6 +81,8 @@ func doMove(origin: Node, ply: Ply):
 	
 	if ply.boardState.win != GameState.ONGOING:
 		endGame(ply.boardState.win)
+	else:
+		Notif.ping(Notif.move)
 	
 	if view == history.size():
 		view += 1
@@ -100,7 +102,7 @@ func doUndo():
 	if history.is_empty(): return
 	history.pop_back()
 	
-	active = true #this is mostly for undoing in scratch games TODO, ensure this works with the new system
+	active = true
 	
 	undo.emit()
 	if view > history.size():
@@ -114,4 +116,6 @@ func endGame(type: int):
 	if not active: return #game already ended, no need to repeat it
 	active = false
 	activeState().win = type
+	Notif.ping(Notif.end)
+	Notif.message("Game Ended " + GameState.resultStrings[type], false)
 	end.emit(type)

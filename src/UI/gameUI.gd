@@ -16,21 +16,10 @@ class_name GameUI
 @onready var gameInfo = $GameInfo
 @onready var ptnDisplay = $ScrollContainer/PtnDisplay
 
-
-@onready var audioPlayer: AudioStreamPlayer = $AudioStreamPlayer
-
 @export var criticalTime: int = 30
 var whiteCritical: bool = false
 var blackCritical: bool = false
 
-@export_category("audio")
-@export var move: AudioStream
-@export var start: AudioStream
-@export var end: AudioStream
-@export var time: AudioStream
-@export var ping: AudioStream
-
-var PopUpTimer: float = 0
 
 var i = 0
 
@@ -39,11 +28,9 @@ static func timeString(sec: int) -> String:
 
 
 func _ready() -> void:
-	Globals.gameUI = self
 	GameLogic.setup.connect(setup)
 	GameLogic.move.connect(addPly)
 	GameLogic.undo.connect(removeLast)
-	GameLogic.end.connect(endMessage)
 	GameLogic.sync.connect(sync)
 	
 	GameLogic.undoRequest.connect(undoRequest)
@@ -60,7 +47,7 @@ func setup(game: GameData, startState: GameState):
 	if not self.is_node_ready():
 		await self.ready
 	
-	audioPlayer.stream = start; audioPlayer.play()
+	Notif.ping(Notif.start) #TODO move to gameLogic?
 	for child in ptnDisplay.get_children():
 		ptnDisplay.remove_child(child)
 	
@@ -95,30 +82,18 @@ func _process(delta: float) -> void:
 		WhiteTime.text = timeString(timeWhite.time_left)
 		if not whiteCritical and timeWhite.time_left < criticalTime:
 			whiteCritical = true
-			audioPlayer.stream = time; audioPlayer.play()
+			Notif.ping(Notif.time)
 	
 	elif not timeBlack.paused:
 		BlackTime.text = timeString(timeBlack.time_left)
 		if not blackCritical and timeBlack.time_left < criticalTime:
 			blackCritical = true
-			audioPlayer.stream = time; audioPlayer.play()
-		
-	if PopUpTimer > 0:
-		PopUpTimer -= delta
-		if PopUpTimer <= 0:
-			$Popup/Panel.hide()
+			Notif.ping(Notif.time)
 
 
 func addPly(origin: Node, ply: Ply):
 	undoButton.set_pressed_no_signal(false)
 	drawButton.set_pressed_no_signal(false)
-	
-	if ply.boardState.win != GameState.ONGOING:
-		audioPlayer.stream = end;
-	else:
-		audioPlayer.stream = move
-	audioPlayer.play()
-	
 	
 	if ply.boardState.ply % 2 == 1:
 		var l = Label.new()
@@ -157,29 +132,14 @@ func removeLast():
 	i -= 1
 
 
-func endMessage(type: int):
-	assert(type != GameState.ONGOING, "Cant end an ongoing Game!")
-	notify("Game Ended " + GameState.resultStrings[type], false)
-	audioPlayer.stream = end; audioPlayer.play()
-
-
 func undoRequest(origin: Node, revoke: bool):
 	if origin == self: return
-	notify("Your opponent retracts their undo request." if revoke else "Your opponent requests an undo!")
+	Notif.message("Your opponent retracts their undo request." if revoke else "Your opponent requests an undo!")
 
 
 func drawRequest(origin: Node, revoke: bool):
 	if origin == self: return
-	notify("Your opponent retracts their draw offer." if revoke else "Your opponent offers a draw!")
-
-
-func notify(msg: String, ping: bool = true):
-	$Popup/Panel/Label.text = " " + msg + " "
-	$Popup/Panel.show()
-	PopUpTimer = 10
-	if ping:
-		audioPlayer.stream = self.ping
-		audioPlayer.play()
+	Notif.message("Your opponent retracts their draw offer." if revoke else "Your opponent offers a draw!")
 
 
 func _input(event: InputEvent) -> void:

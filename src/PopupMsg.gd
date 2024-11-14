@@ -1,0 +1,36 @@
+extends Node
+
+
+@onready var audioPlayer: AudioStreamPlayer = $AudioStreamPlayer
+@onready var popUp: PanelContainer = $Panel
+@onready var popUpLabel: Label = $Panel/Label
+
+@export_category("audio")
+@export var move: AudioStream
+@export var start: AudioStream
+@export var end: AudioStream
+@export var time: AudioStream
+@export var notif: AudioStream
+
+
+var PopUpTimer: float = 0
+
+
+func _process(delta: float) -> void:
+	if PopUpTimer > 0:
+		PopUpTimer -= delta
+		if PopUpTimer <= 0:
+			$Popup/Panel.hide()
+
+
+func message(msg: String, noise: bool = true):
+	popUpLabel.text = " " + msg + " "
+	popUp.show()
+	PopUpTimer = 10
+	if noise:
+		ping(notif)
+
+
+func ping(audio: AudioStream):
+	audioPlayer.stream = audio
+	audioPlayer.play()

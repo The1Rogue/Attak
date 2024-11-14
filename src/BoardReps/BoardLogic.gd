@@ -42,7 +42,7 @@ func _ready():
 func setup(game: GameData, startState: GameState):
 	playAbleColor = WHITE_MASK if game.playerWhite == GameData.LOCAL else 0
 	playAbleColor |= BLACK_MASK if game.playerBlack == GameData.LOCAL else 0
-
+	
 	size = game.size
 	flats = game.flats
 	caps = game.caps
