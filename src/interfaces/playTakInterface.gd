@@ -300,7 +300,7 @@ func makeGame(data: PackedStringArray) -> GameData:
 		data[4], #pw
 		data[6], #pb
 		data[8].to_int(), #time
-		0, #TODO is this not supposed to be here?????
+		0, #for *some* god forsaken reason, playtak doesnt send increment time on game start.....
 		data[12].to_int(), #triggermove
 		data[13].to_int(), #triggertime
 		data[9].to_int(),  #komi

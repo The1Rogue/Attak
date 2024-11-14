@@ -52,6 +52,9 @@ text = "Draw"
 layout_mode = 2
 text = "Resign"
 
+[node name="GameInfo" type="Label" parent="."]
+layout_mode = 2
+
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 3

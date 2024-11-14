@@ -10,7 +10,12 @@ class_name GameUI
 @onready var BlackTime = $PlayerBlackTime
 @onready var timeBlack: Timer  = $TimerBlack
 
+@onready var undoButton = $HBoxContainer/Undo 
+@onready var drawButton = $HBoxContainer/Draw
+@onready var resignButton = $HBoxContainer/Resign
+@onready var gameInfo = $GameInfo
 @onready var ptnDisplay = $ScrollContainer/PtnDisplay
+
 
 @onready var audioPlayer: AudioStreamPlayer = $AudioStreamPlayer
 
@@ -26,10 +31,6 @@ var blackCritical: bool = false
 @export var ping: AudioStream
 
 var PopUpTimer: float = 0
-
-@onready var undoButton = $HBoxContainer/Undo 
-@onready var drawButton = $HBoxContainer/Draw
-@onready var resignButton = $HBoxContainer/Resign
 
 var i = 0
 
@@ -74,6 +75,10 @@ func setup(game: GameData, startState: GameState):
 	BlackTime.text = timeString(game.time)
 	whiteCritical = game.time == 0 #prevent critical sound on not timed game
 	blackCritical = game.time == 0
+	
+	gameInfo.text = " +%3.1f | %d flats/%d cap%s " % [game.komi, game.flats, game.caps, "" if game.caps == 1 else "s"]
+	if game.triggerTime > 0:
+		gameInfo.text += "| +%d@%d " % [game.triggerTime/60, game.triggerMove]
 
 
 func sync(timeWhite: int, timeBlack: int):

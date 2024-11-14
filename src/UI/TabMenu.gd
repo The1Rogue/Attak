@@ -3,6 +3,7 @@ class_name TabMenu
 
 # BUG:
 # laptop close lid disconnects without closing socket, which is not detected
+# timer probably doesnt end if game ends on resign or abandon
 
 # TEST:
 # watch game correct chat
@@ -12,6 +13,7 @@ class_name TabMenu
 # what happens if you accept a new game when one is still active?
 
 # TODO functional
+# default tab in right menu
 # finish removing gameUI from Globals
 # add more general settings
 # auto attempt reconnect on disconnect (and save chats for a bit)
@@ -22,7 +24,6 @@ class_name TabMenu
 # TODO functional / pretty
 # disable things when not logged in
 # click through pieces
-# add game details (komi, time etc)
 # show online count
 # seperate bot from human seeks
 # show ratings (player, and for seeks)
