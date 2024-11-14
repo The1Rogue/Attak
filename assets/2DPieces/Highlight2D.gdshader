@@ -13,5 +13,5 @@ void fragment() {
 	//if (a == 0.0){
 		//COLOR.rgb = outline_color;
 	//}
-	
+
 }

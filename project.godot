@@ -22,6 +22,7 @@ config/windows_native_icon="res://Attak.ico"
 [autoload]
 
 Globals="*res://src/Globals.gd"
+GameLogic="*res://src/Logic/gameLogic.gd"
 
 [display]
 

@@ -25,11 +25,9 @@ var blackCritical: bool = false
 @export var time: AudioStream
 @export var ping: AudioStream
 
-signal clickPly(id: int)
-
 var PopUpTimer: float = 0
 
-@onready var undoButton = $HBoxContainer/Undo
+@onready var undoButton = $HBoxContainer/Undo 
 @onready var drawButton = $HBoxContainer/Draw
 @onready var resignButton = $HBoxContainer/Resign
 
@@ -41,9 +39,23 @@ static func timeString(sec: int) -> String:
 
 func _ready() -> void:
 	Globals.gameUI = self
+	GameLogic.setup.connect(setup)
+	GameLogic.move.connect(addPly)
+	GameLogic.undo.connect(removeLast)
+	GameLogic.end.connect(endMessage)
+	GameLogic.sync.connect(sync)
+	
+	GameLogic.undoRequest.connect(undoRequest)
+	GameLogic.drawRequest.connect(drawRequest)
+	
+	setup(GameLogic.gameData, null)
+	
+	undoButton.toggled.connect(func(t:bool): GameLogic.undoRequest.emit(self, not t))
+	drawButton.toggled.connect(func(t:bool): GameLogic.drawRequest.emit(self, not t))
+	resignButton.pressed.connect(GameLogic.resign.emit)
 
 
-func setup(game: GameData):
+func setup(game: GameData, startState: GameState):
 	if not self.is_node_ready():
 		await self.ready
 	
@@ -92,7 +104,10 @@ func _process(delta: float) -> void:
 			$Popup/Panel.hide()
 
 
-func addPly(ply: Ply):
+func addPly(origin: Node, ply: Ply):
+	undoButton.set_pressed_no_signal(false)
+	drawButton.set_pressed_no_signal(false)
+	
 	if ply.boardState.win != GameState.ONGOING:
 		audioPlayer.stream = end;
 	else:
@@ -109,7 +124,7 @@ func addPly(ply: Ply):
 		var l = Label.new()
 		l.text = str(ply.boardState.ply/2) + ". "
 		ptnDisplay.add_child(l)
-		ptnDisplay.add_child(Control.new()) #empty filler
+		ptnDisplay.add_child(Control.new()) #empty filler to align things
 	
 	timeWhite.paused = (ply.boardState.ply) % 2 == 1 or ply.boardState.win != GameState.ONGOING
 	timeBlack.paused = (ply.boardState.ply) % 2 == 0 or ply.boardState.win != GameState.ONGOING
@@ -117,21 +132,40 @@ func addPly(ply: Ply):
 	var b = Button.new()
 	b.text = ply.toPTN()
 	var c = i #this ensures the lambda expression works correctly
-	b.pressed.connect(func(): clickPly.emit(c))
+	b.pressed.connect(func(): GameLogic.setView(c+1))
 	ptnDisplay.add_child(b)
 	i += 1
 
 
 func removeLast():
 	assert(i > 0, "CANT REMOVE IF THERES NOTHING TO REMOVE")
+	undoButton.set_pressed_no_signal(false)
+	drawButton.set_pressed_no_signal(false)
+	
 	ptnDisplay.remove_child(ptnDisplay.get_child(-1))
 	var c = ptnDisplay.get_child(-1)
 	if c is Label:
-		ptnDisplay.remove_child(ptnDisplay.get_child(-1))
+		ptnDisplay.remove_child(c)
 		
 	timeWhite.paused = i % 2 == 0
 	timeBlack.paused = i % 2 == 1
 	i -= 1
+
+
+func endMessage(type: int):
+	assert(type != GameState.ONGOING, "Cant end an ongoing Game!")
+	notify("Game Ended " + GameState.resultStrings[type], false)
+	audioPlayer.stream = end; audioPlayer.play()
+
+
+func undoRequest(origin: Node, revoke: bool):
+	if origin == self: return
+	notify("Your opponent retracts their undo request." if revoke else "Your opponent requests an undo!")
+
+
+func drawRequest(origin: Node, revoke: bool):
+	if origin == self: return
+	notify("Your opponent retracts their draw offer." if revoke else "Your opponent offers a draw!")
 
 
 func notify(msg: String, ping: bool = true):

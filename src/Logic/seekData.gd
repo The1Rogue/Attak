@@ -13,7 +13,6 @@ enum {
 }
 
 var playerName: String
-var interface: Interface
 
 var size: int
 
@@ -30,9 +29,10 @@ var flats: int
 var caps: int
 var rated: int
 
-func _init(player: String, interface: Interface, size: int, time: int, inc: int, trigger: int, extra: int, color: String, komi: int, flats: int, caps: int, rated: int):
+
+
+func _init(player: String, size: int, time: int, inc: int, trigger: int, extra: int, color: String, komi: int, flats: int, caps: int, rated: int):
 	self.playerName = player
-	self.interface = interface
 	self.size = size
 	self.time = time
 	self.increment = inc

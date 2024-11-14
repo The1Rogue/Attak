@@ -1,4 +1,4 @@
-extends Interface
+extends Node
 class_name PlayTakI
 
 const url = "playtak.com:9999"
@@ -21,7 +21,6 @@ signal removeSeek(id: int)
 
 signal addGame(game: GameData, id: int)
 signal removeGame(id: int)
-
 
 
 func signInGuest() -> bool:
@@ -112,7 +111,7 @@ func _process(delta: float):
 			["GameList", "Add", var id, var pw, var pb, var size, var time, var inc, var komi, var flats, var caps, var unrated, var tournament, var triggerMove, var triggerAmount]:
 				var game = GameData.new(
 					size.to_int(),
-					self, self, pw, pb, 
+					GameData.PLAYTAK, GameData.PLAYTAK, pw, pb, 
 					time.to_int(), inc.to_int(), triggerMove.to_int(), triggerAmount.to_int(),
 					komi.to_int(), flats.to_int(), caps.to_int()
 				)
@@ -123,18 +122,18 @@ func _process(delta: float):
 			
 			["Observe", var id, var pw, var pb, var size, var time, var inc, var komi, var flats, var caps, var unrated, var tournament, var triggerMove, var triggerAmount]:
 				activeGame = id
-				var g = GameData.new(
-					size.to_int(), self, self, pw, pb, time.to_int(), inc.to_int(), triggerMove.to_int(), triggerAmount.to_int(), komi.to_int(), flats.to_int(), caps.to_int()
+				var game = GameData.new(
+					size.to_int(), GameData.PLAYTAK, GameData.PLAYTAK, pw, pb, time.to_int(), inc.to_int(), triggerMove.to_int(), triggerAmount.to_int(), komi.to_int(), flats.to_int(), caps.to_int()
 				)
-				Globals.board.setup(g)
+				GameLogic.doSetup(game)
 
-			["Game", "Start", var id, ..]:
-				Globals.board.setup(makeGame(data))
-				activeGame = id
+			["Game", "Start", ..]:
+				startGame(data)
 			
 			["Game", var id, "P", var sq, ..] when id == activeGame:
 				var type = Place.TYPE.FLAT if data.size() == 4 else Place.TYPE.WALL if data[4] == "W" else Place.TYPE.CAP
-				onMove.emit(self, Place.new(Ply.getTile(sq), type))
+				var ply = Place.new(Ply.getTile(sq), type)
+				GameLogic.doMove(self, ply)
 				
 			["Game", var id, "M", var sq1, var sq2, ..] when id == activeGame:
 				var tile1 = Ply.getTile(sq1)
@@ -148,34 +147,34 @@ func _process(delta: float):
 				var drops: Array[int] = []
 				for i in data.slice(5):
 					drops.append(i.to_int())
-				onMove.emit(self, Spread.new(tile1, dir, drops, smash))
-			
+				GameLogic.doMove(self, Spread.new(tile1, dir, drops, smash))
+				
 			["Game", var id, "Time", var timeW, var timeB] when id == activeGame:
-				timeSync.emit(timeW.to_int() * 1000, timeB.to_int() * 1000)
+				GameLogic.sync.emit(timeW.to_int() * 1000, timeB.to_int() * 1000)
 			
 			["Game", var id, "Timems", var timeW, var timeB] when id == activeGame:
-				timeSync.emit(timeW.to_int(), timeB.to_int())
+				GameLogic.sync.emit(timeW.to_int(), timeB.to_int())
 			
 			["Game", var id, "Over", var result] when id == activeGame:
-				Globals.board.end("Game Ended " + result)
-			
+				endGame(GameState.resultStrings.find(result))
+				
 			["Game", var id, "OfferDraw"] when id == activeGame:
-				Globals.board.GUI.notify("Your opponent offers a draw!")
+				GameLogic.drawRequest.emit(self, false)
 			
 			["Game", var id, "RemoveDraw"] when id == activeGame:
-				Globals.board.GUI.notify("Your opponent retracts their draw offer.")
+				GameLogic.drawRequest.emit(self, true)
 			
 			["Game", var id, "RequestUndo"] when id == activeGame:
-				Globals.board.GUI.notify("Your opponent requests an undo!")
+				GameLogic.undoRequest.emit(self, false)
 			
 			["Game", var id, "RemoveUndo"] when id == activeGame:
-				Globals.board.GUI.notify("Your opponent retracts their undo request.")
+				GameLogic.undoRequest.emit(self, true)
 			
 			["Game", var id, "Undo"] when id == activeGame:
-				Globals.board.undo()
+				GameLogic.doUndo()
 			
 			["Game", var id, "Abandoned.", var player, "quit"] when id == activeGame:
-				Globals.board.end("Game ended because " + player + " abandoned." )
+				endGame(GameState.DEFAULT_WIN_WHITE if player == GameLogic.gameData.playerWhiteName else GameState.DEFAULT_WIN_BLACK)
 			
 			["Seek", "new", var id, ..]:
 				addSeek.emit(makeSeek(data), id.to_int())
@@ -210,7 +209,7 @@ func _process(delta: float):
 				Globals.gameUI.notify(packet.substr(8))
 			
 			["NOK"]:
-				error.emit("NOK")
+				print("NOK") #TODO
 			
 			["OK"]:
 				pass
@@ -220,9 +219,44 @@ func _process(delta: float):
 				print(packet)
 
 
-func sendMove(ply: Ply):
+func startGame(data: PackedStringArray):
+	GameLogic.doSetup(makeGame(data)) #TODO Connect resign?
+	activeGame = data[2]
+	
+	GameLogic.move.connect(sendMove)
+	GameLogic.drawRequest.connect(sendDraw)
+	GameLogic.undoRequest.connect(sendUndo)
+	GameLogic.resign.connect(resign)
+
+
+func resign():
+	socket.send_text("Game#" + activeGame + " Resign")
+
+
+func endGame(type: int):
+	GameLogic.endGame(type)
+	activeGame = ""
+	
+	GameLogic.move.disconnect(sendMove)
+	GameLogic.drawRequest.disconnect(sendDraw)
+	GameLogic.undoRequest.disconnect(sendUndo)
+	GameLogic.resign.disconnect(resign)
+
+
+func sendMove(origin: Node, ply: Ply):
+	if origin == self: return #prevents the client from sending received moves back
 	var t = ply.toPlayTak()
 	socket.send_text("Game#" + activeGame + " " + ply.toPlayTak().to_upper())
+
+
+func sendDraw(origin: Node, revoke: bool):
+	if origin == self: return #prevents the client from sending received moves back
+	socket.send_text("Game#" + activeGame + " " + "RemoveDraw" if revoke else "OfferDraw")
+
+
+func sendUndo(origin: Node, revoke: bool):
+	if origin == self: return #prevents the client from sending received moves back
+	socket.send_text("Game#" + activeGame + " " + "RemoveUndo" if revoke else "RequestUndo")
 
 
 func sendToGame(msg: String):
@@ -242,7 +276,6 @@ func acceptSeek(seek: int):
 func makeSeek(data: PackedStringArray) -> SeekData:
 	return SeekData.new(
 		data[3], #player
-		self,
 		data[4].to_int(), # size
 		data[5].to_int(), # time
 		data[6].to_int(), # inc
@@ -257,8 +290,8 @@ func makeSeek(data: PackedStringArray) -> SeekData:
 
 
 func makeGame(data: PackedStringArray) -> GameData:
-	var pWhite = self if data[7] == "black" else null
-	var pBlack = self if data[7] == "white" else null
+	var pWhite = GameData.PLAYTAK if data[7] == "black" else GameData.LOCAL
+	var pBlack = GameData.PLAYTAK if data[7] == "white" else GameData.LOCAL
 	
 	return GameData.new(
 		data[3].to_int(), #size 

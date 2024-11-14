@@ -36,9 +36,21 @@ enum {
 	ROAD_WIN_BLACK,
 	FLAT_WIN_WHITE,
 	FLAT_WIN_BLACK,
+	DEFAULT_WIN_WHITE,
+	DEFAULT_WIN_BLACK,
 	DRAW,
 	ONGOING
 }
+const resultStrings = [
+	"R-0",
+	"0-R",
+	"F-0",
+	"0-F",
+	"1-0",
+	"0-1",
+	"1/2-1/2",
+	"0-0"
+]
 
 class Reserves extends Resource:
 	@export var flats = {WHITE: 0, BLACK: 0}
@@ -127,7 +139,7 @@ static func emptyState(size: int, flats: int, caps: int, komi: float) -> GameSta
 	
 	return state
 
-# 1,x5/x,1,x4/x,1,12C,1,1,x/x,1,1C,2,x2/x,2,2,2,x2/x5,2 2 8
+
 static func fromTPS(tps: String, flats: int, caps: int) -> GameState:
 	var s = tps.split(" ")
 	var rows = s[0].split("/")

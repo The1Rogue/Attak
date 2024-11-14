@@ -61,7 +61,7 @@ func createStandard(index: int):
 #size: int, time: int, inc: int, trigger: int, extra: int, color: String, komi: int, flats: int, caps: int, rated: RATED):
 	var opt = OPTIONS[index]
 	var color = ["A", "W", "B"][colorStandard.selected]
-	var seek = SeekData.new(opponentStandard.text, interface, opt[0], opt[1] * 60, opt[2], opt[3], opt[4] * 60, color, opt[5] * 2, opt[6], opt[7], opt[8])
+	var seek = SeekData.new(opponentStandard.text, opt[0], opt[1] * 60, opt[2], opt[3], opt[4] * 60, color, opt[5] * 2, opt[6], opt[7], opt[8])
 	interface.sendSeek(seek)
 	Globals.gameUI.notify("Seek Created!")
 
@@ -72,7 +72,7 @@ func createCustom():
 	var caps = standardCaps[size - 3]
 	var color = ["A", "W", "B"][colorCustom.selected]
 	var t = SeekData.RATED if type.selected == 0 else SeekData.UNRATED if type.selected == 2 else SeekData.TOURNAMENT
-	var seek = SeekData.new(opponentCustom.text, interface, size, time.value * 60, inc.value, trigger.value, amount.value * 60, color, komi.value * 2, flats, caps, t)
+	var seek = SeekData.new(opponentCustom.text, size, time.value * 60, inc.value, trigger.value, amount.value * 60, color, komi.value * 2, flats, caps, t)
 	interface.sendSeek(seek)
 	Globals.gameUI.notify("Seek Created!")
 
@@ -81,14 +81,14 @@ func createScratch():
 	if notationEntry.text.is_empty():
 		var g = GameData.new(
 			sizeScratch.get_selected_id(),
-			Globals.board, Globals.board,
+			GameData.LOCAL, GameData.LOCAL,
 			"Player White",
 			"Player Black",
 			0, 0, 0, 0, 0,
 			flatsScratch.value,
 			capsScratch.value
 		)
-		Globals.board.setup(g)
+		GameLogic.doSetup(g)
 		
 	else:
 		var notation = notationEntry.text.strip_edges().split("\n", false)
@@ -161,7 +161,7 @@ func createScratch():
 					Globals.gameUI.notify("\"%s\" is malformed ptn!" % line)
 					return
 				
-				plyList.append(Ply.fromPTN(m.get_string(1))) #TODO actually add these plies
+				plyList.append(Ply.fromPTN(m.get_string(1)))
 				if not m.get_string(2).is_empty():
 					plyList.append(Ply.fromPTN(m.get_string(2)))
 			
@@ -179,12 +179,9 @@ func createScratch():
 		if flats == -1: flats = standardFlats[size-3]
 		if caps == -1: caps = standardCaps[size-3]
 		
-		Globals.board.setup(GameData.new(size, null, null, pw, pb, time, inc, trigger, extra, komi, flats, caps))
-		if startState != null: 
-			Globals.board.startState = startState
-			Globals.board.setState(startState)
+		GameLogic.doSetup(GameData.new(size, GameData.LOCAL, GameData.LOCAL, pw, pb, time, inc, trigger, extra, komi, flats, caps), startState)
 		
 		for i in plyList:
-			Globals.board.play(null, i)
+			GameLogic.doMove(self, i)
 		
 		notationEntry.clear()

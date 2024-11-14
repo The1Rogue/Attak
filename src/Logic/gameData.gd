@@ -1,9 +1,16 @@
 class_name GameData
 
+
+enum { #PlayerType
+	LOCAL,
+	PLAYTAK,
+	BOT #not yet implemented
+}
+
 var id: String
 
-var playerWhite: Player
-var playerBlack: Player
+var playerWhite: int
+var playerBlack: int
 
 var playerWhiteName: String
 var playerBlackName: String
@@ -21,7 +28,7 @@ var increment: int
 var triggerMove: int
 var triggerTime: int
 
-func _init(size: int, pw: Player, pb: Player, pwn: String, pbn: String, time: int, increment: int, trigger: int, extra: int, komi: int, flats: int, caps: int):
+func _init(size: int, pw: int, pb: int, pwn: String, pbn: String, time: int, increment: int, trigger: int, extra: int, komi: int, flats: int, caps: int):
 	self.size = size
 	self.playerWhite = pw
 	self.playerBlack = pb

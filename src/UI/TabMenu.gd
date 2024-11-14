@@ -2,7 +2,7 @@ extends VBoxContainer
 class_name TabMenu
 
 # BUG:
-# laptop close lid disconnects without closing socket
+# laptop close lid disconnects without closing socket, which is not detected
 
 # TEST:
 # watch game correct chat
@@ -12,7 +12,8 @@ class_name TabMenu
 # what happens if you accept a new game when one is still active?
 
 # TODO functional
-# add general settings?
+# finish removing gameUI from Globals
+# add more general settings
 # auto attempt reconnect on disconnect (and save chats for a bit)
 # 2d board texture scaling (is that needed for 3d too?)
 # 2d prevent tall stack covering stacks behind them
@@ -42,7 +43,7 @@ class_name TabMenu
 # handle server messages/errors/NOKs
 # smash on server move
 # custom new game piece counts
-# user settings
+# user settings (change password, forget on logout)
 
 var active: Control
 

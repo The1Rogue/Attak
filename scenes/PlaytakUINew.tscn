@@ -1,11 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://c4xgbwf6ww050"]
+[gd_scene load_steps=10 format=3 uid="uid://c4xgbwf6ww050"]
 
 [ext_resource type="Script" path="res://src/UI/TabMenu.gd" id="1_tkoo2"]
 [ext_resource type="Script" path="res://src/UI/SeekList.gd" id="2_42r6x"]
 [ext_resource type="Script" path="res://src/UI/newSeek.gd" id="3_2oto4"]
 [ext_resource type="Script" path="res://src/interfaces/playTakInterface.gd" id="3_ejegg"]
+[ext_resource type="Script" path="res://src/UI/Settings.gd" id="3_h3hqn"]
 [ext_resource type="Script" path="res://src/UI/login.gd" id="3_kjef8"]
+[ext_resource type="PackedScene" uid="uid://c4esmjnf630vc" path="res://scenes/3DBoard.tscn" id="4_dxgwr"]
 [ext_resource type="Script" path="res://src/UI/WatchList.gd" id="5_ap4a8"]
+[ext_resource type="PackedScene" uid="uid://mxvbujo17lyt" path="res://scenes/2Dboard.tscn" id="5_deflk"]
 
 [node name="PlayTakUI" type="PanelContainer" node_paths=PackedStringArray("menu", "loginMenu", "seekMenu", "watchMenu")]
 anchors_preset = 15
@@ -22,6 +25,16 @@ watchMenu = NodePath("Menu/Watch Game (0)")
 [node name="Menu" type="VBoxContainer" parent="."]
 layout_mode = 2
 script = ExtResource("1_tkoo2")
+
+[node name="Settings" type="VBoxContainer" parent="Menu"]
+layout_mode = 2
+script = ExtResource("3_h3hqn")
+board3D = ExtResource("4_dxgwr")
+board2D = ExtResource("5_deflk")
+
+[node name="Set2D" type="CheckButton" parent="Menu/Settings"]
+layout_mode = 2
+text = "2D board"
 
 [node name="Login" type="VBoxContainer" parent="Menu" node_paths=PackedStringArray("interface")]
 layout_mode = 2

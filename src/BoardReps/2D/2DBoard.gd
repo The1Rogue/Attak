@@ -23,11 +23,9 @@ var pieces: Array[Piece2D] = []
 
 func _ready():
 	super()
-	var g = GameData.new(5, self, self, "Player White", "Player Black", 0, 0, 0, 0, 0, 21, 1)
-	setup(g) #TODO This is temporary (is it?)
 
 
-func makeBoard(flats: int, caps: int):
+func makeBoard():
 	for i in pieces:
 		reserves.remove_child(i)
 	pieces = []
@@ -87,7 +85,7 @@ func putPiece(id: int, v: Vector3i):
 	if pieces[id].selected: pieces[id].position.y -= selectionHeight
 
 
-func putReserve(id: int):	
+func putReserve(id: int):
 	if id < 2*caps:
 		pieces[id].position = Vector2(
 			16 * (size/2.0 + .75) * (-1 if id %2 == 1 else 1),
@@ -101,7 +99,6 @@ func putReserve(id: int):
 			16 * (size/2.0 - (id/2 - caps) * (size-1) / (caps+flats - 1.0))
 		)
 		pieces[id].z_index = (id/2 - caps)
-	
 
 
 func highlight(id: int):
@@ -143,8 +140,8 @@ func _input(event: InputEvent) -> void:
 			if event.button_index == MOUSE_BUTTON_LEFT:
 				var color = 0 if v.x > 0 else 1
 				var type = GameState.FLAT if v.y > 16 * (size/2.0 - .5 - (size-1.0) * flats / (flats+caps)) else GameState.CAP
-				if type == GameState.CAP and currentState().reserves.caps[color] == 0: return
-				elif type == GameState.FLAT and currentState().reserves.flats[color] == 0: return
+				if type == GameState.CAP and GameLogic.activeState().reserves.caps[color] == 0: return
+				elif type == GameState.FLAT and GameLogic.activeState().reserves.flats[color] == 0: return
 				clickReserve(color, type)
 			
 			elif event.button_index == MOUSE_BUTTON_RIGHT:

@@ -41,6 +41,10 @@ var dragLength: float
 @export var hoverMaterial: ShaderMaterial
 
 
+func vecToTile(vec: Vector3) -> Vector2i:
+	return Vector2i(vec.x + size/2.0, size/2.0 - vec.z)
+
+
 func _ready():
 	super()
 	
@@ -49,12 +53,9 @@ func _ready():
 
 	
 	$Collider.input_event.connect(inputEvent)
-	
-	var g = GameData.new(5, self, self, "Player White", "Player Black", 0, 0, 0, 0, 0, 21, 1)
-	setup(g) #TODO This is temporary (is it?)
 
 
-func makeBoard(flats: int, caps: int):
+func makeBoard():
 	for i in pieces:
 		pieceHolder.remove_child(i)
 		i.queue_free()
