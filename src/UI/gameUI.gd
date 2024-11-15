@@ -2,26 +2,29 @@ extends VBoxContainer
 class_name GameUI
 
 
-@onready var WhiteName = $PlayerWhite
-@onready var WhiteTime = $PlayerWhiteTime
-@onready var timeWhite: Timer  = $TimerWhite
+@export var WhiteName: Label
+@export var WhiteTime: Label
+@onready var timeWhite: Timer = $TimerWhite
 
-@onready var BlackName = $PlayerBlack
-@onready var BlackTime = $PlayerBlackTime
+@export var BlackName: Label
+@export var BlackTime: Label
 @onready var timeBlack: Timer  = $TimerBlack
 
-@onready var undoButton = $HBoxContainer/Undo 
-@onready var drawButton = $HBoxContainer/Draw
-@onready var resignButton = $HBoxContainer/Resign
-@onready var gameInfo = $GameInfo
-@onready var ptnDisplay = $ScrollContainer/PtnDisplay
+@export var undoButton: Button
+@export var drawButton: Button
+@export var resignButton: Button
+@export var leftButton: Button
+@export var rightButton: Button
+
+@export var gameInfo: Label
+@export var ptnDisplay: GridContainer
 
 @export var criticalTime: int = 30
 var whiteCritical: bool = false
 var blackCritical: bool = false
 
-
 var i = 0
+
 
 static func timeString(sec: int) -> String:
 	return "%02d:%02d" % [sec / 60, sec % 60]
@@ -32,6 +35,12 @@ func _ready() -> void:
 	GameLogic.move.connect(addPly)
 	GameLogic.undo.connect(removeLast)
 	GameLogic.sync.connect(sync)
+	GameLogic.end.connect(end)
+	
+	if leftButton != null:
+		leftButton.pressed.connect(func(): if GameLogic.view > 0: GameLogic.setView(GameLogic.view - 1))
+	if rightButton != null:
+		rightButton.pressed.connect(func(): if GameLogic.view < GameLogic.history.size(): GameLogic.setView(GameLogic.view + 1))
 	
 	GameLogic.undoRequest.connect(undoRequest)
 	GameLogic.drawRequest.connect(drawRequest)
@@ -48,8 +57,9 @@ func setup(game: GameData, startState: GameState):
 		await self.ready
 	
 	Notif.ping(Notif.start) #TODO move to gameLogic?
-	for child in ptnDisplay.get_children():
-		ptnDisplay.remove_child(child)
+	if ptnDisplay != null:
+		for child in ptnDisplay.get_children():
+			ptnDisplay.remove_child(child)
 	
 	i = 0
 	WhiteName.text = game.playerWhiteName
@@ -63,7 +73,7 @@ func setup(game: GameData, startState: GameState):
 	whiteCritical = game.time == 0 #prevent critical sound on not timed game
 	blackCritical = game.time == 0
 	
-	gameInfo.text = " +%3.1f | %d flats/%d cap%s " % [game.komi, game.flats, game.caps, "" if game.caps == 1 else "s"]
+	gameInfo.text = " +%3.1f | %d flats/%d cap%s " % [game.komi/2.0, game.flats, game.caps, "" if game.caps == 1 else "s"]
 	if game.triggerTime > 0:
 		gameInfo.text += "| +%d@%d " % [game.triggerTime/60, game.triggerMove]
 
@@ -95,6 +105,10 @@ func addPly(origin: Node, ply: Ply):
 	undoButton.set_pressed_no_signal(false)
 	drawButton.set_pressed_no_signal(false)
 	
+	timeWhite.paused = (ply.boardState.ply) % 2 == 1 or ply.boardState.win != GameState.ONGOING
+	timeBlack.paused = (ply.boardState.ply) % 2 == 0 or ply.boardState.win != GameState.ONGOING
+	
+	if ptnDisplay == null: return
 	if ply.boardState.ply % 2 == 1:
 		var l = Label.new()
 		l.text = str((ply.boardState.ply+1)/2) + ". "
@@ -105,9 +119,6 @@ func addPly(origin: Node, ply: Ply):
 		l.text = str(ply.boardState.ply/2) + ". "
 		ptnDisplay.add_child(l)
 		ptnDisplay.add_child(Control.new()) #empty filler to align things
-	
-	timeWhite.paused = (ply.boardState.ply) % 2 == 1 or ply.boardState.win != GameState.ONGOING
-	timeBlack.paused = (ply.boardState.ply) % 2 == 0 or ply.boardState.win != GameState.ONGOING
 
 	var b = Button.new()
 	b.text = ply.toPTN()
@@ -118,17 +129,19 @@ func addPly(origin: Node, ply: Ply):
 
 
 func removeLast():
-	assert(i > 0, "CANT REMOVE IF THERES NOTHING TO REMOVE")
 	undoButton.set_pressed_no_signal(false)
 	drawButton.set_pressed_no_signal(false)
 	
+	timeWhite.paused = GameLogic.currentPly() % 2 == 1
+	timeBlack.paused = GameLogic.currentPly() % 2 == 0
+	
+	if ptnDisplay == null: return
+	assert(i > 0, "CANT REMOVE IF THERES NOTHING TO REMOVE")
 	ptnDisplay.remove_child(ptnDisplay.get_child(-1))
 	var c = ptnDisplay.get_child(-1)
 	if c is Label:
 		ptnDisplay.remove_child(c)
-		
-	timeWhite.paused = i % 2 == 0
-	timeBlack.paused = i % 2 == 1
+
 	i -= 1
 
 
@@ -140,6 +153,11 @@ func undoRequest(origin: Node, revoke: bool):
 func drawRequest(origin: Node, revoke: bool):
 	if origin == self: return
 	Notif.message("Your opponent retracts their draw offer." if revoke else "Your opponent offers a draw!")
+
+
+func end(type: int):
+	timeWhite.paused = true
+	timeBlack.paused = true
 
 
 func _input(event: InputEvent) -> void:

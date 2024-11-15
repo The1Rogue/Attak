@@ -27,6 +27,7 @@ func _init(interface: PlayTakI, name: String, type: int = ROOM):
 	entryBox.set_anchors_and_offsets_preset(PRESET_BOTTOM_WIDE)
 	entryBox.placeholder_text = ">"
 	textBox.size_flags_vertical |= Control.SIZE_EXPAND
+	textBox.scroll_following = true
 	
 	add_child(textBox)
 	add_child(entryBox)

@@ -80,6 +80,7 @@ func createCustom():
 func createScratch():
 	if notationEntry.text.is_empty():
 		var g = GameData.new(
+			"",
 			sizeScratch.get_selected_id(),
 			GameData.LOCAL, GameData.LOCAL,
 			"Player White",
@@ -179,7 +180,7 @@ func createScratch():
 		if flats == -1: flats = standardFlats[size-3]
 		if caps == -1: caps = standardCaps[size-3]
 		
-		GameLogic.doSetup(GameData.new(size, GameData.LOCAL, GameData.LOCAL, pw, pb, time, inc, trigger, extra, komi, flats, caps), startState)
+		GameLogic.doSetup(GameData.new("", size, GameData.LOCAL, GameData.LOCAL, pw, pb, time, inc, trigger, extra, komi, flats, caps), startState)
 		
 		for i in plyList:
 			GameLogic.doMove(self, i)

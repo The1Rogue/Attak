@@ -1,0 +1,119 @@
+[gd_scene load_steps=8 format=3 uid="uid://grf6aae1vam1"]
+
+[ext_resource type="Theme" uid="uid://xkc4r42x2b24" path="res://baseThemeMobile.tres" id="1_7atxf"]
+[ext_resource type="Script" path="res://src/UI/gameUI.gd" id="1_fe04k"]
+[ext_resource type="Texture2D" uid="uid://buprxxgoqi641" path="res://assets/UI/Left.png" id="3_4aj6d"]
+[ext_resource type="Texture2D" uid="uid://cdhohwsw80oag" path="res://assets/UI/Right.png" id="4_6by62"]
+[ext_resource type="Texture2D" uid="uid://br4bmyueqd5rx" path="res://assets/UI/Resign.png" id="5_gwdo7"]
+[ext_resource type="Texture2D" uid="uid://d2m550pgmw7ah" path="res://assets/UI/Draw.png" id="6_x22vx"]
+[ext_resource type="Texture2D" uid="uid://c4r41rkuep21e" path="res://assets/UI/Undo.png" id="7_vtpc4"]
+
+[node name="GameUIMobile" type="VBoxContainer" node_paths=PackedStringArray("WhiteName", "WhiteTime", "BlackName", "BlackTime", "undoButton", "drawButton", "resignButton", "leftButton", "rightButton", "gameInfo")]
+custom_minimum_size = Vector2(120, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_7atxf")
+alignment = 1
+script = ExtResource("1_fe04k")
+WhiteName = NodePath("PlayerWhite")
+WhiteTime = NodePath("PlayerWhiteTime")
+BlackName = NodePath("PlayerBlack")
+BlackTime = NodePath("PlayerBlackTime")
+undoButton = NodePath("HBoxContainer/Undo")
+drawButton = NodePath("HBoxContainer/Draw")
+resignButton = NodePath("HBoxContainer/Resign")
+leftButton = NodePath("HBoxContainer/Left")
+rightButton = NodePath("HBoxContainer/Right")
+gameInfo = NodePath("GameInfo")
+
+[node name="PlayerWhite" type="Label" parent="."]
+layout_mode = 2
+theme_type_variation = &"LabelWhite"
+text = "Player White
+"
+horizontal_alignment = 1
+
+[node name="PlayerWhiteTime" type="Label" parent="."]
+layout_mode = 2
+theme_type_variation = &"LabelWhite"
+text = "00:00
+"
+horizontal_alignment = 1
+
+[node name="GameInfo" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 1
+horizontal_alignment = 1
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="PlayerBlack" type="Label" parent="."]
+layout_mode = 2
+theme_type_variation = &"LabelBlack"
+text = "Player Black
+"
+horizontal_alignment = 1
+
+[node name="PlayerBlackTime" type="Label" parent="."]
+layout_mode = 2
+theme_type_variation = &"LabelBlack"
+text = "00:00
+"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+alignment = 1
+
+[node name="Left" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = " "
+icon = ExtResource("3_4aj6d")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Right" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+icon = ExtResource("4_6by62")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Resign" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+icon = ExtResource("5_gwdo7")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Draw" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+icon = ExtResource("6_x22vx")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Undo" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+icon = ExtResource("7_vtpc4")
+icon_alignment = 1
+expand_icon = true
+
+[node name="TimerWhite" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[node name="TimerBlack" type="Timer" parent="."]
+one_shot = true
+autostart = true

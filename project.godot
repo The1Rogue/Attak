@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Attak"
-run/main_scene="res://scenes/main.tscn"
+run/main_scene="res://scenes/mainMobile.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 boot_splash/image="res://assets/Attak256.png"
 boot_splash/fullsize=false
@@ -29,6 +29,8 @@ Notif="*res://scenes/PopupMsg.tscn"
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
 window/handheld/orientation=6
 
 [gui]

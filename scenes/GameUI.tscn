@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/UI/gameUI.gd" id="1_se5o0"]
 
-[node name="GameUI" type="VBoxContainer"]
+[node name="GameUI" type="VBoxContainer" node_paths=PackedStringArray("WhiteName", "WhiteTime", "BlackName", "BlackTime", "undoButton", "drawButton", "resignButton", "gameInfo", "ptnDisplay")]
 custom_minimum_size = Vector2(120, 0)
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,6 +11,15 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 script = ExtResource("1_se5o0")
+WhiteName = NodePath("PlayerWhite")
+WhiteTime = NodePath("PlayerWhiteTime")
+BlackName = NodePath("PlayerBlack")
+BlackTime = NodePath("PlayerBlackTime")
+undoButton = NodePath("HBoxContainer/Undo")
+drawButton = NodePath("HBoxContainer/Draw")
+resignButton = NodePath("HBoxContainer/Resign")
+gameInfo = NodePath("GameInfo")
+ptnDisplay = NodePath("ScrollContainer/PtnDisplay")
 
 [node name="PlayerWhite" type="Label" parent="."]
 layout_mode = 2

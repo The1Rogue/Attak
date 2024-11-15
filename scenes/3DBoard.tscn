@@ -1,6 +1,5 @@
-[gd_scene load_steps=19 format=3 uid="uid://c4esmjnf630vc"]
+[gd_scene load_steps=18 format=3 uid="uid://c4esmjnf630vc"]
 
-[ext_resource type="Script" path="res://src/Cam.gd" id="1_4aj53"]
 [ext_resource type="Script" path="res://src/BoardReps/3D/3DBoard.gd" id="2_4p11y"]
 [ext_resource type="BoxMesh" uid="uid://daablsfdehx7a" path="res://assets/3DPieces/whiteFlat.tres" id="3_gvubj"]
 [ext_resource type="Texture2D" uid="uid://dtqgytcgfkvby" path="res://assets/3DPieces/textures/sq.png" id="3_ims2i"]
@@ -9,24 +8,24 @@
 [ext_resource type="CylinderMesh" uid="uid://cksydhk7rhem6" path="res://assets/3DPieces/blackCap.tres" id="6_in0fr"]
 [ext_resource type="Shader" path="res://assets/3DPieces/Highlight3D.gdshader" id="7_fpqoa"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_v7jt8"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_ood11"]
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_evu4o"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_a6je8"]
 height = 1.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_vv3ke"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lklc0"]
 render_priority = 0
 shader = ExtResource("7_fpqoa")
 shader_parameter/offset = 0.02
 shader_parameter/scale = 1.1
-shader_parameter/color = Color(0.1632, 0.559413, 0.68, 1)
+shader_parameter/color = Color(0.164706, 0.560784, 0.678431, 1)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mtql4"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ptg30"]
 render_priority = 0
 shader = ExtResource("7_fpqoa")
 shader_parameter/offset = 0.02
 shader_parameter/scale = 1.1
-shader_parameter/color = Color(0, 1, 0.383333, 1)
+shader_parameter/color = Color(2.79158e-06, 0.844415, 0.454824, 1)
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_2c6g0"]
 
@@ -51,20 +50,18 @@ texture_filter = 0
 material = SubResource("StandardMaterial3D_6pysb")
 size = Vector2(6, 6)
 
-[node name="3DBoard" type="Node3D"]
+[node name="3DBoard" type="StaticBody3D"]
 script = ExtResource("2_4p11y")
 whiteFlatMesh = ExtResource("3_gvubj")
 whiteCapMesh = ExtResource("4_ulro6")
 blackFlatMesh = ExtResource("5_bmxa4")
 blackCapMesh = ExtResource("6_in0fr")
-flatShape = SubResource("BoxShape3D_v7jt8")
-capShape = SubResource("CylinderShape3D_evu4o")
-highlightMaterial = SubResource("ShaderMaterial_vv3ke")
-hoverMaterial = SubResource("ShaderMaterial_mtql4")
+flatShape = SubResource("BoxShape3D_ood11")
+capShape = SubResource("CylinderShape3D_a6je8")
+highlightMaterial = SubResource("ShaderMaterial_lklc0")
+hoverMaterial = SubResource("ShaderMaterial_ptg30")
 
-[node name="Collider" type="StaticBody3D" parent="."]
-
-[node name="shape" type="CollisionShape3D" parent="Collider"]
+[node name="shape" type="CollisionShape3D" parent="."]
 shape = SubResource("WorldBoundaryShape3D_2c6g0")
 
 [node name="OmniLight3D" type="DirectionalLight3D" parent="."]
@@ -78,15 +75,17 @@ environment = SubResource("Environment_84367")
 
 [node name="board" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_ahl31")
+skeleton = NodePath("../3DBoard")
 
 [node name="top" type="MeshInstance3D" parent="board"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.151, 0)
 mesh = SubResource("PlaneMesh_kwwfp")
-skeleton = NodePath("../..")
+skeleton = NodePath("../../3DBoard")
 
 [node name="Pivot" type="Node3D" parent="."]
 transform = Transform3D(0.872922, 0.338896, -0.350937, 0, 0.71934, 0.694658, 0.48786, -0.606383, 0.627928, 0, 0, 0)
 
 [node name="Camera3D" type="Camera3D" parent="Pivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
-script = ExtResource("1_4aj53")
+
+[node name="3DBoard" type="Node3D" parent="."]

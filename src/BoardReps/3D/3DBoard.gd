@@ -18,13 +18,19 @@ const ROTATION = [Vector3.ZERO, Vector3(PI/2, PI/4, 0)]
 var pieces: Array[Piece3D]
 @onready var board = $board
 @onready var squares = $board/top
-@onready var shape = $Collider/shape
+@onready var shape = $shape
 
 var dragLength: float
 @export var dragThreshHold: float = 8: 
 	set(v):
 		dragThreshHold = v
 		Piece3D.dragThreshHold = v
+
+const dist = 300
+const mobileZoomMod: float = .02
+var I0: Vector2
+@onready var Cam = $Pivot/Camera3D
+@onready var Pivot = $Pivot
 
 @onready var pieceHolder = $Pieces
 
@@ -51,8 +57,7 @@ func _ready():
 	Piece3D.highlight = highlightMaterial
 	Piece3D.hover = hoverMaterial
 
-	
-	$Collider.input_event.connect(inputEvent)
+	#$Collider.input_event.connect(inputEvent)
 
 
 func makeBoard():
@@ -176,21 +181,48 @@ func deselect(id: int):
 	pieces[id].selected = false
 
 
-func inputEvent(camera: Camera3D, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
+func _input_event(camera: Camera3D, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
 	if event is InputEventMouseButton:
 		if not event.pressed and dragLength < dragThreshHold:
 			if event.button_index == MOUSE_BUTTON_LEFT:
 				var tile = vecToTile(event_position)
 				if tile.x >= 0 and tile.x < size and tile.y >= 0 and tile.y < size:
 					clickTile(tile)
+			
 			elif event.button_index == MOUSE_BUTTON_RIGHT:
 				var tile = vecToTile(event_position)
 				if tile.x >= 0 and tile.x < size and tile.y >= 0 and tile.y < size:
 					rightClickTile(tile)
+					
+			elif event.button_index == MOUSE_BUTTON_WHEEL_UP:
+				Cam.position.z = clamp(Cam.position.z - .5, 1, 15)
+			elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+				Cam.position.z = clamp(Cam.position.z + .5, 1, 15)
+	
+	elif event is InputEventScreenTouch:
+		I0 = event.position
+		if not event.pressed and dragLength < dragThreshHold:
+			var tile = vecToTile(event_position)
+			if tile.x >= 0 and tile.x < size and tile.y >= 0 and tile.y < size:
+				clickTile(tile)
+		dragLength = 0
+	
+	elif event is InputEventScreenDrag:
+		dragLength += event.relative.length()
+		if event.index == 0:
+			I0 = event.position
 			
-		
-	elif event is InputEventMouseMotion:
+		else:
+			var diff = I0 - event.position
+			var drag = diff.dot(event.relative) / diff.length()
+			Cam.position.z = clamp(Cam.position.z + drag * mobileZoomMod, 1, 15)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
 		if event.button_mask & MOUSE_BUTTON_MASK_LEFT != 0:
+			Pivot.rotation.x = clamp(Pivot.rotation.x - event.relative.y / dist, -PI/2, 0)
+			Pivot.rotation.y -= event.relative.x / dist
 			dragLength += event.relative.length()
 		
 		else:

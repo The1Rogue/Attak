@@ -5,6 +5,8 @@ extends Node
 @onready var popUp: PanelContainer = $Panel
 @onready var popUpLabel: Label = $Panel/Label
 
+@export var popUpLength: float = 5
+
 @export_category("audio")
 @export var move: AudioStream
 @export var start: AudioStream
@@ -20,13 +22,13 @@ func _process(delta: float) -> void:
 	if PopUpTimer > 0:
 		PopUpTimer -= delta
 		if PopUpTimer <= 0:
-			$Popup/Panel.hide()
+			popUp.hide()
 
 
 func message(msg: String, noise: bool = true):
 	popUpLabel.text = " " + msg + " "
 	popUp.show()
-	PopUpTimer = 10
+	PopUpTimer = popUpLength
 	if noise:
 		ping(notif)
 

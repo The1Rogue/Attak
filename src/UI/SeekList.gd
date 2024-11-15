@@ -28,10 +28,11 @@ func add(seek: SeekData, id: int):
 
 
 func remove(id: int):
-	count -= 1
-	tabButton.text = " Join Game (%d) " % count
-	remove_child(seeks[id])
-	seeks.erase(id)
+	if id in seeks:
+		count -= 1
+		tabButton.text = " Join Game (%d) " % count
+		remove_child(seeks[id])
+		seeks.erase(id)
 
 
 func clear():

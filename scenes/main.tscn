@@ -1,26 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://bjrcqnjcbnic8"]
+[gd_scene load_steps=3 format=3 uid="uid://bjrcqnjcbnic8"]
 
 [ext_resource type="PackedScene" uid="uid://c7t0t4lbjup7v" path="res://scenes/GameUI.tscn" id="1_nqs8u"]
 [ext_resource type="PackedScene" uid="uid://c4xgbwf6ww050" path="res://scenes/PlaytakUINew.tscn" id="2_2vxwu"]
-[ext_resource type="PackedScene" uid="uid://c4esmjnf630vc" path="res://scenes/3DBoard.tscn" id="5_vocdm"]
 
-[node name="Root" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
+[node name="CanvasLayer" type="CanvasLayer"]
 
 [node name="Main" type="HSplitContainer" parent="."]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 split_offset = 10000
 
 [node name="HSplitContainer" type="HSplitContainer" parent="Main"]
@@ -28,24 +18,13 @@ layout_mode = 2
 
 [node name="GameUI" parent="Main/HSplitContainer" instance=ExtResource("1_nqs8u")]
 layout_mode = 2
+mouse_filter = 0
+mouse_force_pass_scroll_events = false
 
-[node name="AspectRatioContainer" type="AspectRatioContainer" parent="Main/HSplitContainer"]
+[node name="Control" type="Control" parent="Main/HSplitContainer"]
 layout_mode = 2
-ratio = 1.25
-
-[node name="SubViewportContainer" type="SubViewportContainer" parent="Main/HSplitContainer/AspectRatioContainer"]
-layout_mode = 2
-stretch = true
-
-[node name="SubViewport" type="SubViewport" parent="Main/HSplitContainer/AspectRatioContainer/SubViewportContainer"]
-handle_input_locally = false
-physics_object_picking = true
-size = Vector2i(2, 2)
-size_2d_override = Vector2i(1350, 1080)
-size_2d_override_stretch = true
-render_target_update_mode = 4
-
-[node name="3DBoard" parent="Main/HSplitContainer/AspectRatioContainer/SubViewportContainer/SubViewport" instance=ExtResource("5_vocdm")]
+mouse_filter = 2
 
 [node name="PlaytakUI" parent="Main" instance=ExtResource("2_2vxwu")]
 layout_mode = 2
+mouse_force_pass_scroll_events = false

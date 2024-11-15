@@ -33,7 +33,7 @@ func makeBoard():
 	for i in board.get_children():
 		board.remove_child(i)
 	
-	$Camera2D.zoom = Vector2.ONE * 55/size
+	$Camera2D.zoom = Vector2.ONE * 80/size # SHOULD BE 55 FOR DESKTOP
 	board.region_rect.size = Vector2.ONE * size * 16
 	
 	for i in size:
@@ -126,7 +126,7 @@ func deselect(id: int):
 	pieces[id].selected = false
 
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and not event.pressed:
 		var v = board.get_global_mouse_position()
 		var tile = Vector2(v.x/16 + size/2.0, size/2.0 - v.y / 16)

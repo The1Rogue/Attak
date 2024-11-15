@@ -28,7 +28,8 @@ var increment: int
 var triggerMove: int
 var triggerTime: int
 
-func _init(size: int, pw: int, pb: int, pwn: String, pbn: String, time: int, increment: int, trigger: int, extra: int, komi: int, flats: int, caps: int):
+func _init(id: String, size: int, pw: int, pb: int, pwn: String, pbn: String, time: int, increment: int, trigger: int, extra: int, komi: int, flats: int, caps: int):
+	self.id = id
 	self.size = size
 	self.playerWhite = pw
 	self.playerBlack = pb
@@ -41,3 +42,7 @@ func _init(size: int, pw: int, pb: int, pwn: String, pbn: String, time: int, inc
 	self.komi = komi
 	self.flats = flats
 	self.caps = caps
+
+
+func isObserver():
+	return playerWhite == PLAYTAK and playerBlack == PLAYTAK

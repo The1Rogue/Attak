@@ -1,7 +1,7 @@
 extends Node
 class_name PlayTakI
 
-const url = "playtak.com:9999"
+const url = "ws://playtak.com:9999/ws"
 
 @export var menu: TabMenu
 @export var loginMenu: LoginMenu
@@ -13,7 +13,13 @@ var socket: WebSocketPeer = WebSocketPeer.new()
 var active: bool = false
 var activeUsername: String = ""
 
-var activeGame: String
+var activeGame: GameData = GameLogic.gameData:
+	set(v):
+		if activeGame.isObserver():
+			socket.send_text("Unobserve " + activeGame.id)
+		activeGame = v
+
+
 var pingtime: float = 0
 
 signal addSeek(seek: SeekData, id: int)
@@ -21,6 +27,9 @@ signal removeSeek(id: int)
 
 signal addGame(game: GameData, id: int)
 signal removeGame(id: int)
+
+func _ready():
+	GameLogic.setup.connect(func(data, state): activeGame = data)
 
 
 func signInGuest() -> bool:
@@ -35,6 +44,7 @@ func signIn(username: String, password: String) -> bool:
 	var err = socket.connect_to_url(url)
 	if err != OK:
 		print("Unable to connect")
+		Notif.message("Could not reach the playtak server!")
 		return false
 	
 	var packet: String = await awaitPacket() #should be welcome packet
@@ -54,6 +64,7 @@ func signIn(username: String, password: String) -> bool:
 		return true
 	
 	print("failed to login")
+	Notif.message("Invalid Login!")
 	socket.close()
 	return false
 
@@ -73,7 +84,6 @@ func logout():
 	Chat.rooms.clear()
 	
 	activeUsername = ""
-	activeGame = ""
 
 
 func awaitPacket() -> String:
@@ -110,7 +120,7 @@ func _process(delta: float):
 		match Array(data):
 			["GameList", "Add", var id, var pw, var pb, var size, var time, var inc, var komi, var flats, var caps, var unrated, var tournament, var triggerMove, var triggerAmount]:
 				var game = GameData.new(
-					size.to_int(),
+					id, size.to_int(),
 					GameData.PLAYTAK, GameData.PLAYTAK, pw, pb, 
 					time.to_int(), inc.to_int(), triggerMove.to_int(), triggerAmount.to_int(),
 					komi.to_int(), flats.to_int(), caps.to_int()
@@ -121,24 +131,27 @@ func _process(delta: float):
 				removeGame.emit(id.to_int())
 				
 			["Observe", var id, var pw, var pb, var size, var time, var inc, var komi, var flats, var caps, var unrated, var tournament, var triggerMove, var triggerAmount]:
-				activeGame = id
 				var game = GameData.new(
-					size.to_int(), GameData.PLAYTAK, GameData.PLAYTAK, pw, pb, time.to_int(), inc.to_int(), triggerMove.to_int(), triggerAmount.to_int(), komi.to_int(), flats.to_int(), caps.to_int()
+					id, size.to_int(), GameData.PLAYTAK, GameData.PLAYTAK, pw, pb, time.to_int(), inc.to_int(), triggerMove.to_int(), triggerAmount.to_int(), komi.to_int(), flats.to_int(), caps.to_int()
 				)
 				GameLogic.doSetup(game)
 				var players=[pw,pb]
 				players.sort()
-				socket.send_text("JoinRoom "+"-".join(players))
+				var room = "-".join(players)
+				if room in Chat.rooms:
+					menu.select(Chat.rooms[room])
+				else:
+					socket.send_text("JoinRoom "+room)
 				
 			["Game", "Start", ..]:
 				startGame(data)
 			
-			["Game", var id, "P", var sq, ..] when id == activeGame:
+			["Game", var id, "P", var sq, ..] when id == activeGame.id:
 				var type = Place.TYPE.FLAT if data.size() == 4 else Place.TYPE.WALL if data[4] == "W" else Place.TYPE.CAP
 				var ply = Place.new(Ply.getTile(sq), type)
 				GameLogic.doMove(self, ply)
 				
-			["Game", var id, "M", var sq1, var sq2, ..] when id == activeGame:
+			["Game", var id, "M", var sq1, var sq2, ..] when id == activeGame.id:
 				var tile1 = Ply.getTile(sq1)
 				var tile2 = Ply.getTile(sq2)
 				var smash = false
@@ -152,35 +165,40 @@ func _process(delta: float):
 					drops.append(i.to_int())
 				GameLogic.doMove(self, Spread.new(tile1, dir, drops, smash))
 				
-			["Game", var id, "Time", var timeW, var timeB] when id == activeGame:
+			["Game", var id, "Time", var timeW, var timeB] when id == activeGame.id:
 				GameLogic.sync.emit(timeW.to_int() * 1000, timeB.to_int() * 1000)
 			
-			["Game", var id, "Timems", var timeW, var timeB] when id == activeGame:
+			["Game", var id, "Timems", var timeW, var timeB] when id == activeGame.id:
 				GameLogic.sync.emit(timeW.to_int(), timeB.to_int())
 			
-			["Game", var id, "Over", var result] when id == activeGame:
+			["Game", var id, "Over", var result] when id == activeGame.id:
 				endGame(GameState.resultStrings.find(result))
 				
-			["Game", var id, "OfferDraw"] when id == activeGame:
+			["Game", var id, "OfferDraw"] when id == activeGame.id:
 				GameLogic.drawRequest.emit(self, false)
 			
-			["Game", var id, "RemoveDraw"] when id == activeGame:
+			["Game", var id, "RemoveDraw"] when id == activeGame.id:
 				GameLogic.drawRequest.emit(self, true)
 			
-			["Game", var id, "RequestUndo"] when id == activeGame:
+			["Game", var id, "RequestUndo"] when id == activeGame.id:
 				GameLogic.undoRequest.emit(self, false)
 			
-			["Game", var id, "RemoveUndo"] when id == activeGame:
+			["Game", var id, "RemoveUndo"] when id == activeGame.id:
 				GameLogic.undoRequest.emit(self, true)
 			
-			["Game", var id, "Undo"] when id == activeGame:
+			["Game", var id, "Undo"] when id == activeGame.id:
 				GameLogic.doUndo()
 			
-			["Game", var id, "Abandoned.", var player, "quit"] when id == activeGame:
+			["Game", var id, "Abandoned.", var player, "quit"] when id == activeGame.id:
 				endGame(GameState.DEFAULT_WIN_WHITE if player == GameLogic.gameData.playerWhiteName else GameState.DEFAULT_WIN_BLACK)
 			
-			["Seek", "new", var id, ..]:
-				addSeek.emit(makeSeek(data), id.to_int())
+			["Seek", "new", var id, var name, var size, var time, var inc, var color, var komi, var flats, var caps, var unrated, var tourney, var trigger, var extra, var opponent] when opponent == "" or opponent == activeUsername:
+				var seek = SeekData.new(
+					name, size.to_int(), time.to_int(), inc.to_int(), trigger.to_int(), extra.to_int(),
+					color, komi.to_int(), flats.to_int(), caps.to_int(), 
+					SeekData.TOURNAMENT if tourney == "1" else SeekData.UNRATED if unrated == "1" else SeekData.RATED
+				)
+				addSeek.emit(seek, id.to_int())
 			
 			["Seek", "remove", var id, ..]:
 				removeSeek.emit(id.to_int())
@@ -223,8 +241,8 @@ func _process(delta: float):
 
 
 func startGame(data: PackedStringArray):
-	GameLogic.doSetup(makeGame(data)) #TODO Connect resign?
-	activeGame = data[2]
+	var game = makeGame(data)
+	GameLogic.doSetup(game)
 	
 	GameLogic.move.connect(sendMove)
 	GameLogic.drawRequest.connect(sendDraw)
@@ -238,12 +256,12 @@ func startGame(data: PackedStringArray):
 
 
 func resign():
-	socket.send_text("Game#" + activeGame + " Resign")
+	socket.send_text("Game#" + activeGame.id + " Resign")
 
 
 func endGame(type: int):
 	GameLogic.endGame(type)
-	activeGame = ""
+	if activeGame.isObserver(): return  #we werent connected, so dont disconnect
 	
 	GameLogic.move.disconnect(sendMove)
 	GameLogic.drawRequest.disconnect(sendDraw)
@@ -254,21 +272,21 @@ func endGame(type: int):
 func sendMove(origin: Node, ply: Ply):
 	if origin == self: return #prevents the client from sending received moves back
 	var t = ply.toPlayTak()
-	socket.send_text("Game#" + activeGame + " " + ply.toPlayTak().to_upper())
+	socket.send_text("Game#" + activeGame.id + " " + ply.toPlayTak().to_upper())
 
 
 func sendDraw(origin: Node, revoke: bool):
 	if origin == self: return #prevents the client from sending received moves back
-	socket.send_text("Game#" + activeGame + " " + "RemoveDraw" if revoke else "OfferDraw")
+	socket.send_text("Game#" + activeGame.id + " " + "RemoveDraw" if revoke else "OfferDraw")
 
 
 func sendUndo(origin: Node, revoke: bool):
 	if origin == self: return #prevents the client from sending received moves back
-	socket.send_text("Game#" + activeGame + " " + "RemoveUndo" if revoke else "RequestUndo")
+	socket.send_text("Game#" + activeGame.id + " " + "RemoveUndo" if revoke else "RequestUndo")
 
 
 func sendToGame(msg: String):
-	socket.send_text("Game#" + activeGame + " " + msg)
+	socket.send_text("Game#" + activeGame.id + " " + msg)
 
 
 func sendSeek(seek: SeekData):
@@ -281,27 +299,12 @@ func acceptSeek(seek: int):
 	socket.send_text("Accept " + str(seek))
 
 
-func makeSeek(data: PackedStringArray) -> SeekData:
-	return SeekData.new(
-		data[3], #player
-		data[4].to_int(), # size
-		data[5].to_int(), # time
-		data[6].to_int(), # inc
-		data[13].to_int(),# triggermove
-		data[14].to_int(),# triggeramount
-		data[7], # color
-		data[8].to_int(), # komi
-		data[9].to_int(), # flats
-		data[10].to_int(),# caps
-		SeekData.TOURNAMENT if data[12] == "1" else SeekData.UNRATED if data[11] == "1" else SeekData.RATED
-	)
-
-
 func makeGame(data: PackedStringArray) -> GameData:
 	var pWhite = GameData.PLAYTAK if data[7] == "black" else GameData.LOCAL
 	var pBlack = GameData.PLAYTAK if data[7] == "white" else GameData.LOCAL
 	
 	return GameData.new(
+		data[2], #id
 		data[3].to_int(), #size 
 		pWhite,
 		pBlack,

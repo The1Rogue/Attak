@@ -3,25 +3,28 @@ class_name TabMenu
 
 # BUG:
 # laptop close lid disconnects without closing socket, which is not detected
-# timer probably doesnt end if game ends on resign or abandon
+# chat cant handle emotes?
+# font is horrid on non-standard screens
+# board2D doesnt scale properly between desktop / mobile
+# mobile notifs dont scale
+# mobile new seek is utterly broken
+# mobile spinbox and checkbox icons are super
 
 # TEST:
-# watch game correct chat
 # verify last 2 entries on gamelist add message
 # find all remaining TODOs
 # what happens if you accept a new game when one is still active?
 
 # TODO functional
-# adaptive ui size (mostly font)
+# mobile UI
 # default tab in right menu
-# finish removing gameUI from Globals
 # add more general settings
 # auto attempt reconnect on disconnect (and save chats for a bit)
 # 2d board texture scaling (is that needed for 3d too?)
 # 2d prevent tall stack covering stacks behind them
-# 3d decide what to do with border/viewport size
 
 # TODO functional / pretty
+# auto open last tab instead of closing it (in right menu)
 # make chat names less bulky
 # disable things when not logged in
 # click through pieces

@@ -6,7 +6,7 @@ enum {
 }
 
 
-var gameData: GameData = GameData.new(5, GameData.LOCAL, GameData.LOCAL, "Player White", "Player Black", 0, 0, 0, 0, 0, 21, 1)
+var gameData: GameData = GameData.new("", 5, GameData.LOCAL, GameData.LOCAL, "Player White", "Player Black", 0, 0, 0, 0, 0, 21, 1)
 
 
 var startState: GameState = GameState.emptyState(5, 21, 1, 0)
@@ -46,7 +46,6 @@ func doSetup(game: GameData, start: GameState = null):
 		undoRequest.connect(localUndoReq)
 	elif undoRequest.is_connected(localUndoReq):
 		undoRequest.disconnect(localUndoReq)
-	
 	
 	setup.emit(gameData, start)
 

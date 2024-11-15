@@ -8,7 +8,7 @@
 [ext_resource type="Script" path="res://src/UI/login.gd" id="3_kjef8"]
 [ext_resource type="PackedScene" uid="uid://c4esmjnf630vc" path="res://scenes/3DBoard.tscn" id="4_dxgwr"]
 [ext_resource type="Script" path="res://src/UI/WatchList.gd" id="5_ap4a8"]
-[ext_resource type="PackedScene" uid="uid://mxvbujo17lyt" path="res://scenes/2Dboard.tscn" id="5_deflk"]
+[ext_resource type="PackedScene" uid="uid://mxvbujo17lyt" path="res://scenes/2DBoard.tscn" id="5_deflk"]
 
 [node name="PlayTakUI" type="PanelContainer" node_paths=PackedStringArray("menu", "loginMenu", "seekMenu", "watchMenu")]
 anchors_preset = 15
