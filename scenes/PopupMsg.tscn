@@ -7,7 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://bemdkj8eexdkx" path="res://assets/Audio/time.mp3" id="5_wo0o2"]
 [ext_resource type="AudioStream" uid="uid://cijet7eej75xk" path="res://assets/Audio/notify.mp3" id="6_5sg0s"]
 
-[node name="Popup" type="Node"]
+[node name="Popup" type="CanvasLayer"]
 script = ExtResource("1_fsurt")
 move = ExtResource("2_v1lt1")
 start = ExtResource("3_18s3m")

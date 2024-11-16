@@ -1,16 +1,14 @@
-[gd_resource type="Theme" load_steps=10 format=3 uid="uid://xkc4r42x2b24"]
+[gd_resource type="Theme" load_steps=9 format=3 uid="uid://xkc4r42x2b24"]
 
 [ext_resource type="FontFile" uid="uid://dt1agg411md3s" path="res://assets/UbuntuMono-Regular.ttf" id="1_n3e47"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ah4r2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1dkqw"]
 content_margin_left = 4.0
 content_margin_right = 4.0
-bg_color = Color(2.5028e-06, 0.659891, 0.845455, 1)
+bg_color = Color(0.376471, 0.431373, 0.709804, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_28cbl"]
-bg_color = Color(0.355278, 0.1357, 0.59, 1)
+bg_color = Color(0.137255, 0.113725, 0.270588, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
@@ -24,29 +22,28 @@ expand_margin_bottom = 1.0
 bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rrfbf"]
-bg_color = Color(1, 1, 1, 1)
+bg_color = Color(0.580392, 0.580392, 0.580392, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8asyw"]
-bg_color = Color(0.16851, 0.1558, 0.41, 1)
+bg_color = Color(0.247059, 0.211765, 0.45098, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h6d2u"]
-bg_color = Color(0.12909, 0.1222, 0.26, 1)
+bg_color = Color(0.137255, 0.113725, 0.270588, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1k277"]
-bg_color = Color(0.0674278, 0.622616, 1, 1)
+bg_color = Color(0.376471, 0.431373, 0.709804, 1)
 
 [resource]
 default_font = ExtResource("1_n3e47")
 default_font_size = 128
-Button/styles/normal = SubResource("StyleBoxFlat_ah4r2")
 Button/styles/pressed = SubResource("StyleBoxFlat_1dkqw")
 ExitButton/base_type = &"Button"
 ExitButton/styles/normal = SubResource("StyleBoxFlat_28cbl")
 LabelBlack/base_type = &"Label"
-LabelBlack/colors/font_color = Color(1, 1, 1, 1)
+LabelBlack/colors/font_color = Color(0.580392, 0.580392, 0.580392, 1)
 LabelBlack/styles/normal = SubResource("StyleBoxFlat_66hnr")
 LabelWhite/base_type = &"Label"
-LabelWhite/colors/font_color = Color(0, 0, 0, 1)
+LabelWhite/colors/font_color = Color(0.164706, 0.164706, 0.164706, 1)
 LabelWhite/styles/normal = SubResource("StyleBoxFlat_rrfbf")
 LineEdit/styles/focus = SubResource("StyleBoxFlat_8asyw")
 LineEdit/styles/normal = SubResource("StyleBoxFlat_h6d2u")

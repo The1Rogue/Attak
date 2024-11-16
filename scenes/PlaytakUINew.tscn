@@ -22,9 +22,10 @@ loginMenu = NodePath("Menu/Login")
 seekMenu = NodePath("Menu/Join Game (0)")
 watchMenu = NodePath("Menu/Watch Game (0)")
 
-[node name="Menu" type="VBoxContainer" parent="."]
+[node name="Menu" type="VBoxContainer" parent="." node_paths=PackedStringArray("start")]
 layout_mode = 2
 script = ExtResource("1_tkoo2")
+start = NodePath("Login")
 
 [node name="Settings" type="VBoxContainer" parent="Menu"]
 layout_mode = 2
@@ -112,6 +113,7 @@ confirmScratch = NodePath("TabContainer/scratch/Enter")
 
 [node name="TabContainer" type="TabContainer" parent="Menu/New Seek"]
 layout_mode = 2
+size_flags_vertical = 3
 current_tab = 0
 clip_tabs = false
 
@@ -119,8 +121,9 @@ clip_tabs = false
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="Opponent_Color" type="HBoxContainer" parent="Menu/New Seek/TabContainer/standard"]
+[node name="Opponent_Color" type="GridContainer" parent="Menu/New Seek/TabContainer/standard"]
 layout_mode = 2
+columns = 2
 
 [node name="Label" type="Label" parent="Menu/New Seek/TabContainer/standard/Opponent_Color"]
 layout_mode = 2
@@ -129,6 +132,7 @@ text = "Opponent: "
 [node name="Opponent" type="LineEdit" parent="Menu/New Seek/TabContainer/standard/Opponent_Color"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 placeholder_text = "Anyone"
 
 [node name="Label2" type="Label" parent="Menu/New Seek/TabContainer/standard/Opponent_Color"]
@@ -149,6 +153,7 @@ popup/item_2/id = 2
 [node name="ItemList" type="ItemList" parent="Menu/New Seek/TabContainer/standard"]
 custom_minimum_size = Vector2(0, 250)
 layout_mode = 2
+size_flags_vertical = 3
 item_count = 8
 item_0/text = "Classic 5x5"
 item_1/text = "Classic 6x6"

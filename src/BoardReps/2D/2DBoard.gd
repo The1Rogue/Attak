@@ -26,15 +26,19 @@ func _ready():
 
 
 func makeBoard():
+	assert(sq.get_height() == sq.get_width(), "SQUARE IS NON-SQUARE")
+	var tsize:int = sq.get_height()
 	for i in pieces:
 		reserves.remove_child(i)
 	pieces = []
 	
-	for i in board.get_children():
-		board.remove_child(i)
+	for i in get_children():
+		if i is Label: remove_child(i)
 	
-	$Camera2D.zoom = Vector2.ONE * 80/size # SHOULD BE 55 FOR DESKTOP
-	board.region_rect.size = Vector2.ONE * size * 16
+	$Camera2D.zoom = Vector2.ONE * (80 if OS.has_feature("mobile") else 55) /size # SHOULD BE 55 FOR DESKTOP
+	board.texture = sq
+	board.region_rect.size = Vector2.ONE * size * tsize
+	board.scale = Vector2.ONE * (16.0 / tsize)
 	
 	for i in size:
 		var l = Label.new()
@@ -43,7 +47,7 @@ func makeBoard():
 		l.scale = Vector2.ONE * .2
 		l.position = Vector2(-16 * size/2.0 - 4, 16 * (size/2.0 - i) - 8)
 		l.position.y -= l.size.y * l.scale.y
-		board.add_child(l)
+		add_child(l)
 
 		l = Label.new()
 		l.text = char(i + 65)
@@ -51,7 +55,7 @@ func makeBoard():
 		l.scale = Vector2.ONE * .2
 		l.position = Vector2(8 - 16 * (size/2.0 - i), 16 * size/2.0 + 1)
 		l.position.x -= l.size.x * l.scale.x
-		board.add_child(l)
+		add_child(l)
 
 
 	

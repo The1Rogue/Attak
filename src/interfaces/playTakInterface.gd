@@ -8,7 +8,6 @@ const url = "ws://playtak.com:9999/ws"
 @export var seekMenu: SeekList
 @export var watchMenu: WatchList
 
-
 var socket: WebSocketPeer = WebSocketPeer.new()
 var active: bool = false
 var activeUsername: String = ""

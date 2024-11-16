@@ -7,11 +7,9 @@ class_name Settings
 @export var board2D: PackedScene
 
 
-
 func _ready() -> void:
 	$Set2D.toggled.connect(setBoard)
 	GameLogic.add_child(board3D.instantiate())
-
 
 
 func setBoard(is2D: bool):

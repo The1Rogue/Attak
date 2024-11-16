@@ -31,12 +31,13 @@ func _ready():
 		signin(login.user, login.password)
 		tabButton.disabled = false
 
+
 func signin(user:String, passw: String):
 	if await interface.signIn(user, passw):
 		login.hide()
 		settings.show()
 		tabButton.text = interface.activeUsername
-		get_parent().select(get_parent().get_child(5)) #bit convoluted maybe but eh
+		get_parent().select(interface.seekMenu) #bit convoluted maybe but eh
 		
 		if user != "Guest" and remember.button_pressed:
 			ResourceSaver.save(Login.new(interface.activeUsername, passw), loginResource)

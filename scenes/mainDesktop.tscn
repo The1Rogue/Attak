@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://bjrcqnjcbnic8"]
+
+[ext_resource type="PackedScene" uid="uid://c7t0t4lbjup7v" path="res://scenes/GameUI.tscn" id="1_nqs8u"]
+[ext_resource type="PackedScene" uid="uid://c4xgbwf6ww050" path="res://scenes/PlaytakUINew.tscn" id="2_2vxwu"]
+
+[node name="Main" type="HSplitContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+split_offset = 10000
+
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+layout_mode = 2
+
+[node name="GameUI" parent="HSplitContainer" instance=ExtResource("1_nqs8u")]
+layout_mode = 2
+mouse_filter = 0
+mouse_force_pass_scroll_events = false
+
+[node name="Control" type="Control" parent="HSplitContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="PlaytakUI" parent="." instance=ExtResource("2_2vxwu")]
+layout_mode = 2
+mouse_force_pass_scroll_events = false

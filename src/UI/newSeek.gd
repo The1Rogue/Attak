@@ -55,7 +55,7 @@ func _ready() -> void:
 	options.item_activated.connect(createStandard)
 	confirmCustom.pressed.connect(createCustom)
 	confirmScratch.pressed.connect(createScratch)
-
+	opponentCustom.get_parent().columns = 2 if OS.has_feature("mobile") else 4
 
 func createStandard(index: int):
 #size: int, time: int, inc: int, trigger: int, extra: int, color: String, komi: int, flats: int, caps: int, rated: RATED):

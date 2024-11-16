@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" path="res://src/BoardReps/3D/3DBoard.gd" id="2_4p11y"]
 [ext_resource type="BoxMesh" uid="uid://daablsfdehx7a" path="res://assets/3DPieces/whiteFlat.tres" id="3_gvubj"]
-[ext_resource type="Texture2D" uid="uid://dtqgytcgfkvby" path="res://assets/3DPieces/textures/sq.png" id="3_ims2i"]
 [ext_resource type="CylinderMesh" uid="uid://bcraohr53d311" path="res://assets/3DPieces/whiteCap.tres" id="4_ulro6"]
 [ext_resource type="BoxMesh" uid="uid://dqqb28lxr4vbf" path="res://assets/3DPieces/blackFlat.tres" id="5_bmxa4"]
 [ext_resource type="CylinderMesh" uid="uid://cksydhk7rhem6" path="res://assets/3DPieces/blackCap.tres" id="6_in0fr"]
+[ext_resource type="Texture2D" uid="uid://dbm7r0b1yi8y7" path="res://assets/2DPieces/textures/sq.png" id="7_cohjf"]
 [ext_resource type="Shader" path="res://assets/3DPieces/Highlight3D.gdshader" id="7_fpqoa"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ood11"]
@@ -42,7 +42,7 @@ material = SubResource("ORMMaterial3D_1i0kw")
 size = Vector3(7, 0.3, 7)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6pysb"]
-albedo_texture = ExtResource("3_ims2i")
+albedo_texture = ExtResource("7_cohjf")
 uv1_triplanar = true
 texture_filter = 0
 

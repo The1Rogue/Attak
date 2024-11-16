@@ -2,22 +2,22 @@ extends VBoxContainer
 class_name TabMenu
 
 # BUG:
-# laptop close lid disconnects without closing socket, which is not detected
-# chat cant handle emotes?
-# font is horrid on non-standard screens
-# board2D doesnt scale properly between desktop / mobile
 # mobile notifs dont scale
-# mobile new seek is utterly broken
-# mobile spinbox and checkbox icons are super
+# mobile spinbox and checkbox icons are super small
+# chat names too long on mobile
+# chat cant handle emotes?
+# laptop close lid disconnects without closing socket, which is not detected
+# mobile scroll goes through menu with mouse
 
 # TEST:
+# do we want to support mobile landscape?
+# does web log out if not focused?
 # verify last 2 entries on gamelist add message
 # find all remaining TODOs
 # what happens if you accept a new game when one is still active?
 
 # TODO functional
-# mobile UI
-# default tab in right menu
+# mobile show active game's chat on screen
 # add more general settings
 # auto attempt reconnect on disconnect (and save chats for a bit)
 # 2d board texture scaling (is that needed for 3d too?)
@@ -51,7 +51,9 @@ class_name TabMenu
 # custom new game piece counts
 # user settings (change password, forget on logout)
 
-var active: Control
+@export var start: TabMenuTab
+
+var active: TabMenuTab
 
 
 func _ready() -> void:
@@ -67,7 +69,7 @@ func _ready() -> void:
 		move_child(b, b.get_index() - 1)
 		b.theme_type_variation = &"TabButton"
 	
-	active = get_child(1)
+	active = start
 	active.show()
 
 

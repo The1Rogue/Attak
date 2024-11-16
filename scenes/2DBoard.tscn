@@ -1,7 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://mxvbujo17lyt"]
+[gd_scene load_steps=12 format=3 uid="uid://mxvbujo17lyt"]
 
 [ext_resource type="Script" path="res://src/BoardReps/2D/2DBoard.gd" id="1_485fe"]
-[ext_resource type="Texture2D" uid="uid://dtqgytcgfkvby" path="res://assets/3DPieces/textures/sq.png" id="2_5caff"]
+[ext_resource type="Texture2D" uid="uid://dbm7r0b1yi8y7" path="res://assets/2DPieces/textures/sq.png" id="2_883rs"]
 [ext_resource type="Texture2D" uid="uid://c1rbvn07lmwxy" path="res://assets/2DPieces/textures/pixelCapWhite.png" id="3_cmj6s"]
 [ext_resource type="Texture2D" uid="uid://clh8xcwq6vfa6" path="res://assets/2DPieces/textures/pixelFlatWhite.png" id="4_tes60"]
 [ext_resource type="Texture2D" uid="uid://brfmd5rv5xakk" path="res://assets/2DPieces/textures/pixelWallWhite.png" id="5_p1vx5"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://dtyjrw2uce3qr" path="res://assets/2DPieces/textures/pixelFlatBlack.png" id="7_1k53g"]
 [ext_resource type="Texture2D" uid="uid://76jg8rlnk0e0" path="res://assets/2DPieces/textures/pixelWallBlack.png" id="8_2jael"]
 [ext_resource type="Shader" path="res://assets/2DPieces/Highlight2D.gdshader" id="9_spr7x"]
+[ext_resource type="Texture2D" uid="uid://bp2lq3nfor3hk" path="res://assets/2DPieces/textures/sqHQ.png" id="10_0rjp1"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_m7t6u"]
 shader = ExtResource("9_spr7x")
@@ -19,7 +20,7 @@ shader_parameter/progress = 0.05
 texture_filter = 1
 script = ExtResource("1_485fe")
 pieceSize = 0.75
-sq = ExtResource("2_5caff")
+sq = ExtResource("10_0rjp1")
 WhiteCap = ExtResource("3_cmj6s")
 WhiteFlat = ExtResource("4_tes60")
 WhiteWall = ExtResource("5_p1vx5")
@@ -32,7 +33,7 @@ highlightMaterial = SubResource("ShaderMaterial_m7t6u")
 
 [node name="Board" type="Sprite2D" parent="."]
 texture_repeat = 2
-texture = ExtResource("2_5caff")
+texture = ExtResource("2_883rs")
 region_enabled = true
 region_rect = Rect2(0, 0, 80, 80)
 

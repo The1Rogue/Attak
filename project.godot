@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Attak"
-run/main_scene="res://scenes/mainMobile.tscn"
+run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 boot_splash/image="res://assets/Attak256.png"
 boot_splash/fullsize=false
@@ -29,9 +29,9 @@ Notif="*res://scenes/PopupMsg.tscn"
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/stretch/mode="viewport"
+window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
-window/handheld/orientation=6
+window/handheld/orientation=1
 
 [gui]
 
@@ -49,3 +49,4 @@ textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 textures/vram_compression/import_etc2_astc=true
+environment/defaults/default_clear_color=Color(0.176471, 0.192157, 0.278431, 1)
