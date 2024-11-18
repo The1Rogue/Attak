@@ -34,6 +34,13 @@ func _init(interface: PlayTakI, name: String, type: int = ROOM):
 	entryBox.text_submitted.connect(send)
 	rooms[name] = self
 	
+	
+	if OS.has_feature("mobile"):
+		var c = Control.new()
+		add_child(c)
+		entryBox.focus_entered.connect(addKeyboardBuffer)
+		entryBox.focus_exited.connect(removeKeyboardBuffer)
+
 
 func _ready():
 	if type != GLOBAL:
@@ -44,6 +51,7 @@ func _ready():
 		exit.pressed.connect(remove)
 		exit.set_anchors_and_offsets_preset(PRESET_CENTER_RIGHT)
 		exit.position.x -= 7
+
 
 static func escape_bbcode(bbcode_text):
 	return bbcode_text.replace("[", "[lb]")
@@ -74,3 +82,12 @@ func remove():
 	get_parent().remove(self)
 	rooms.erase(room)
 	queue_free()
+
+
+func addKeyboardBuffer():
+	await get_tree().create_timer(.5).timeout
+	get_child(-1).custom_minimum_size.y = DisplayServer.virtual_keyboard_get_height() / get_viewport_transform().get_scale().y
+
+
+func removeKeyboardBuffer():
+	get_child(-1).custom_minimum_size.y = 0

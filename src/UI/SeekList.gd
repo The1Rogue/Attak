@@ -19,6 +19,9 @@ func add(seek: SeekData, id: int):
 	b.text = " %-14s %dx%d +%3.1f    %2d:00+:%02ds" % [seek.playerName, seek.size, seek.size, seek.komi/2.0, seek.time/60, seek.increment]
 	if seek.triggerTime != 0:
 		b.text += " +%2d@%d" % [seek.triggerTime/60, seek.triggerMove]
+	
+	if OS.has_feature("mobile"):
+		b.text = b.text.insert(24, "\n")
 		
 	if seek.rated != SeekData.RATED:
 		b.text += " Unrated" if seek.rated == SeekData.UNRATED else " Tournament"

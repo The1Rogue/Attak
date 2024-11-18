@@ -1,15 +1,27 @@
 extends VBoxContainer
 class_name TabMenu
 
+
+# PLANNED FOR NEXT RELEASE:
+# BUG: tabmenutab wrapping oob (only sometimes????)
+# TEST: mobile seek / watch wrapping
+# TODO: auto attempt reconnect on disconnect (and save chats for a bit) (how to prevent disconnect due to reconnect somewhere else?)
+
+# MAYBE:
+# mobile spinbox and checkbox icons are super small (needs custom textures)
+# mobile show active game's chat on screen (text bubbles perhaps?)
+# 2d prevent tall stack covering stacks behind them
+
 # BUG:
-# mobile notifs dont scale
-# mobile spinbox and checkbox icons are super small
-# chat names too long on mobile
-# chat cant handle emotes?
+# can press undo on first ply
+# mobile chat entry box stays up if virtual keyboard hidden manually
+# mobile placement of first white flat in 3D scratch immediately selects it (double touch input)
 # laptop close lid disconnects without closing socket, which is not detected
 # mobile scroll goes through menu with mouse
+# mobile sometimes gives load_source_code errors (though non-fatal and not noticable without in the app)
 
 # TEST:
+# upload to google play / appstore?
 # do we want to support mobile landscape?
 # does web log out if not focused?
 # verify last 2 entries on gamelist add message
@@ -17,15 +29,17 @@ class_name TabMenu
 # what happens if you accept a new game when one is still active?
 
 # TODO functional
-# mobile show active game's chat on screen
-# add more general settings
-# auto attempt reconnect on disconnect (and save chats for a bit)
-# 2d board texture scaling (is that needed for 3d too?)
-# 2d prevent tall stack covering stacks behind them
+# local bot support
+# puzzle integration?
+# TakBot support ????
+# peer to peer / lan play ????
+# add more general settings / board specific settings
+# save settings?
 
 # TODO functional / pretty
+# make join / watch entries not rely on monospace font
+# color in join game
 # auto open last tab instead of closing it (in right menu)
-# make chat names less bulky
 # disable things when not logged in
 # click through pieces
 # show online count
@@ -35,13 +49,11 @@ class_name TabMenu
 # TODO pretty
 # add tweens to ui
 # add tweens to board
-# make ui mobile friendly
-# undo/draw buttons show opponent request
 # add result tag to ptn display
 # prettify ui
 # better login success/fail feedback
 # chat message notif sound / notif dot
-# more detailed seek/watch ui
+# more detailed watch ui
 
 # TODO low priority
 # choose what to do with ptn clock / result
@@ -52,7 +64,6 @@ class_name TabMenu
 # user settings (change password, forget on logout)
 
 @export var start: TabMenuTab
-
 var active: TabMenuTab
 
 
@@ -64,6 +75,7 @@ func _ready() -> void:
 		child.tabButton = b
 		child.hide()
 		b.text = child.name
+		b.autowrap_mode = TextServer.AUTOWRAP_WORD
 		b.pressed.connect(func(): select(child))
 		child.add_sibling(b)
 		move_child(b, b.get_index() - 1)
@@ -93,6 +105,7 @@ func addNode(node: TabMenuTab, name: String, select: bool = true):
 	b.add_sibling(node)
 	node.hide()
 	b.text = name
+	b.autowrap_mode = TextServer.AUTOWRAP_WORD
 	b.pressed.connect(func(): select(node))
 	b.theme_type_variation = &"TabButton"
 	if select:

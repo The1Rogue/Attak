@@ -4,9 +4,10 @@ class_name Board2D
 @onready var board = $Board
 @onready var reserves = $Reserves
 
-@export var selectionHeight = 8
+@export var selectionHeight: float = 8
+@export var heightOffset: float = 2
 
-@export var pieceSize = .5
+@export var pieceSize: float = .5
 @export var sq: Texture2D
 
 @export var WhiteCap: Texture2D
@@ -85,8 +86,10 @@ func makeBoard():
 
 func putPiece(id: int, v: Vector3i):
 	pieces[id].z_index = v.y + 1
-	pieces[id].position = Vector2((v.x - size/2.0 + .5) * 16, (size/2.0 - v.z - .5) * 16 - v.y * 2)
-	if pieces[id].selected: pieces[id].position.y -= selectionHeight
+	pieces[id].position = Vector2((v.x - size/2.0 + .5) * 16, (size/2.0 - v.z - .5) * 16 - v.y * heightOffset)
+	if pieces[id].selected: 
+		pieces[id].position.y -= selectionHeight
+		pieces[id].z_index += 10
 
 
 func putReserve(id: int):
@@ -122,11 +125,13 @@ func setWall(id: int, wall: bool):
 
 func select(id: int):
 	pieces[id].position.y -= selectionHeight
+	pieces[id].z_index += 10
 	pieces[id].selected = true
 
 
 func deselect(id: int):
 	pieces[id].position.y += selectionHeight
+	pieces[id].z_index -= 10
 	pieces[id].selected = false
 
 

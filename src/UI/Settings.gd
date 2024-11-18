@@ -9,7 +9,11 @@ class_name Settings
 
 func _ready() -> void:
 	$Set2D.toggled.connect(setBoard)
-	GameLogic.add_child(board3D.instantiate())
+	if OS.has_feature("mobile"):
+		GameLogic.add_child(board2D.instantiate())
+		$Set2D.set_pressed_no_signal(true)
+	else:
+		GameLogic.add_child(board3D.instantiate())
 
 
 func setBoard(is2D: bool):

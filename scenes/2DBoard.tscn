@@ -2,31 +2,32 @@
 
 [ext_resource type="Script" path="res://src/BoardReps/2D/2DBoard.gd" id="1_485fe"]
 [ext_resource type="Texture2D" uid="uid://dbm7r0b1yi8y7" path="res://assets/2DPieces/textures/sq.png" id="2_883rs"]
-[ext_resource type="Texture2D" uid="uid://c1rbvn07lmwxy" path="res://assets/2DPieces/textures/pixelCapWhite.png" id="3_cmj6s"]
-[ext_resource type="Texture2D" uid="uid://clh8xcwq6vfa6" path="res://assets/2DPieces/textures/pixelFlatWhite.png" id="4_tes60"]
-[ext_resource type="Texture2D" uid="uid://brfmd5rv5xakk" path="res://assets/2DPieces/textures/pixelWallWhite.png" id="5_p1vx5"]
-[ext_resource type="Texture2D" uid="uid://b4o6b2urw3cbo" path="res://assets/2DPieces/textures/pixelCapBlack.png" id="6_yf2iw"]
-[ext_resource type="Texture2D" uid="uid://dtyjrw2uce3qr" path="res://assets/2DPieces/textures/pixelFlatBlack.png" id="7_1k53g"]
-[ext_resource type="Texture2D" uid="uid://76jg8rlnk0e0" path="res://assets/2DPieces/textures/pixelWallBlack.png" id="8_2jael"]
+[ext_resource type="Texture2D" uid="uid://bkiwmiw5su4sd" path="res://assets/2DPieces/textures/HQ/CapWhite.png" id="3_1bmfs"]
+[ext_resource type="Texture2D" uid="uid://bl2cy6kdvchi5" path="res://assets/2DPieces/textures/HQ/FlatWhite.png" id="4_774uj"]
+[ext_resource type="Texture2D" uid="uid://cp6saoe4b0nu" path="res://assets/2DPieces/textures/HQ/WallWhite.png" id="5_yyu00"]
+[ext_resource type="Texture2D" uid="uid://sxg2g4wvrxfk" path="res://assets/2DPieces/textures/HQ/CapBlack.png" id="6_ulsqi"]
+[ext_resource type="Texture2D" uid="uid://bv50mt24yjjpp" path="res://assets/2DPieces/textures/HQ/FlatBlack.png" id="7_8oxu8"]
+[ext_resource type="Texture2D" uid="uid://cf4y3gtavl7kt" path="res://assets/2DPieces/textures/HQ/WallBlack.png" id="8_4yhmc"]
 [ext_resource type="Shader" path="res://assets/2DPieces/Highlight2D.gdshader" id="9_spr7x"]
-[ext_resource type="Texture2D" uid="uid://bp2lq3nfor3hk" path="res://assets/2DPieces/textures/sqHQ.png" id="10_0rjp1"]
+[ext_resource type="Texture2D" uid="uid://bp2lq3nfor3hk" path="res://assets/2DPieces/textures/HQ/sq.png" id="10_0rjp1"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_m7t6u"]
 shader = ExtResource("9_spr7x")
-shader_parameter/outline_color = Color(0.164706, 0.560784, 0.678431, 1)
+shader_parameter/outline_color = Color(0.266667, 0.701961, 0.513726, 1)
 shader_parameter/progress = 0.05
 
 [node name="2DBoard" type="Node2D"]
 texture_filter = 1
 script = ExtResource("1_485fe")
+heightOffset = 1.25
 pieceSize = 0.75
 sq = ExtResource("10_0rjp1")
-WhiteCap = ExtResource("3_cmj6s")
-WhiteFlat = ExtResource("4_tes60")
-WhiteWall = ExtResource("5_p1vx5")
-BlackCap = ExtResource("6_yf2iw")
-BlackFlat = ExtResource("7_1k53g")
-BlackWall = ExtResource("8_2jael")
+WhiteCap = ExtResource("3_1bmfs")
+WhiteFlat = ExtResource("4_774uj")
+WhiteWall = ExtResource("5_yyu00")
+BlackCap = ExtResource("6_ulsqi")
+BlackFlat = ExtResource("7_8oxu8")
+BlackWall = ExtResource("8_4yhmc")
 highlightMaterial = SubResource("ShaderMaterial_m7t6u")
 
 [node name="Reserves" type="Node2D" parent="."]

@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://dt1agg411md3s"
-path="res://.godot/imported/UbuntuMono-Regular.ttf-add0e40464d7b034676681709e21c263.fontdata"
+uid="uid://b7als71ollau6"
+path="res://.godot/imported/NotoEmoji-Regular.ttf-ff8228671995629ff560cde973cd856c.fontdata"
 
 [deps]
 
-source_file="res://assets/UbuntuMono-Regular.ttf"
-dest_files=["res://.godot/imported/UbuntuMono-Regular.ttf-add0e40464d7b034676681709e21c263.fontdata"]
+source_file="res://assets/NotoEmoji-Regular.ttf"
+dest_files=["res://.godot/imported/NotoEmoji-Regular.ttf-ff8228671995629ff560cde973cd856c.fontdata"]
 
 [params]
 
@@ -25,7 +25,7 @@ hinting=1
 subpixel_positioning=1
 oversampling=0.0
 Fallbacks=null
-fallbacks=[Resource("res://assets/NotoEmoji-Regular.ttf")]
+fallbacks=[]
 Compress=null
 compress=true
 preload=[]

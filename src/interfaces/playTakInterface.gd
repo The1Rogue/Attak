@@ -125,10 +125,10 @@ func _process(delta: float):
 					komi.to_int(), flats.to_int(), caps.to_int()
 				)
 				addGame.emit(game, id.to_int())
-				
+			
 			["GameList", "Remove", var id, ..]:
 				removeGame.emit(id.to_int())
-				
+			
 			["Observe", var id, var pw, var pb, var size, var time, var inc, var komi, var flats, var caps, var unrated, var tournament, var triggerMove, var triggerAmount]:
 				var game = GameData.new(
 					id, size.to_int(), GameData.PLAYTAK, GameData.PLAYTAK, pw, pb, time.to_int(), inc.to_int(), triggerMove.to_int(), triggerAmount.to_int(), komi.to_int(), flats.to_int(), caps.to_int()
@@ -141,7 +141,7 @@ func _process(delta: float):
 					menu.select(Chat.rooms[room])
 				else:
 					socket.send_text("JoinRoom "+room)
-				
+			
 			["Game", "Start", ..]:
 				startGame(data)
 			
@@ -276,12 +276,12 @@ func sendMove(origin: Node, ply: Ply):
 
 func sendDraw(origin: Node, revoke: bool):
 	if origin == self: return #prevents the client from sending received moves back
-	socket.send_text("Game#" + activeGame.id + " " + "RemoveDraw" if revoke else "OfferDraw")
+	socket.send_text("Game#" + activeGame.id + " " + ("RemoveDraw" if revoke else "OfferDraw"))
 
 
 func sendUndo(origin: Node, revoke: bool):
 	if origin == self: return #prevents the client from sending received moves back
-	socket.send_text("Game#" + activeGame.id + " " + "RemoveUndo" if revoke else "RequestUndo")
+	socket.send_text("Game#" + activeGame.id + " " + ("RemoveUndo" if revoke else "RequestUndo"))
 
 
 func sendToGame(msg: String):

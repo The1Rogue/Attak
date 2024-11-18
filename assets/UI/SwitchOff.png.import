@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bp2lq3nfor3hk"
-path="res://.godot/imported/sqHQ.png-8ae06c385e41dbc3a42f894f4763fc8b.ctex"
+uid="uid://b2meo8xan03jm"
+path="res://.godot/imported/SwitchOff.png-b8d3fa6ea443d3a51213eb213082655d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/2DPieces/textures/sqHQ.png"
-dest_files=["res://.godot/imported/sqHQ.png-8ae06c385e41dbc3a42f894f4763fc8b.ctex"]
+source_file="res://assets/UI/SwitchOff.png"
+dest_files=["res://.godot/imported/SwitchOff.png-b8d3fa6ea443d3a51213eb213082655d.ctex"]
 
 [params]
 
-compress/mode=4
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

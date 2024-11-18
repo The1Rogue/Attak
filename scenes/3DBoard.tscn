@@ -5,8 +5,8 @@
 [ext_resource type="CylinderMesh" uid="uid://bcraohr53d311" path="res://assets/3DPieces/whiteCap.tres" id="4_ulro6"]
 [ext_resource type="BoxMesh" uid="uid://dqqb28lxr4vbf" path="res://assets/3DPieces/blackFlat.tres" id="5_bmxa4"]
 [ext_resource type="CylinderMesh" uid="uid://cksydhk7rhem6" path="res://assets/3DPieces/blackCap.tres" id="6_in0fr"]
-[ext_resource type="Texture2D" uid="uid://dbm7r0b1yi8y7" path="res://assets/2DPieces/textures/sq.png" id="7_cohjf"]
 [ext_resource type="Shader" path="res://assets/3DPieces/Highlight3D.gdshader" id="7_fpqoa"]
+[ext_resource type="Texture2D" uid="uid://bp2lq3nfor3hk" path="res://assets/2DPieces/textures/HQ/sq.png" id="7_uaha4"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ood11"]
 
@@ -18,14 +18,14 @@ render_priority = 0
 shader = ExtResource("7_fpqoa")
 shader_parameter/offset = 0.02
 shader_parameter/scale = 1.1
-shader_parameter/color = Color(0.164706, 0.560784, 0.678431, 1)
+shader_parameter/color = Color(0.266667, 0.701961, 0.513726, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ptg30"]
 render_priority = 0
 shader = ExtResource("7_fpqoa")
 shader_parameter/offset = 0.02
 shader_parameter/scale = 1.1
-shader_parameter/color = Color(2.79158e-06, 0.844415, 0.454824, 1)
+shader_parameter/color = Color(0.376471, 0.431373, 0.709804, 1)
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_2c6g0"]
 
@@ -42,7 +42,7 @@ material = SubResource("ORMMaterial3D_1i0kw")
 size = Vector3(7, 0.3, 7)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6pysb"]
-albedo_texture = ExtResource("7_cohjf")
+albedo_texture = ExtResource("7_uaha4")
 uv1_triplanar = true
 texture_filter = 0
 

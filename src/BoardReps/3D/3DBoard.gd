@@ -193,11 +193,6 @@ func _input_event(camera: Camera3D, event: InputEvent, event_position: Vector3, 
 				var tile = vecToTile(event_position)
 				if tile.x >= 0 and tile.x < size and tile.y >= 0 and tile.y < size:
 					rightClickTile(tile)
-					
-			elif event.button_index == MOUSE_BUTTON_WHEEL_UP:
-				Cam.position.z = clamp(Cam.position.z - .5, 1, 15)
-			elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-				Cam.position.z = clamp(Cam.position.z + .5, 1, 15)
 	
 	elif event is InputEventScreenTouch:
 		I0 = event.position
@@ -218,8 +213,14 @@ func _input_event(camera: Camera3D, event: InputEvent, event_position: Vector3, 
 			Cam.position.z = clamp(Cam.position.z + drag * mobileZoomMod, 1, 15)
 
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion:
+func _unhandled_input(event: InputEvent) -> void: #these are seperate so they work while hovering Piece3D
+	if event is InputEventMouseButton:
+			if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+				Cam.position.z = clamp(Cam.position.z - .5, 1, 15)
+			elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+				Cam.position.z = clamp(Cam.position.z + .5, 1, 15)
+				
+	elif event is InputEventMouseMotion:
 		if event.button_mask & MOUSE_BUTTON_MASK_LEFT != 0:
 			Pivot.rotation.x = clamp(Pivot.rotation.x - event.relative.y / dist, -PI/2, 0)
 			Pivot.rotation.y -= event.relative.x / dist

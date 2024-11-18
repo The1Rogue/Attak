@@ -103,7 +103,8 @@ func _process(delta: float) -> void:
 
 func addPly(origin: Node, ply: Ply):
 	undoButton.set_pressed_no_signal(false)
-	drawButton.set_pressed_no_signal(false)
+	undoButton.theme_type_variation = &"GameUIButton"
+	
 	
 	timeWhite.paused = (ply.boardState.ply) % 2 == 1 or ply.boardState.win != GameState.ONGOING
 	timeBlack.paused = (ply.boardState.ply) % 2 == 0 or ply.boardState.win != GameState.ONGOING
@@ -147,17 +148,22 @@ func removeLast():
 
 func undoRequest(origin: Node, revoke: bool):
 	if origin == self: return
+	undoButton.theme_type_variation = &"GameUIButton" if revoke else &"HighlightButton"
 	Notif.message("Your opponent retracts their undo request." if revoke else "Your opponent requests an undo!")
 
 
 func drawRequest(origin: Node, revoke: bool):
 	if origin == self: return
+	drawButton.theme_type_variation = &"GameUIButton" if revoke else &"HighlightButton"
 	Notif.message("Your opponent retracts their draw offer." if revoke else "Your opponent offers a draw!")
 
 
 func end(type: int):
 	timeWhite.paused = true
 	timeBlack.paused = true
+	
+	undoButton.theme_type_variation = &"GameUIButton"
+	drawButton.theme_type_variation = &"GameUIButton"
 
 
 func _input(event: InputEvent) -> void:

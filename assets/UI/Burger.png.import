@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/Burger.png-013c550ed24a7d461a0c3189849da420.c
 
 [params]
 
-compress/mode=4
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

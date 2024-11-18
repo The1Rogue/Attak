@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://c7t0t4lbjup7v"]
+[gd_scene load_steps=5 format=3 uid="uid://c7t0t4lbjup7v"]
 
 [ext_resource type="Script" path="res://src/UI/gameUI.gd" id="1_se5o0"]
+[ext_resource type="Texture2D" uid="uid://c4r41rkuep21e" path="res://assets/UI/Undo.png" id="2_8r6og"]
+[ext_resource type="Texture2D" uid="uid://d2m550pgmw7ah" path="res://assets/UI/Draw.png" id="3_ij83d"]
+[ext_resource type="Texture2D" uid="uid://br4bmyueqd5rx" path="res://assets/UI/Resign.png" id="4_3jk82"]
 
 [node name="GameUI" type="VBoxContainer" node_paths=PackedStringArray("WhiteName", "WhiteTime", "BlackName", "BlackTime", "undoButton", "drawButton", "resignButton", "gameInfo", "ptnDisplay")]
 custom_minimum_size = Vector2(120, 0)
@@ -40,18 +43,33 @@ layout_mode = 2
 alignment = 1
 
 [node name="Undo" type="Button" parent="HBoxContainer"]
+texture_filter = 2
+custom_minimum_size = Vector2(75, 0)
 layout_mode = 2
+theme_type_variation = &"GameUIButton"
 toggle_mode = true
 text = "Undo"
+icon = ExtResource("2_8r6og")
+expand_icon = true
 
 [node name="Draw" type="Button" parent="HBoxContainer"]
+texture_filter = 2
+custom_minimum_size = Vector2(75, 0)
 layout_mode = 2
+theme_type_variation = &"GameUIButton"
 toggle_mode = true
 text = "Draw"
+icon = ExtResource("3_ij83d")
+expand_icon = true
 
 [node name="Resign" type="Button" parent="HBoxContainer"]
+texture_filter = 2
+custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
+theme_type_variation = &"GameUIButton"
 text = "Resign"
+icon = ExtResource("4_3jk82")
+expand_icon = true
 
 [node name="GameInfo" type="Label" parent="."]
 layout_mode = 2

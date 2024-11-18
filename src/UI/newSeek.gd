@@ -63,7 +63,7 @@ func createStandard(index: int):
 	var color = ["A", "W", "B"][colorStandard.selected]
 	var seek = SeekData.new(opponentStandard.text, opt[0], opt[1] * 60, opt[2], opt[3], opt[4] * 60, color, opt[5] * 2, opt[6], opt[7], opt[8])
 	interface.sendSeek(seek)
-	Globals.gameUI.notify("Seek Created!")
+	Notif.message("Seek Created!")
 
 
 func createCustom():
@@ -74,7 +74,7 @@ func createCustom():
 	var t = SeekData.RATED if type.selected == 0 else SeekData.UNRATED if type.selected == 2 else SeekData.TOURNAMENT
 	var seek = SeekData.new(opponentCustom.text, size, time.value * 60, inc.value, trigger.value, amount.value * 60, color, komi.value * 2, flats, caps, t)
 	interface.sendSeek(seek)
-	Globals.gameUI.notify("Seek Created!")
+	Notif.message("Seek Created!")
 
 
 func createScratch():
@@ -119,14 +119,14 @@ func createScratch():
 						var tps = x[1].substr(1, x[1].length()-2)
 						startState = GameState.fromTPS(tps, flats, caps)
 						if startState == null:
-							Globals.gameUI.notify("Invalid TPS \"%s\"" % tps)
+							Notif.message("Invalid TPS \"%s\"" % tps)
 							return
 							
 						elif size == 0:
 							size = startState.size
 							
 						elif size != startState.size:
-							Globals.gameUI.notify("TPS size doesnt match Size tag!")
+							Notif.message("TPS size doesnt match Size tag!")
 							return
 						
 					"Komi":
@@ -144,7 +144,7 @@ func createScratch():
 					"Clock":
 						var m: RegExMatch = clockRegex.search(x[1])
 						if m == null:
-							Globals.gameUI.notify("%s is not valid clock format!" % x[1])
+							Notif.message("%s is not valid clock format!" % x[1])
 							return
 						time = 60 * m.get_string(1).to_int() + m.get_string(2).to_int()
 						inc = m.get_string(3).to_int()
@@ -159,7 +159,7 @@ func createScratch():
 				c += 1
 				var m = ptnLineRegex.search(line)
 				if m == null:
-					Globals.gameUI.notify("\"%s\" is malformed ptn!" % line)
+					Notif.message("\"%s\" is malformed ptn!" % line)
 					return
 				
 				plyList.append(Ply.fromPTN(m.get_string(1)))
@@ -170,11 +170,11 @@ func createScratch():
 				pass
 			
 			else:
-				Globals.gameUI.notify("Could not recognize \"%s\"" % line)
+				Notif.message("Could not recognize \"%s\"" % line)
 				return
 		
 		if size == 0:
-			Globals.gameUI.notify("Could not determine board size!")
+			Notif.message("Could not determine board size!")
 			return
 		
 		if flats == -1: flats = standardFlats[size-3]
