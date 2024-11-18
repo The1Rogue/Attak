@@ -131,8 +131,8 @@ func addPly(origin: Node, ply: Ply):
 
 func removeLast():
 	undoButton.set_pressed_no_signal(false)
-	drawButton.set_pressed_no_signal(false)
-	
+	undoButton.theme_type_variation = &"GameUIButton"
+
 	timeWhite.paused = GameLogic.currentPly() % 2 == 1
 	timeBlack.paused = GameLogic.currentPly() % 2 == 0
 	
@@ -142,7 +142,6 @@ func removeLast():
 	var c = ptnDisplay.get_child(-1)
 	if c is Label:
 		ptnDisplay.remove_child(c)
-
 	i -= 1
 
 

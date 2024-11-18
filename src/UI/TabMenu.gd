@@ -3,22 +3,22 @@ class_name TabMenu
 
 
 # PLANNED FOR NEXT RELEASE:
-# BUG: tabmenutab wrapping oob (only sometimes????)
 # TEST: mobile seek / watch wrapping
 # TODO: auto attempt reconnect on disconnect (and save chats for a bit) (how to prevent disconnect due to reconnect somewhere else?)
 
 # MAYBE:
-# mobile spinbox and checkbox icons are super small (needs custom textures)
 # mobile show active game's chat on screen (text bubbles perhaps?)
 # 2d prevent tall stack covering stacks behind them
 
 # BUG:
+# tabmenutab wrapping oob (only sometimes????)
+# Web disconnects if tab not active
 # can press undo on first ply
 # mobile chat entry box stays up if virtual keyboard hidden manually
 # mobile placement of first white flat in 3D scratch immediately selects it (double touch input)
 # laptop close lid disconnects without closing socket, which is not detected
 # mobile scroll goes through menu with mouse
-# mobile sometimes gives load_source_code errors (though non-fatal and not noticable without in the app)
+# mobile and web sometimes gives load_source_code errors (though non-fatal and not noticable without in the app)(perhaps thats just a debugger issue?)
 
 # TEST:
 # upload to google play / appstore?
@@ -29,6 +29,7 @@ class_name TabMenu
 # what happens if you accept a new game when one is still active?
 
 # TODO functional
+# allow user to revoke seek
 # local bot support
 # puzzle integration?
 # TakBot support ????
@@ -37,9 +38,9 @@ class_name TabMenu
 # save settings?
 
 # TODO functional / pretty
+# 3D add custom pieces / playtak texture support
 # make join / watch entries not rely on monospace font
 # color in join game
-# auto open last tab instead of closing it (in right menu)
 # disable things when not logged in
 # click through pieces
 # show online count
@@ -65,6 +66,7 @@ class_name TabMenu
 
 @export var start: TabMenuTab
 var active: TabMenuTab
+var last: TabMenuTab
 
 
 func _ready() -> void:
@@ -86,14 +88,17 @@ func _ready() -> void:
 
 
 func select(node: Control):
-	if active != null:
-		active.hide()
-		
 	if active == node:
-		active = null
+		if last == null: return
+		active = last
+		last = node
+		last.hide()
+		active.show()
 		
 	else:
+		last = active
 		active = node
+		last.hide()
 		active.show()
 
 
@@ -123,4 +128,7 @@ func gotoOrMakeChat(interface: PlayTakI, name: String, type: int):
 func remove(node: TabMenuTab):
 	remove_child(node.tabButton)
 	remove_child(node)
-	if node == active: active = null
+	if node == active: 
+		active = last
+		last = null
+	
