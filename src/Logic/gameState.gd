@@ -92,6 +92,12 @@ class Pile extends Resource:
 			p.pieces.append(reserves.getPiece(p.type if i == s.size()-1 else FLAT, s[i].to_int() - 1))
 		return p 
 
+	func getTPS() -> String:
+		var out = ""
+		for i in pieces:
+			out += str(i % 2 + 1)
+		return out + ("S" if type == WALL else "C" if type == CAP else "")
+
 	func take(n:int) -> Pile:
 		var top = Pile.new()
 		top.type = type
@@ -303,3 +309,23 @@ func flatWin() -> int:
 				else: 
 					count += 1
 	return DRAW if count == 0 else FLAT_WIN_WHITE if count < 0 else FLAT_WIN_BLACK
+
+func getTPS() -> String:
+	var out = ""
+	for y in size:
+		var eCount = 0
+		for x in size:
+			var s = board[x][size-y-1].getTPS()
+			if s.is_empty(): eCount += 1
+			else:
+				if eCount != 0:
+					out += "x%d," % eCount if eCount > 1 else "x,"
+					eCount = 0
+				out += s + ","
+		if eCount > 0:
+			out += "x%d" % eCount if eCount > 1 else "x"
+		else:
+			out = out.rstrip(",")
+		out += "/"
+		
+	return out.rstrip("/") + " %d %d" % [ply % 2 + 1, ply / 2 + 1]

@@ -89,6 +89,7 @@ func doMove(origin: Node, ply: Ply):
 	
 	var i = currentPly() % 2
 	move.emit(origin, ply)
+	print(ply.boardState.getTPS())
 
 
 #handles undos in local games
