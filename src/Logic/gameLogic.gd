@@ -30,6 +30,9 @@ func _ready():
 
 
 func doSetup(game: GameData, start: GameState = null):
+	if active: #stop game if ongoing
+		end.emit(GameState.ONGOING)
+	
 	history = []
 	view = 0
 	active = true
@@ -89,7 +92,6 @@ func doMove(origin: Node, ply: Ply):
 	
 	var i = currentPly() % 2
 	move.emit(origin, ply)
-	print(ply.boardState.getTPS())
 
 
 #handles undos in local games
@@ -110,11 +112,11 @@ func doUndo():
 
 
 func endGame(type: int):
-	assert(type != GameState.ONGOING, "CANT END AN ONGOING GAME")
 	assert(activeState().win == GameState.ONGOING or activeState().win == type, "GAME END TYPE DOES NOT MATCH")
 	if not active: return #game already ended, no need to repeat it
 	active = false
-	activeState().win = type
-	Notif.ping(Notif.end)
-	Notif.message("Game Ended " + GameState.resultStrings[type], false)
 	end.emit(type)
+	if type != GameState.ONGOING:
+		activeState().win = type
+		Notif.ping(Notif.end)
+		Notif.message("Game Ended " + GameState.resultStrings[type], false)

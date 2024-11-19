@@ -13,12 +13,6 @@ var active: bool = false
 var activeUsername: String = ""
 var activePass: String = "" #WARNING having this in ram is *not* secure, but we need it to reestablish broken connections, and i dont think a playtak account is critical, so....
 
-var activeGame: GameData = GameLogic.gameData:
-	set(v):
-		if activeGame.isObserver():
-			socket.send_text("Unobserve " + activeGame.id)
-		activeGame = v
-
 
 var pingtime: float = 0
 
@@ -29,7 +23,7 @@ signal addGame(game: GameData, id: int)
 signal removeGame(id: int)
 
 func _ready():
-	GameLogic.setup.connect(func(data, state): activeGame = data)
+	GameLogic.end.connect(handleUnobserve)
 
 
 func signInGuest() -> bool:
@@ -64,7 +58,6 @@ func signIn(username: String, password: String) -> bool:
 		print("successfully logged in as %s" % activeUsername)
 		return true
 	
-	print(packet)
 	print("failed to login")
 	Notif.message("Invalid Login!")
 	socket.close()
@@ -154,12 +147,12 @@ func _process(delta: float):
 			["Game", "Start", ..]:
 				startGame(data)
 			
-			["Game", var id, "P", var sq, ..] when id == activeGame.id:
+			["Game", var id, "P", var sq, ..] when id == GameLogic.gameData.id:
 				var type = Place.TYPE.FLAT if data.size() == 4 else Place.TYPE.WALL if data[4] == "W" else Place.TYPE.CAP
 				var ply = Place.new(Ply.getTile(sq), type)
 				GameLogic.doMove(self, ply)
 				
-			["Game", var id, "M", var sq1, var sq2, ..] when id == activeGame.id:
+			["Game", var id, "M", var sq1, var sq2, ..] when id == GameLogic.gameData.id:
 				var tile1 = Ply.getTile(sq1)
 				var tile2 = Ply.getTile(sq2)
 				var smash = false
@@ -173,31 +166,31 @@ func _process(delta: float):
 					drops.append(i.to_int())
 				GameLogic.doMove(self, Spread.new(tile1, dir, drops, smash))
 				
-			["Game", var id, "Time", var timeW, var timeB] when id == activeGame.id:
+			["Game", var id, "Time", var timeW, var timeB] when id == GameLogic.gameData.id:
 				GameLogic.sync.emit(timeW.to_int() * 1000, timeB.to_int() * 1000)
 			
-			["Game", var id, "Timems", var timeW, var timeB] when id == activeGame.id:
+			["Game", var id, "Timems", var timeW, var timeB] when id == GameLogic.gameData.id:
 				GameLogic.sync.emit(timeW.to_int(), timeB.to_int())
 			
-			["Game", var id, "Over", var result] when id == activeGame.id:
+			["Game", var id, "Over", var result] when id == GameLogic.gameData.id:
 				endGame(GameState.resultStrings.find(result))
 				
-			["Game", var id, "OfferDraw"] when id == activeGame.id:
+			["Game", var id, "OfferDraw"] when id == GameLogic.gameData.id:
 				GameLogic.drawRequest.emit(self, false)
 			
-			["Game", var id, "RemoveDraw"] when id == activeGame.id:
+			["Game", var id, "RemoveDraw"] when id == GameLogic.gameData.id:
 				GameLogic.drawRequest.emit(self, true)
 			
-			["Game", var id, "RequestUndo"] when id == activeGame.id:
+			["Game", var id, "RequestUndo"] when id == GameLogic.gameData.id:
 				GameLogic.undoRequest.emit(self, false)
 			
-			["Game", var id, "RemoveUndo"] when id == activeGame.id:
+			["Game", var id, "RemoveUndo"] when id == GameLogic.gameData.id:
 				GameLogic.undoRequest.emit(self, true)
 			
-			["Game", var id, "Undo"] when id == activeGame.id:
+			["Game", var id, "Undo"] when id == GameLogic.gameData.id:
 				GameLogic.doUndo()
 			
-			["Game", var id, "Abandoned.", var player, "quit"] when id == activeGame.id:
+			["Game", var id, "Abandoned.", var player, "quit"] when id == GameLogic.gameData.id:
 				endGame(GameState.DEFAULT_WIN_WHITE if player == GameLogic.gameData.playerWhiteName else GameState.DEFAULT_WIN_BLACK)
 			
 			["Seek", "new", var id, var name, var size, var time, var inc, var color, var komi, var flats, var caps, var unrated, var tourney, var trigger, var extra, var opponent] when opponent == "" or opponent == activeUsername:
@@ -264,12 +257,12 @@ func startGame(data: PackedStringArray):
 
 
 func resign():
-	socket.send_text("Game#" + activeGame.id + " Resign")
+	socket.send_text("Game#" + GameLogic.gameData.id + " Resign")
 
 
 func endGame(type: int):
 	GameLogic.endGame(type)
-	if activeGame.isObserver(): return  #we werent connected, so dont disconnect
+	if GameLogic.gameData.isObserver(): return  #we werent connected, so dont disconnect
 	
 	GameLogic.move.disconnect(sendMove)
 	GameLogic.drawRequest.disconnect(sendDraw)
@@ -277,24 +270,29 @@ func endGame(type: int):
 	GameLogic.resign.disconnect(resign)
 
 
+func handleUnobserve(type: int):
+	if GameLogic.gameData.isObserver():
+		socket.send_text("Unobserve %s" % GameLogic.gameData.id)
+
+
 func sendMove(origin: Node, ply: Ply):
 	if origin == self: return #prevents the client from sending received moves back
 	var t = ply.toPlayTak()
-	socket.send_text("Game#" + activeGame.id + " " + ply.toPlayTak().to_upper())
+	socket.send_text("Game#" + GameLogic.gameData.id + " " + ply.toPlayTak().to_upper())
 
 
 func sendDraw(origin: Node, revoke: bool):
 	if origin == self: return #prevents the client from sending received moves back
-	socket.send_text("Game#" + activeGame.id + " " + ("RemoveDraw" if revoke else "OfferDraw"))
+	socket.send_text("Game#" + GameLogic.gameData.id + " " + ("RemoveDraw" if revoke else "OfferDraw"))
 
 
 func sendUndo(origin: Node, revoke: bool):
 	if origin == self: return #prevents the client from sending received moves back
-	socket.send_text("Game#" + activeGame.id + " " + ("RemoveUndo" if revoke else "RequestUndo"))
+	socket.send_text("Game#" + GameLogic.gameData.id + " " + ("RemoveUndo" if revoke else "RequestUndo"))
 
 
 func sendToGame(msg: String):
-	socket.send_text("Game#" + activeGame.id + " " + msg)
+	socket.send_text("Game#" + GameLogic.gameData.id + " " + msg)
 
 
 func sendSeek(seek: SeekData):
