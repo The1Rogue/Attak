@@ -296,7 +296,7 @@ func endGame(type: int):
 
 
 func handleUnobserve(type: int):
-	if GameLogic.gameData.isObserver():
+	if GameLogic.gameData.isObserver() and GameLogic.active:
 		socket.send_text("Unobserve %s" % GameLogic.gameData.id)
 
 

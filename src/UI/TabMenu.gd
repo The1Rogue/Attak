@@ -70,3 +70,4 @@ func remove(node: TabMenuTab):
 	if node == active: 
 		active = last
 		last = null
+		active.show()

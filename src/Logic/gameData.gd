@@ -46,3 +46,6 @@ func _init(id: String, size: int, pw: int, pb: int, pwn: String, pbn: String, ti
 
 func isObserver():
 	return playerWhite == PLAYTAK and playerBlack == PLAYTAK
+
+func isScratch():
+	return playerWhite == LOCAL and playerBlack == LOCAL

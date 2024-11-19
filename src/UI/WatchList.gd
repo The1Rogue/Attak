@@ -39,7 +39,8 @@ func clear():
 
 
 func observe(id: int):
-	if GameLogic.gameData.isObserver() or not GameLogic.active:
+	
+	if GameLogic.gameData.isObserver() or GameLogic.gameData.isScratch() or not GameLogic.active:
 		PlayTakI.socket.send_text("Observe " + str(id))
 	else:
-		Globals.gameUI.notify("Can't watch a game while you're still playing!")
+		Notif.message("Can't watch a game while you're still playing!")
