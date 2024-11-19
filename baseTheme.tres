@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=21 format=3 uid="uid://3w4qd4ooj08t"]
+[gd_resource type="Theme" load_steps=25 format=3 uid="uid://3w4qd4ooj08t"]
 
 [ext_resource type="FontFile" uid="uid://dt1agg411md3s" path="res://assets/UbuntuMono-Regular.ttf" id="1_kk87t"]
 [ext_resource type="Texture2D" uid="uid://dpunkq0sjcqum" path="res://assets/UI/SwitchOn.png" id="1_lxcww"]
@@ -92,8 +92,19 @@ bg_color = Color(0.247059, 0.211765, 0.45098, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h6d2u"]
 bg_color = Color(0.137255, 0.113725, 0.270588, 1)
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aw8ka"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_osg7l"]
+bg_color = Color(0.176471, 0.192157, 0.278431, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oqwsa"]
+bg_color = Color(0.176471, 0.192157, 0.278431, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1k277"]
 bg_color = Color(0.376471, 0.431373, 0.709804, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e132u"]
+bg_color = Color(0.176471, 0.192157, 0.278431, 1)
 
 [resource]
 default_font = ExtResource("1_kk87t")
@@ -125,5 +136,9 @@ LineEdit/styles/focus = SubResource("StyleBoxFlat_8asyw")
 LineEdit/styles/normal = SubResource("StyleBoxFlat_h6d2u")
 TabButton/base_type = &"Button"
 TabButton/font_sizes/font_size = 24
+TabButton/styles/focus = SubResource("StyleBoxEmpty_aw8ka")
+TabButton/styles/hover = SubResource("StyleBoxFlat_osg7l")
+TabButton/styles/hover_pressed = SubResource("StyleBoxFlat_oqwsa")
 TabButton/styles/normal = SubResource("StyleBoxFlat_1k277")
+TabButton/styles/pressed = SubResource("StyleBoxFlat_e132u")
 VBoxContainer/constants/separation = 5

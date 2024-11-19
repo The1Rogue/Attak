@@ -1,17 +1,17 @@
 extends Node
-class_name PlayTakI
 
 const url = "ws://playtak.com:9999/ws"
 
-@export var menu: TabMenu
-@export var loginMenu: LoginMenu
-@export var seekMenu: SeekList
-@export var watchMenu: WatchList
+var menu: TabMenu
 
 var socket: WebSocketPeer = WebSocketPeer.new()
 var active: bool = false
 var activeUsername: String = ""
-var activePass: String = "" #WARNING having this in ram is *not* secure, but we need it to reestablish broken connections, and i dont think a playtak account is critical, so....
+var activePass: String = "" #WARNING having this in ram is *not* secure, but we need it to re-establish broken connections, and i dont think a playtak account is critical, so....
+
+const ratingURL = "http://playtak.com/ratinglist.json" #TODO
+@onready var http = HTTPRequest.new()
+var ratingList: Dictionary = {}
 
 
 var pingtime: float = 0
@@ -22,8 +22,15 @@ signal removeSeek(id: int)
 signal addGame(game: GameData, id: int)
 signal removeGame(id: int)
 
+signal logout
+signal ratingUpdate
+
 func _ready():
 	GameLogic.end.connect(handleUnobserve)
+	
+	add_child(http)
+	http.request_completed.connect(parseRatings)
+	http.request(ratingURL)
 
 
 func signInGuest() -> bool:
@@ -64,7 +71,7 @@ func signIn(username: String, password: String) -> bool:
 	return false
 
 
-func logout():
+func onLogout():
 	active = false
 	if socket.get_ready_state() == WebSocketPeer.STATE_OPEN:
 		socket.close()
@@ -72,8 +79,7 @@ func logout():
 			await get_tree().create_timer(.1).timeout
 			socket.poll()
 	
-	seekMenu.clear()
-	watchMenu.clear()
+	logout.emit()
 	for chat in Chat.rooms.keys():
 		Chat.rooms[chat].remove()
 	Chat.rooms.clear()
@@ -104,7 +110,7 @@ func _process(delta: float):
 	var state = socket.get_ready_state()
 	if state != WebSocketPeer.STATE_OPEN:
 		var u = activeUsername
-		loginMenu.logout()
+		onLogout()
 		if socket.get_close_code() == -1:
 			Notif.message("You were disconnected")
 			return
@@ -239,6 +245,25 @@ func _process(delta: float):
 			_:
 				print("Unparsed Message:")
 				print(packet)
+
+
+func parseRatings(result:int , response_code: int, header: PackedStringArray, body: PackedByteArray):
+	if result != HTTPRequest.RESULT_SUCCESS:
+		pass
+	
+	else:
+		#Array[ [" ".join(unames), activeRating, rating, gamesplayed, isBot ]   ]
+		var json: Array = JSON.parse_string(body.get_string_from_utf8())
+		ratingList = {}
+		for entry in json:
+			for name in entry[0].split(" "):
+				ratingList[name] = entry[2]
+		ratingUpdate.emit()
+	
+	# target time is 10m past the hour, + random to avoid ddos
+	# last +3600 is because % can (and in this case always will) return negative
+	var offset = (600 + randi_range(5, 300) - Time.get_unix_time_from_system() as int) % 3600 + 3600
+	get_tree().create_timer(offset).timeout.connect(func(): http.request(ratingURL)) #BUG this loop breaks if we get no response
 
 
 func startGame(data: PackedStringArray):

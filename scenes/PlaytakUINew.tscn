@@ -1,16 +1,15 @@
-[gd_scene load_steps=10 format=3 uid="uid://c4xgbwf6ww050"]
+[gd_scene load_steps=9 format=3 uid="uid://c4xgbwf6ww050"]
 
 [ext_resource type="Script" path="res://src/UI/TabMenu.gd" id="1_tkoo2"]
 [ext_resource type="Script" path="res://src/UI/SeekList.gd" id="2_42r6x"]
 [ext_resource type="Script" path="res://src/UI/newSeek.gd" id="3_2oto4"]
-[ext_resource type="Script" path="res://src/interfaces/playTakInterface.gd" id="3_ejegg"]
 [ext_resource type="Script" path="res://src/UI/Settings.gd" id="3_h3hqn"]
-[ext_resource type="Script" path="res://src/UI/login.gd" id="3_kjef8"]
+[ext_resource type="Script" path="res://src/UI/loginMenu.gd" id="3_kjef8"]
 [ext_resource type="PackedScene" uid="uid://c4esmjnf630vc" path="res://scenes/3DBoard.tscn" id="4_dxgwr"]
 [ext_resource type="Script" path="res://src/UI/WatchList.gd" id="5_ap4a8"]
 [ext_resource type="PackedScene" uid="uid://mxvbujo17lyt" path="res://scenes/2DBoard.tscn" id="5_deflk"]
 
-[node name="PlayTakUI" type="PanelContainer" node_paths=PackedStringArray("menu", "loginMenu", "seekMenu", "watchMenu")]
+[node name="PlayTakUI" type="PanelContainer"]
 custom_minimum_size = Vector2(250, 0)
 anchors_preset = 15
 anchor_right = 1.0
@@ -19,11 +18,6 @@ offset_left = 3.0
 offset_right = 3.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("3_ejegg")
-menu = NodePath("Menu")
-loginMenu = NodePath("Menu/Login")
-seekMenu = NodePath("Menu/Join Game (0)")
-watchMenu = NodePath("Menu/Watch Game (0)")
 
 [node name="Menu" type="VBoxContainer" parent="." node_paths=PackedStringArray("start")]
 layout_mode = 2
@@ -40,10 +34,10 @@ board2D = ExtResource("5_deflk")
 layout_mode = 2
 text = "2D board"
 
-[node name="Login" type="VBoxContainer" parent="Menu" node_paths=PackedStringArray("interface")]
+[node name="Login" type="VBoxContainer" parent="Menu" node_paths=PackedStringArray("tabOnLogin")]
 layout_mode = 2
 script = ExtResource("3_kjef8")
-interface = NodePath("../..")
+tabOnLogin = NodePath("../Join Game (0)")
 
 [node name="Menu" type="MarginContainer" parent="Menu/Login"]
 layout_mode = 2
@@ -91,10 +85,9 @@ text = "Logout
 [node name="seperator2" type="Control" parent="Menu/Login/Menu/Settings"]
 layout_mode = 2
 
-[node name="New Seek" type="VBoxContainer" parent="Menu" node_paths=PackedStringArray("interface", "opponentStandard", "colorStandard", "options", "opponentCustom", "colorCustom", "type", "sizeCustom", "komi", "time", "inc", "trigger", "amount", "confirmCustom", "sizeScratch", "flatsScratch", "capsScratch", "notationEntry", "confirmScratch")]
+[node name="New Seek" type="VBoxContainer" parent="Menu" node_paths=PackedStringArray("opponentStandard", "colorStandard", "options", "opponentCustom", "colorCustom", "type", "sizeCustom", "komi", "time", "inc", "trigger", "amount", "confirmCustom", "sizeScratch", "flatsScratch", "capsScratch", "notationEntry", "confirmScratch")]
 layout_mode = 2
 script = ExtResource("3_2oto4")
-interface = NodePath("../..")
 opponentStandard = NodePath("TabContainer/standard/Opponent_Color/Opponent")
 colorStandard = NodePath("TabContainer/standard/Opponent_Color/OptionButton")
 options = NodePath("TabContainer/standard/ItemList")
@@ -362,12 +355,10 @@ placeholder_text = "PTN"
 layout_mode = 2
 text = "Create"
 
-[node name="Join Game (0)" type="VBoxContainer" parent="Menu" node_paths=PackedStringArray("interface")]
+[node name="Join Game (0)" type="VBoxContainer" parent="Menu"]
 layout_mode = 2
 script = ExtResource("2_42r6x")
-interface = NodePath("../..")
 
-[node name="Watch Game (0)" type="VBoxContainer" parent="Menu" node_paths=PackedStringArray("interface")]
+[node name="Watch Game (0)" type="VBoxContainer" parent="Menu"]
 layout_mode = 2
 script = ExtResource("5_ap4a8")
-interface = NodePath("../..")

@@ -3,6 +3,8 @@ class_name LoginMenu
 
 const loginResource = "user://playtakLogin.res"
 
+@export var tabOnLogin: TabMenuTab
+
 @onready var login: VBoxContainer = $Menu/Login
 @onready var userEntry: LineEdit = $Menu/Login/User
 @onready var passEntry: LineEdit = $Menu/Login/Pass
@@ -12,14 +14,15 @@ const loginResource = "user://playtakLogin.res"
 @onready var settings: VBoxContainer = $Menu/Settings
 @onready var logoutButton: Button = $Menu/Settings/Logout
 
-@export var interface: PlayTakI
-
 func _ready():
+	PlayTakI.ratingUpdate.connect(updateRating)
+	PlayTakI.logout.connect(logout)
+	
 	userEntry.text_submitted.connect(passEntry.grab_focus)
 	passEntry.text_submitted.connect(submit)
 	confirm.pressed.connect(submit)
 
-	logoutButton.pressed.connect(logout)
+	logoutButton.pressed.connect(PlayTakI.onLogout)
 
 	var p = get_parent()
 	if not p.is_node_ready():
@@ -33,14 +36,14 @@ func _ready():
 
 
 func signin(user:String, passw: String):
-	if await interface.signIn(user, passw):
+	if await PlayTakI.signIn(user, passw):
 		login.hide()
 		settings.show()
-		tabButton.text = interface.activeUsername
-		get_parent().select(interface.seekMenu) #bit convoluted maybe but eh
+		tabButton.text = "%s (%d)" % [PlayTakI.activeUsername, PlayTakI.ratingList.get(PlayTakI.activeUsername, 1000)]
+		get_parent().select(tabOnLogin)
 		
 		if user != "Guest" and remember.button_pressed:
-			ResourceSaver.save(Login.new(interface.activeUsername, passw), loginResource)
+			ResourceSaver.save(Login.new(PlayTakI.activeUsername, passw), loginResource)
 
 
 func submit():
@@ -50,7 +53,11 @@ func submit():
 
 func logout():
 	tabButton.text = "Login"
-	interface.logout()
 	
 	settings.hide()
 	login.show()
+
+
+func updateRating():
+	if not PlayTakI.active: return
+	tabButton.text = "%s (%d)" % [PlayTakI.activeUsername, PlayTakI.ratingList.get(PlayTakI.activeUsername, 1000)]

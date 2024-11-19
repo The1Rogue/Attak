@@ -9,8 +9,6 @@ const standardCaps = [0, 0, 1, 1, 2, 2]
 var ptnLineRegex: RegEx = RegEx.new()
 var clockRegex: RegEx = RegEx.new()
 
-@export var interface: PlayTakI
-
 @export_category("standard")
 const OPTIONS = [
 	[5, 12, 10, 0, 0, 2, 21, 1, SeekData.RATED],
@@ -57,12 +55,13 @@ func _ready() -> void:
 	confirmScratch.pressed.connect(createScratch)
 	opponentCustom.get_parent().columns = 2 if OS.has_feature("mobile") else 4
 
+
 func createStandard(index: int):
 #size: int, time: int, inc: int, trigger: int, extra: int, color: String, komi: int, flats: int, caps: int, rated: RATED):
 	var opt = OPTIONS[index]
 	var color = ["A", "W", "B"][colorStandard.selected]
 	var seek = SeekData.new(opponentStandard.text, opt[0], opt[1] * 60, opt[2], opt[3], opt[4] * 60, color, opt[5] * 2, opt[6], opt[7], opt[8])
-	interface.sendSeek(seek)
+	PlayTakI.sendSeek(seek)
 	Notif.message("Seek Created!")
 
 
@@ -73,7 +72,7 @@ func createCustom():
 	var color = ["A", "W", "B"][colorCustom.selected]
 	var t = SeekData.RATED if type.selected == 0 else SeekData.UNRATED if type.selected == 2 else SeekData.TOURNAMENT
 	var seek = SeekData.new(opponentCustom.text, size, time.value * 60, inc.value, trigger.value, amount.value * 60, color, komi.value * 2, flats, caps, t)
-	interface.sendSeek(seek)
+	PlayTakI.sendSeek(seek)
 	Notif.message("Seek Created!")
 
 

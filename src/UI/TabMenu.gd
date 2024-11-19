@@ -8,6 +8,7 @@ var last: TabMenuTab
 
 
 func _ready() -> void:
+	PlayTakI.menu = self
 	for child in get_children():
 		if not child is TabMenuTab: continue
 		child.size_flags_vertical |= Control.SIZE_EXPAND

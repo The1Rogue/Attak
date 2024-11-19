@@ -24,6 +24,7 @@ config/windows_native_icon="res://Attak.ico"
 Globals="*res://src/Globals.gd"
 GameLogic="*res://src/Logic/gameLogic.gd"
 Notif="*res://scenes/PopupMsg.tscn"
+PlayTakI="*res://src/interfaces/playTakInterface.gd"
 
 [display]
 
