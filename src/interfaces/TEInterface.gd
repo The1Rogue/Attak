@@ -1,7 +1,7 @@
 extends Node
 class_name TEI
 
-
+#WARNING: userdefined executables pose security risks, TODO: disable on web version
 const tempEXE = "/home/fay/Projects/attak-misc/tiltak/target/release/tei"
 
 enum {

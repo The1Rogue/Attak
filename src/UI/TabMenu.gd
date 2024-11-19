@@ -32,7 +32,7 @@ func select(node: Control):
 		last = node
 		last.hide()
 		active.show()
-		
+	
 	else:
 		last = active
 		active = node

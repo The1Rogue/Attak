@@ -11,6 +11,7 @@ const url = "ws://playtak.com:9999/ws"
 var socket: WebSocketPeer = WebSocketPeer.new()
 var active: bool = false
 var activeUsername: String = ""
+var activePass: String = "" #WARNING having this in ram is *not* secure, but we need it to reestablish broken connections, and i dont think a playtak account is critical, so....
 
 var activeGame: GameData = GameLogic.gameData:
 	set(v):
@@ -48,13 +49,14 @@ func signIn(username: String, password: String) -> bool:
 	
 	var packet: String = await awaitPacket() #should be welcome packet
 	packet = await awaitPacket() #should be login request
-	
+
 	socket.send_text("Login %s %s" % [username, password])
 	packet = await awaitPacket() #confirmation or rejection
 	
 	if packet.begins_with("Welcome"):
 		active = true
 		activeUsername = packet.substr(8, packet.length()-9)
+		activePass = password
 		
 		Chat.rooms["Global"] = Chat.new(self, "Global", Chat.GLOBAL)
 		menu.addNode(Chat.rooms["Global"], "Chat: Global", false)
@@ -62,6 +64,7 @@ func signIn(username: String, password: String) -> bool:
 		print("successfully logged in as %s" % activeUsername)
 		return true
 	
+	print(packet)
 	print("failed to login")
 	Notif.message("Invalid Login!")
 	socket.close()
@@ -107,10 +110,16 @@ func _process(delta: float):
 	socket.poll()
 	var state = socket.get_ready_state()
 	if state != WebSocketPeer.STATE_OPEN:
-		print("websocket isnt open while it should be")
-		Notif.message("Disconnected Unexpectedly!")
+		var u = activeUsername
 		loginMenu.logout()
-		return
+		if socket.get_close_code() == -1:
+			Notif.message("You were disconnected")
+			return
+		else:
+			print("websocket isnt open while it should be, trying to reconnect")
+			if not await signIn(u, activePass):
+				Notif.message("Disconnected Unexpectedly!", false)
+				return
 	
 	var packet
 	while socket.get_available_packet_count():
