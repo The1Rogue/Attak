@@ -44,7 +44,6 @@ func _threadFunc():
 	
 	if state == INACTIVE: return #it was simply closed, all good
 	
-	
 	GameLogic.endGame.call_deferred(GameState.DEFAULT_WIN_WHITE if GameLogic.gameData.playerWhite == GameData.LOCAL else GameState.DEFAULT_WIN_BLACK)
 	Notif.message.call_deferred("The Bot program has crashed!", false)
 	print("BOT DIED! THE PIPE CLOSED WITH ID %d" % stdio.get_error())
@@ -100,7 +99,7 @@ func sendMove(origin: Node, ply: Ply):
 	for i in GameLogic.history:
 		pos += " %s" % i.toPTN()
 	send(pos)
-	send("go movetime %d" % (10000 if ply.boardState.ply > 4 else 100)) #TODO proper time implementation
+	send("go wtime %d btime %d winc %d binc %d" % [GameLogic.timerWhite.time_left * 1000, GameLogic.timerBlack.time_left * 1000, GameLogic.gameData.increment * 1000, GameLogic.gameData.increment * 1000])
 
 
 func onResign():
@@ -122,10 +121,10 @@ func startGame(game: GameData): #TODO handle komi
 	GameLogic.end.connect(endGame)
 	GameLogic.resign.connect(onResign)
 	
-	send("teinewgame %d" % game.size) #TODO handle start if bot is white
+	send("teinewgame %d" % game.size)
 	if game.playerWhite == GameData.BOT:
 		send("position tps %s" % startTPS)
-		send("go movetime %d" % 100) #TODO proper time implementation
+		send("go wtime %d btime %d winc %d binc %d" % [game.time*1000, game.time*1000, game.increment*1000, game.increment*1000])
 
 
 func endGame(type: int):
