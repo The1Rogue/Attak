@@ -1,8 +1,7 @@
 extends Node
 class_name TEI
 
-#WARNING: userdefined executables pose security risks, TODO: disable on web version
-const tempEXE = "/home/fay/Projects/attak-misc/tiltak/target/release/tei"
+#WARNING: userdefined executables pose security risks
 
 enum {
 	INACTIVE,
@@ -25,9 +24,9 @@ func _ready():
 	if not GameLogic.is_node_ready():
 		await GameLogic.ready
 		
-	startConnection(tempEXE)
-	var game = GameData.new("", 6, GameData.LOCAL, GameData.BOT, "You", "Bot", 0, 0, 0, 0, 0, 30, 1)
-	startGame(game)
+	#startConnection(tempEXE)
+	#var game = GameData.new("", 6, GameData.LOCAL, GameData.BOT, "You", "Bot", 0, 0, 0, 0, 0, 30, 1)
+	#startGame(game)
 
 
 func send(s: String):
@@ -45,8 +44,9 @@ func _threadFunc():
 	
 	if state == INACTIVE: return #it was simply closed, all good
 	
-	GameLogic.endGame(GameState.DEFAULT_WIN_WHITE if GameLogic.gameData.playerWhite == GameData.LOCAL else GameState.DEFAULT_WIN_BLACK)
-	Notif.message("The Bot program has crashed!", false)
+	
+	GameLogic.endGame.call_deferred(GameState.DEFAULT_WIN_WHITE if GameLogic.gameData.playerWhite == GameData.LOCAL else GameState.DEFAULT_WIN_BLACK)
+	Notif.message.call_deferred("The Bot program has crashed!", false)
 	print("BOT DIED! THE PIPE CLOSED WITH ID %d" % stdio.get_error())
 
 
@@ -96,7 +96,6 @@ func startConnection(executable: String):
 
 func sendMove(origin: Node, ply: Ply):
 	if origin == self: return 
-	#TODO deal with custom startposition
 	var pos = "position tps %s moves" % startTPS
 	for i in GameLogic.history:
 		pos += " %s" % i.toPTN()
@@ -108,7 +107,7 @@ func onResign():
 	GameLogic.endGame(GameState.DEFAULT_WIN_WHITE if GameLogic.gameData.playerWhite == GameData.BOT else GameState.DEFAULT_WIN_BLACK)
 
 
-func startGame(game: GameData):
+func startGame(game: GameData): #TODO handle komi
 	while state != READY:
 		await get_tree().create_timer(.1).timeout
 	
@@ -124,7 +123,9 @@ func startGame(game: GameData):
 	GameLogic.resign.connect(onResign)
 	
 	send("teinewgame %d" % game.size) #TODO handle start if bot is white
-
+	if game.playerWhite == GameData.BOT:
+		send("position tps %s" % startTPS)
+		send("go movetime %d" % 100) #TODO proper time implementation
 
 func endGame(type: int):
 	GameLogic.move.disconnect(sendMove)
@@ -134,6 +135,7 @@ func endGame(type: int):
 	state = INACTIVE
 	stdio.close()
 	thread.wait_to_finish()
+	OS.kill(pid) #the quit should do it but it doesnt.....
 
 
 func _exit_tree() -> void:
@@ -143,3 +145,5 @@ func _exit_tree() -> void:
 	if stdio != null:
 		stdio.close()
 		thread.wait_to_finish()
+		OS.kill(pid) #the quit should do it but it doesnt.....
+		

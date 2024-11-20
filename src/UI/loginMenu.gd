@@ -31,7 +31,7 @@ func _ready():
 	if ResourceLoader.exists(loginResource):
 		tabButton.disabled = true
 		var login = ResourceLoader.load(loginResource)
-		signin(login.user, login.password)
+		await signin(login.user, login.password)
 		tabButton.disabled = false
 
 

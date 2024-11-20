@@ -170,6 +170,7 @@ static func fromTPS(tps: String, flats: int, caps: int) -> GameState:
 			if c[0] == "x":
 				count += c[1].to_int() if c.length() > 1 else 1
 			else:
+				if count >= state.size**2: return null
 				var p = Pile.fromTps(c, state.reserves)
 				if p == null: 
 					return null
@@ -309,6 +310,7 @@ func flatWin() -> int:
 				else: 
 					count += 1
 	return DRAW if count == 0 else FLAT_WIN_WHITE if count < 0 else FLAT_WIN_BLACK
+
 
 func getTPS() -> String:
 	var out = ""

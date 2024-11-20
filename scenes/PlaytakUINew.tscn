@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://c4xgbwf6ww050"]
+[gd_scene load_steps=14 format=3 uid="uid://c4xgbwf6ww050"]
 
 [ext_resource type="Script" path="res://src/UI/TabMenu.gd" id="1_tkoo2"]
 [ext_resource type="Script" path="res://src/UI/SeekList.gd" id="2_42r6x"]
@@ -8,11 +8,13 @@
 [ext_resource type="PackedScene" uid="uid://c4esmjnf630vc" path="res://scenes/3DBoard.tscn" id="4_dxgwr"]
 [ext_resource type="Script" path="res://src/UI/WatchList.gd" id="5_ap4a8"]
 [ext_resource type="PackedScene" uid="uid://mxvbujo17lyt" path="res://scenes/2DBoard.tscn" id="5_deflk"]
+[ext_resource type="Script" path="res://src/UI/TEIMenu.gd" id="6_rkv8g"]
+[ext_resource type="Script" path="res://src/interfaces/TEInterface.gd" id="7_qmfb0"]
 [ext_resource type="Texture2D" uid="uid://bcmk8n1vulre6" path="res://assets/UI/circleBlack.png" id="8_e2tn2"]
 [ext_resource type="Texture2D" uid="uid://gixfwgwmlwtx" path="res://assets/UI/circleWhite.png" id="9_oaldp"]
 [ext_resource type="Texture2D" uid="uid://db7kok8ipbe6h" path="res://assets/UI/circleBoth.png" id="10_agh7h"]
 
-[node name="PlayTakUI" type="PanelContainer"]
+[node name="MainMenu" type="PanelContainer"]
 custom_minimum_size = Vector2(250, 0)
 anchors_preset = 15
 anchor_right = 1.0
@@ -88,6 +90,116 @@ text = "Logout
 [node name="seperator2" type="Control" parent="Menu/Login/Menu/Settings"]
 layout_mode = 2
 
+[node name="TEI" type="VBoxContainer" parent="Menu"]
+layout_mode = 2
+script = ExtResource("6_rkv8g")
+
+[node name="FileDialog" type="FileDialog" parent="Menu/TEI"]
+title = "Open a File"
+initial_position = 2
+size = Vector2i(1200, 800)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Menu/TEI"]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="Menu/TEI/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "/"
+
+[node name="Button" type="Button" parent="Menu/TEI/HBoxContainer"]
+layout_mode = 2
+text = " Select Bot Program "
+
+[node name="GridContainer" type="GridContainer" parent="Menu/TEI"]
+layout_mode = 2
+theme_override_constants/h_separation = 20
+columns = 4
+
+[node name="Color" type="Label" parent="Menu/TEI/GridContainer"]
+layout_mode = 2
+text = "My Color:"
+
+[node name="Color2" type="OptionButton" parent="Menu/TEI/GridContainer"]
+layout_mode = 2
+selected = 0
+allow_reselect = true
+item_count = 2
+popup/item_0/text = "White"
+popup/item_1/text = "Black"
+popup/item_1/id = 1
+
+[node name="Size" type="Label" parent="Menu/TEI/GridContainer"]
+layout_mode = 2
+text = "Size:"
+
+[node name="Size2" type="OptionButton" parent="Menu/TEI/GridContainer"]
+layout_mode = 2
+selected = 0
+allow_reselect = true
+item_count = 6
+popup/item_0/text = "6x6"
+popup/item_0/id = 6
+popup/item_1/text = "3x3"
+popup/item_1/id = 3
+popup/item_2/text = "4x4"
+popup/item_2/id = 4
+popup/item_3/text = "5x5"
+popup/item_3/id = 5
+popup/item_4/text = "7x7"
+popup/item_4/id = 7
+popup/item_5/text = "8x8"
+popup/item_5/id = 8
+
+[node name="Komi" type="Label" parent="Menu/TEI/GridContainer"]
+layout_mode = 2
+text = "Komi:"
+
+[node name="Komi2" type="SpinBox" parent="Menu/TEI/GridContainer"]
+layout_mode = 2
+max_value = 4.0
+step = 0.5
+value = 2.0
+custom_arrow_step = 0.5
+
+[node name="Filler" type="Control" parent="Menu/TEI/GridContainer"]
+layout_mode = 2
+
+[node name="Filler2" type="Control" parent="Menu/TEI/GridContainer"]
+layout_mode = 2
+
+[node name="Time" type="Label" parent="Menu/TEI/GridContainer"]
+layout_mode = 2
+text = "Time:
+"
+
+[node name="Time2" type="SpinBox" parent="Menu/TEI/GridContainer"]
+layout_mode = 2
+min_value = 1.0
+value = 15.0
+suffix = "min"
+
+[node name="Incr" type="Label" parent="Menu/TEI/GridContainer"]
+layout_mode = 2
+text = "Increment:"
+
+[node name="Incr2" type="SpinBox" parent="Menu/TEI/GridContainer"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+step = 5.0
+value = 10.0
+suffix = "sec"
+
+[node name="Button" type="Button" parent="Menu/TEI"]
+layout_mode = 2
+text = "Start Game"
+
+[node name="TEI" type="Node" parent="Menu/TEI"]
+script = ExtResource("7_qmfb0")
+
 [node name="New Seek" type="VBoxContainer" parent="Menu" node_paths=PackedStringArray("opponentStandard", "colorStandard", "options", "opponentCustom", "colorCustom", "type", "sizeCustom", "komi", "time", "inc", "trigger", "amount", "confirmCustom", "sizeScratch", "flatsScratch", "capsScratch", "notationEntry", "confirmScratch")]
 layout_mode = 2
 script = ExtResource("3_2oto4")
@@ -113,10 +225,11 @@ confirmScratch = NodePath("TabContainer/scratch/Enter")
 [node name="TabContainer" type="TabContainer" parent="Menu/New Seek"]
 layout_mode = 2
 size_flags_vertical = 3
-current_tab = 0
+current_tab = 1
 clip_tabs = false
 
 [node name="standard" type="VBoxContainer" parent="Menu/New Seek/TabContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -164,7 +277,6 @@ item_6/text = "Beginner Tourney"
 item_7/text = "Intermediate Tourney"
 
 [node name="custom" type="VBoxContainer" parent="Menu/New Seek/TabContainer"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 

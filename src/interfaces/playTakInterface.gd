@@ -55,13 +55,11 @@ func signIn(username: String, password: String) -> bool:
 	packet = await awaitPacket() #confirmation or rejection
 	
 	if packet.begins_with("Welcome"):
-		active = true
 		activeUsername = packet.substr(8, packet.length()-9)
 		activePass = password
-		
+		active = true
 		Chat.rooms["Global"] = Chat.new("Global", Chat.GLOBAL)
 		menu.addNode(Chat.rooms["Global"], "Chat: Global", false)
-		
 		print("successfully logged in as %s" % activeUsername)
 		return true
 	
@@ -106,7 +104,6 @@ func _process(delta: float):
 		socket.send_text("PING")
 		pingtime -= 30
 	
-	socket.poll()
 	var state = socket.get_ready_state()
 	if state != WebSocketPeer.STATE_OPEN:
 		var u = activeUsername
@@ -241,6 +238,7 @@ func _process(delta: float):
 				Chat.rooms[u].add_message(activeUsername, " ".join(data.slice(2)))
 			
 			["Message", ..]:
+				print(packet)
 				Notif.message(packet.substr(8))
 			
 			["NOK"]:
@@ -252,6 +250,8 @@ func _process(delta: float):
 			_:
 				print("Unparsed Message:")
 				print(packet)
+				
+	socket.poll()
 
 
 func parseRatings(result:int , response_code: int, header: PackedStringArray, body: PackedByteArray):

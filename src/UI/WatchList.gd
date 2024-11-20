@@ -39,7 +39,6 @@ func clear():
 
 
 func observe(id: int):
-	
 	if GameLogic.gameData.isObserver() or GameLogic.gameData.isScratch() or not GameLogic.active:
 		PlayTakI.socket.send_text("Observe " + str(id))
 	else:
