@@ -109,11 +109,3 @@ toggle_mode = true
 icon = ExtResource("7_vtpc4")
 icon_alignment = 1
 expand_icon = true
-
-[node name="TimerWhite" type="Timer" parent="."]
-one_shot = true
-autostart = true
-
-[node name="TimerBlack" type="Timer" parent="."]
-one_shot = true
-autostart = true

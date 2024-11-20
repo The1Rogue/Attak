@@ -5,6 +5,8 @@ enum {
 	BLACK = 1
 }
 
+var timerWhite: Timer
+var timerBlack: Timer
 
 var gameData: GameData = GameData.new("", 5, GameData.LOCAL, GameData.LOCAL, "Player White", "Player Black", 0, 0, 0, 0, 0, 21, 1)
 
@@ -26,6 +28,16 @@ signal end(type: int)
 signal sync(timeWhite: int, timeBlack: int)
 
 func _ready():
+	timerWhite = Timer.new()
+	timerWhite.autostart = true
+	timerWhite.one_shot = true
+	add_child(timerWhite)
+	
+	timerBlack = Timer.new()
+	timerBlack.autostart = true
+	timerBlack.one_shot = true
+	add_child(timerBlack)
+	
 	doSetup(gameData, null)
 
 
@@ -49,7 +61,18 @@ func doSetup(game: GameData, start: GameState = null):
 	elif undoRequest.is_connected(localUndoReq):
 		undoRequest.disconnect(localUndoReq)
 	
+	timerWhite.paused = true
+	timerBlack.paused = true
+	timerWhite.start(game.time)
+	timerBlack.start(game.time)
+	
 	setup.emit(gameData, start)
+
+
+func timeSync(timeWhite: int, timeBlack: int):
+	sync.emit(timeWhite, timeBlack)
+	timerWhite.start(timeWhite / 1000.0)
+	timerBlack.start(timeBlack / 1000.0)
 
 
 func activeState() -> GameState:
@@ -90,7 +113,11 @@ func doMove(origin: Node, ply: Ply):
 		viewState.emit(ply.boardState)
 	history.append(ply)
 	
-	var i = currentPly() % 2
+	var i = ply.boardState.ply % 2
+	
+	timerWhite.paused = i == 1 or ply.boardState.win != GameState.ONGOING
+	timerBlack.paused = i == 0 or ply.boardState.win != GameState.ONGOING
+	
 	move.emit(origin, ply)
 
 
@@ -105,6 +132,10 @@ func doUndo():
 	
 	active = true
 	
+	timerWhite.paused = currentPly() % 2 == 1
+	timerBlack.paused = currentPly() % 2 == 0
+	
+	
 	undo.emit()
 	if view > history.size():
 		view = history.size()
@@ -113,6 +144,9 @@ func doUndo():
 
 func endGame(type: int):
 	assert(activeState().win == GameState.ONGOING or activeState().win == type, "GAME END TYPE DOES NOT MATCH")
+	timerWhite.paused = true
+	timerBlack.paused = true
+	
 	if not active: return #game already ended, no need to repeat it
 	active = false
 	end.emit(type)

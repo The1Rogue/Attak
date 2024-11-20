@@ -100,11 +100,3 @@ theme_type_variation = &"LabelBlack"
 text = "00:00
 "
 horizontal_alignment = 1
-
-[node name="TimerWhite" type="Timer" parent="."]
-one_shot = true
-autostart = true
-
-[node name="TimerBlack" type="Timer" parent="."]
-one_shot = true
-autostart = true

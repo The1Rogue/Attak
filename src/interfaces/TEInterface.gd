@@ -127,6 +127,7 @@ func startGame(game: GameData): #TODO handle komi
 		send("position tps %s" % startTPS)
 		send("go movetime %d" % 100) #TODO proper time implementation
 
+
 func endGame(type: int):
 	GameLogic.move.disconnect(sendMove)
 	GameLogic.end.disconnect(endGame)
@@ -146,4 +147,3 @@ func _exit_tree() -> void:
 		stdio.close()
 		thread.wait_to_finish()
 		OS.kill(pid) #the quit should do it but it doesnt.....
-		

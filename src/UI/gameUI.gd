@@ -4,11 +4,9 @@ class_name GameUI
 
 @export var WhiteName: Label
 @export var WhiteTime: Label
-@onready var timeWhite: Timer = $TimerWhite
 
 @export var BlackName: Label
 @export var BlackTime: Label
-@onready var timeBlack: Timer  = $TimerBlack
 
 @export var undoButton: Button
 @export var drawButton: Button
@@ -34,7 +32,6 @@ func _ready() -> void:
 	GameLogic.setup.connect(setup)
 	GameLogic.move.connect(addPly)
 	GameLogic.undo.connect(removeLast)
-	GameLogic.sync.connect(sync)
 	GameLogic.end.connect(end)
 	
 	if leftButton != null:
@@ -64,10 +61,6 @@ func setup(game: GameData, startState: GameState):
 	i = 0
 	WhiteName.text = game.playerWhiteName
 	BlackName.text = game.playerBlackName
-	timeWhite.paused = true
-	timeBlack.paused = true
-	timeWhite.start(game.time)
-	timeBlack.start(game.time)
 	WhiteTime.text = timeString(game.time)
 	BlackTime.text = timeString(game.time)
 	whiteCritical = game.time == 0 #prevent critical sound on not timed game
@@ -78,25 +71,17 @@ func setup(game: GameData, startState: GameState):
 		gameInfo.text += "| +%d@%d " % [game.triggerTime/60, game.triggerMove]
 
 
-func sync(timeWhite: int, timeBlack: int):
-	whiteCritical = false
-	blackCritical = false
-	self.timeWhite.start(timeWhite / 1000.0)
-	self.timeBlack.start(timeBlack / 1000.0)
-	WhiteTime.text = timeString(timeWhite / 1000.0)
-	BlackTime.text = timeString(timeBlack / 1000.0)
-
-
 func _process(delta: float) -> void:
-	if not timeWhite.paused:
-		WhiteTime.text = timeString(timeWhite.time_left)
-		if not whiteCritical and timeWhite.time_left < criticalTime:
+	WhiteTime.text = timeString(GameLogic.timerWhite.time_left)
+	BlackTime.text = timeString(GameLogic.timerBlack.time_left)
+	
+	if not GameLogic.timerWhite.paused:
+		if not whiteCritical and GameLogic.timerWhite.time_left < criticalTime:
 			whiteCritical = true
 			Notif.ping(Notif.time)
 	
-	elif not timeBlack.paused:
-		BlackTime.text = timeString(timeBlack.time_left)
-		if not blackCritical and timeBlack.time_left < criticalTime:
+	elif not GameLogic.timerBlack.paused:
+		if not blackCritical and GameLogic.timerBlack.time_left < criticalTime:
 			blackCritical = true
 			Notif.ping(Notif.time)
 
@@ -104,10 +89,6 @@ func _process(delta: float) -> void:
 func addPly(origin: Node, ply: Ply):
 	undoButton.set_pressed_no_signal(false)
 	undoButton.theme_type_variation = &"GameUIButton"
-	
-	
-	timeWhite.paused = (ply.boardState.ply) % 2 == 1 or ply.boardState.win != GameState.ONGOING
-	timeBlack.paused = (ply.boardState.ply) % 2 == 0 or ply.boardState.win != GameState.ONGOING
 	
 	if ptnDisplay == null: return
 	if ply.boardState.ply % 2 == 1:
@@ -132,9 +113,6 @@ func addPly(origin: Node, ply: Ply):
 func removeLast():
 	undoButton.set_pressed_no_signal(false)
 	undoButton.theme_type_variation = &"GameUIButton"
-
-	timeWhite.paused = GameLogic.currentPly() % 2 == 1
-	timeBlack.paused = GameLogic.currentPly() % 2 == 0
 	
 	if ptnDisplay == null: return
 	assert(i > 0, "CANT REMOVE IF THERES NOTHING TO REMOVE")
@@ -158,9 +136,6 @@ func drawRequest(origin: Node, revoke: bool):
 
 
 func end(type: int):
-	timeWhite.paused = true
-	timeBlack.paused = true
-	
 	undoButton.theme_type_variation = &"GameUIButton"
 	drawButton.theme_type_variation = &"GameUIButton"
 

@@ -170,10 +170,10 @@ func _process(delta: float):
 				GameLogic.doMove(self, Spread.new(tile1, dir, drops, smash))
 				
 			["Game", var id, "Time", var timeW, var timeB] when id == GameLogic.gameData.id:
-				GameLogic.sync.emit(timeW.to_int() * 1000, timeB.to_int() * 1000)
+				GameLogic.timeSync(timeW.to_int() * 1000, timeB.to_int() * 1000)
 			
 			["Game", var id, "Timems", var timeW, var timeB] when id == GameLogic.gameData.id:
-				GameLogic.sync.emit(timeW.to_int(), timeB.to_int())
+				GameLogic.timeSync(timeW.to_int(), timeB.to_int())
 			
 			["Game", var id, "Over", var result] when id == GameLogic.gameData.id:
 				endGame(GameState.resultStrings.find(result))
