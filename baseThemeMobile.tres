@@ -110,6 +110,7 @@ bg_color = Color(0.176471, 0.192157, 0.278431, 1)
 [resource]
 default_font = ExtResource("1_n3e47")
 default_font_size = 128
+Button/constants/icon_max_width = 125
 Button/styles/pressed = SubResource("StyleBoxFlat_1dkqw")
 CheckButton/icons/checked = ExtResource("1_si2ta")
 CheckButton/icons/unchecked = ExtResource("2_sv4ab")

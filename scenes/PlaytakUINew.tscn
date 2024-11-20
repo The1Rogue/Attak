@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://c4xgbwf6ww050"]
+[gd_scene load_steps=12 format=3 uid="uid://c4xgbwf6ww050"]
 
 [ext_resource type="Script" path="res://src/UI/TabMenu.gd" id="1_tkoo2"]
 [ext_resource type="Script" path="res://src/UI/SeekList.gd" id="2_42r6x"]
@@ -8,6 +8,9 @@
 [ext_resource type="PackedScene" uid="uid://c4esmjnf630vc" path="res://scenes/3DBoard.tscn" id="4_dxgwr"]
 [ext_resource type="Script" path="res://src/UI/WatchList.gd" id="5_ap4a8"]
 [ext_resource type="PackedScene" uid="uid://mxvbujo17lyt" path="res://scenes/2DBoard.tscn" id="5_deflk"]
+[ext_resource type="Texture2D" uid="uid://bcmk8n1vulre6" path="res://assets/UI/circleBlack.png" id="8_e2tn2"]
+[ext_resource type="Texture2D" uid="uid://gixfwgwmlwtx" path="res://assets/UI/circleWhite.png" id="9_oaldp"]
+[ext_resource type="Texture2D" uid="uid://db7kok8ipbe6h" path="res://assets/UI/circleBoth.png" id="10_agh7h"]
 
 [node name="PlayTakUI" type="PanelContainer"]
 custom_minimum_size = Vector2(250, 0)
@@ -358,6 +361,9 @@ text = "Create"
 [node name="Join Game (0)" type="VBoxContainer" parent="Menu"]
 layout_mode = 2
 script = ExtResource("2_42r6x")
+iconBlack = ExtResource("8_e2tn2")
+iconWhite = ExtResource("9_oaldp")
+iconBoth = ExtResource("10_agh7h")
 
 [node name="Watch Game (0)" type="VBoxContainer" parent="Menu"]
 layout_mode = 2
