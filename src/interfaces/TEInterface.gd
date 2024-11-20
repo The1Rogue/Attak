@@ -106,7 +106,7 @@ func onResign():
 	GameLogic.endGame(GameState.DEFAULT_WIN_WHITE if GameLogic.gameData.playerWhite == GameData.BOT else GameState.DEFAULT_WIN_BLACK)
 
 
-func startGame(game: GameData): #TODO handle komi
+func startGame(game: GameData):
 	while state != READY:
 		await get_tree().create_timer(.1).timeout
 	
@@ -121,6 +121,7 @@ func startGame(game: GameData): #TODO handle komi
 	GameLogic.end.connect(endGame)
 	GameLogic.resign.connect(onResign)
 	
+	send("setoption name HalfKomi value %d" % game.komi)
 	send("teinewgame %d" % game.size)
 	if game.playerWhite == GameData.BOT:
 		send("position tps %s" % startTPS)

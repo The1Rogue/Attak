@@ -17,7 +17,7 @@ var count = 0
 var games: Dictionary = {}
 
 func _ready():
-	if false:
+	if not OS.has_feature("tei"):
 		if not get_parent().is_node_ready():
 			await get_parent().ready
 		get_parent().remove(self)

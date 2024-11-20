@@ -11,13 +11,14 @@ config_version=5
 [application]
 
 config/name="Attak"
-run/main_scene="res://scenes/main.tscn"
+run/main_scene="res://scenes/mainDesktop.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 boot_splash/image="res://assets/Attak256.png"
 boot_splash/fullsize=false
 boot_splash/use_filter=false
 config/icon="res://assets/Attak.png"
 config/windows_native_icon="res://Attak.ico"
+run/main_scene.mobile="res://scenes/mainMobile.tscn"
 
 [autoload]
 

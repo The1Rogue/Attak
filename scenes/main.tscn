@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://djixbhvwcai8c"]
-
-[ext_resource type="Script" path="res://src/loader.gd" id="1_ec80q"]
-
-[node name="Main" type="CanvasLayer"]
-script = ExtResource("1_ec80q")
