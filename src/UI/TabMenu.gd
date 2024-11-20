@@ -56,14 +56,6 @@ func addNode(node: TabMenuTab, name: String, select: bool = true):
 		self.select(node)
 
 
-func gotoOrMakeChat(interface: PlayTakI, name: String, type: int):
-	if name in Chat.rooms:
-		select(Chat.rooms[name])
-	else:
-		var c = Chat.new(interface, name, type)
-		addNode(c, "Chat: "+name)
-
-
 func remove(node: TabMenuTab):
 	remove_child(node.tabButton)
 	remove_child(node)

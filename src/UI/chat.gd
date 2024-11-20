@@ -4,7 +4,6 @@ class_name Chat
 const MAXINT = 2**32
 
 static var rooms: Dictionary = {}
-var interface: PlayTakI
 var room: String
 var type: int
 
@@ -16,8 +15,7 @@ enum {
 	PRIVATE
 }
 
-func _init(interface: PlayTakI, name: String, type: int = ROOM):
-	self.interface = interface
+func _init(name: String, type: int = ROOM):
 	self.room = name.lstrip("<").rstrip(">")
 	self.type = type
 	
@@ -58,14 +56,13 @@ static func escape_bbcode(bbcode_text):
 
 
 func send(msg: String):
-	add_message(interface.activeUsername, msg)
 	match type:
 		GLOBAL:
-			interface.socket.send_text("Shout " + msg)
+			PlayTakI.socket.send_text("Shout " + msg)
 		ROOM:
-			interface.socket.send_text("ShoutRoom " + room + " " + msg)
+			PlayTakI.socket.send_text("ShoutRoom " + room + " " + msg)
 		PRIVATE:
-			interface.socket.send_text("Tell " + room + " " + msg)
+			PlayTakI.socket.send_text("Tell " + room + " " + msg)
 	entryBox.clear()
 
 

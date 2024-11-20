@@ -21,7 +21,6 @@ func add(seek: SeekData, id: int):
 	tabButton.text = " Join Game (%d) " % count
 	var b = Button.new()
 	add_child(b)
-	#b.text = " %-14s (%04d) %dx%d +%3.1f    %2d:00+:%02ds" % [seek.playerName, PlayTakI.ratingList.get(seek.playerName, 1000), seek.size, seek.size, seek.komi/2.0, seek.time/60, seek.increment]
 	var time45 = seek.time + 45 * seek.increment
 	var type = "blitz" if time45 < 600 else "rapid" if time45 < 1200 else "classic"
 	b.text = "%s (%4d) %ds +%3.1f %s" % [seek.playerName, PlayTakI.ratingList.get(seek.playerName, 1000), seek.size, seek.komi/2.0, type]

@@ -59,7 +59,7 @@ func signIn(username: String, password: String) -> bool:
 		activeUsername = packet.substr(8, packet.length()-9)
 		activePass = password
 		
-		Chat.rooms["Global"] = Chat.new(self, "Global", Chat.GLOBAL)
+		Chat.rooms["Global"] = Chat.new("Global", Chat.GLOBAL)
 		menu.addNode(Chat.rooms["Global"], "Chat: Global", false)
 		
 		print("successfully logged in as %s" % activeUsername)
@@ -214,7 +214,7 @@ func _process(delta: float):
 				Chat.rooms["Global"].add_message(user.lstrip("<").rstrip(">"), " ".join(data.slice(2)))
 				
 			["Joined", "room", var room]:
-				Chat.new(self, room, Chat.ROOM)
+				Chat.new(room, Chat.ROOM)
 				menu.addNode(Chat.rooms[room], "Chat: " + room)
 			
 			["Left", "room", var room]:
@@ -222,16 +222,23 @@ func _process(delta: float):
 			
 			["ShoutRoom", var room, var user, ..]:
 				if not room in Chat.rooms:
-					Chat.new(self, room, Chat.ROOM)
+					Chat.new(room, Chat.ROOM)
 					menu.addNode(Chat.rooms[room], "Chat: " + room)
 				Chat.rooms[room].add_message(user.lstrip("<").rstrip(">"), " ".join(data.slice(3)))
 				
 			["Tell", var user, ..]:
 				var u = user.lstrip("<").rstrip(">")
 				if not u in Chat.rooms:
-					Chat.new(self, u, Chat.PRIVATE)
+					Chat.new(u, Chat.PRIVATE)
 					menu.addNode(Chat.rooms[u], "Chat: " + user)
 				Chat.rooms[u].add_message(u, " ".join(data.slice(2)))
+			
+			["Told", var user, ..]:
+				var u = user.lstrip("<").rstrip(">")
+				if not u in Chat.rooms:
+					Chat.new(u, Chat.PRIVATE)
+					menu.addNode(Chat.rooms[u], "Chat: " + user)
+				Chat.rooms[u].add_message(activeUsername, " ".join(data.slice(2)))
 			
 			["Message", ..]:
 				Notif.message(packet.substr(8))
@@ -277,7 +284,7 @@ func startGame(data: PackedStringArray):
 	
 	var opponent = data[4] if data[7] == "black" else data[6]
 	if not opponent in Chat.rooms:
-		Chat.new(self, opponent, Chat.PRIVATE)
+		Chat.new(opponent, Chat.PRIVATE)
 		menu.addNode(Chat.rooms[opponent], "Chat: " + opponent)
 
 
