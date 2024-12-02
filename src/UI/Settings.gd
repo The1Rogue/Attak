@@ -10,7 +10,7 @@ var board: BoardLogic
 
 func _ready() -> void:
 	$Set2D.toggled.connect(setBoard)
-	if OS.has_feature("mobile"):
+	if Globals.isMobile():
 		board = board2D.instantiate()
 		$Set2D.set_pressed_no_signal(true)
 	else:

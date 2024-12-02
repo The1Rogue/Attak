@@ -9,7 +9,7 @@ var active: bool = false
 var activeUsername: String = ""
 var activePass: String = "" #WARNING having this in ram is *not* secure, but we need it to re-establish broken connections, and i dont think a playtak account is critical, so....
 
-const ratingURL = "http://playtak.com/ratinglist.json" #TODO
+const ratingURL = "http://playtak.com/ratinglist.json"
 @onready var http = HTTPRequest.new()
 var ratingList: Dictionary = {}
 

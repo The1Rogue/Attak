@@ -225,11 +225,10 @@ confirmScratch = NodePath("TabContainer/scratch/Enter")
 [node name="TabContainer" type="TabContainer" parent="Menu/New Seek"]
 layout_mode = 2
 size_flags_vertical = 3
-current_tab = 1
+current_tab = 0
 clip_tabs = false
 
 [node name="standard" type="VBoxContainer" parent="Menu/New Seek/TabContainer"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -277,6 +276,7 @@ item_6/text = "Beginner Tourney"
 item_7/text = "Intermediate Tourney"
 
 [node name="custom" type="VBoxContainer" parent="Menu/New Seek/TabContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 

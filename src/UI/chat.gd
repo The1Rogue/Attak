@@ -33,7 +33,7 @@ func _init(name: String, type: int = ROOM):
 	rooms[name] = self
 	
 	
-	if OS.has_feature("mobile"):
+	if Globals.isMobile():
 		var c = Control.new()
 		add_child(c)
 		entryBox.focus_entered.connect(addKeyboardBuffer)

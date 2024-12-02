@@ -19,7 +19,7 @@ var PopUpTimer: float = 0
 
 func _ready():
 	popUpLabel.add_theme_font_size_override(&"font_size",
-	(128 if OS.has_feature("mobile") else 32))
+	(128 if Globals.isMobile() else 32))
 
 
 func _process(delta: float) -> void:

@@ -143,11 +143,12 @@ func doUndo():
 
 
 func endGame(type: int):
+	if not active: return #game already ended, no need to repeat it
+	
 	assert(activeState().win == GameState.ONGOING or activeState().win == type, "GAME END TYPE DOES NOT MATCH")
 	timerWhite.paused = true
 	timerBlack.paused = true
 	
-	if not active: return #game already ended, no need to repeat it
 	active = false
 	end.emit(type)
 	if type != GameState.ONGOING:
