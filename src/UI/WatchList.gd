@@ -14,9 +14,11 @@ func add(game: GameData, id: int):
 	count += 1
 	tabButton.text = " Watch Game (%d) " % count
 	var b = Button.new()
-	add_child(b)
 	b.text = " %s vs %s %dx%d +%3.1f" % [game.playerWhiteName, game.playerBlackName, game.size, game.size, game.komi/2.0]
 	b.autowrap_mode = TextServer.AUTOWRAP_WORD
+	add_child(b)
+	b.reset_size()
+	
 	
 	games[id] = b
 	b.alignment = HORIZONTAL_ALIGNMENT_LEFT

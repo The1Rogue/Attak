@@ -27,6 +27,11 @@ GameLogic="*res://src/Logic/gameLogic.gd"
 Notif="*res://scenes/PopupMsg.tscn"
 PlayTakI="*res://src/interfaces/playTakInterface.gd"
 
+[debug]
+
+gdscript/warnings/integer_division=0
+gdscript/warnings/narrowing_conversion=0
+
 [display]
 
 window/size/viewport_width=1920

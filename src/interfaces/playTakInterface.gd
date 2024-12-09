@@ -131,7 +131,7 @@ func _process(delta: float):
 				)
 				addGame.emit(game, id.to_int())
 			
-			["GameList", "Remove", var id, ..]:
+			["GameList", "Remove", var id, ..] when id != "0":
 				removeGame.emit(id.to_int())
 			
 			["Observe", var id, var pw, var pb, var size, var time, var inc, var komi, var flats, var caps, var unrated, var tournament, var triggerMove, var triggerAmount]:

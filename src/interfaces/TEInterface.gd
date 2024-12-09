@@ -20,12 +20,6 @@ var startTPS: String
 
 var FATAL: bool #TODO actually solve the fatal bug
 
-func _ready():
-	return
-	if not GameLogic.is_node_ready():
-		await GameLogic.ready
-
-
 
 func send(s: String):
 	while state == THINKING or state == STARTING:
