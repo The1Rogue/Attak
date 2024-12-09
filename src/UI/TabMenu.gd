@@ -61,5 +61,5 @@ func remove(node: TabMenuTab):
 	remove_child(node)
 	if node == active: 
 		active = last
-		last = null
-		active.show()
+		last = start
+		active.show() #cannot call on null value?

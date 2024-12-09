@@ -67,5 +67,5 @@ func accept(id: int):
 
 func updateRatings():
 	for i in seeks:
-		var s = seeks[i].text.split(" ", false, 2)
-		seeks[i].text = s[0] + " (%4d) " % PlayTakI.ratingList.get(s[0], 1000) + s[2]
+		var s = seeks[i].text.split(" ", false, 1)
+		seeks[i].text = s[0] + " (%4d) " % PlayTakI.ratingList.get(s[0], 1000) + s[1].substr(7)
