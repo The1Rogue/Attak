@@ -1,9 +1,10 @@
-extends TabMenuTab
+extends Control
 class_name LoginMenu
 
 const loginResource = "user://playtakLogin.res"
 
-@export var tabOnLogin: TabMenuTab
+@export var tabOnLogin: Control
+@export var button: Button
 
 @onready var login: VBoxContainer = $Menu/Login
 @onready var userEntry: LineEdit = $Menu/Login/User
@@ -29,17 +30,17 @@ func _ready():
 		await get_parent().ready
 		
 	if ResourceLoader.exists(loginResource):
-		tabButton.disabled = true
+		#button.disabled = true  TODO prevent login attempts during this?
 		var login = ResourceLoader.load(loginResource)
 		await signin(login.user, login.password)
-		tabButton.disabled = false
+		#button.disabled = false TODO
 
 
 func signin(user:String, passw: String):
 	if await PlayTakI.signIn(user, passw):
 		login.hide()
 		settings.show()
-		tabButton.text = "%s (%d)" % [PlayTakI.activeUsername, PlayTakI.ratingList.get(PlayTakI.activeUsername, 1000)]
+		button.text = "%s (%d)" % [PlayTakI.activeUsername, PlayTakI.ratingList.get(PlayTakI.activeUsername, 1000)]
 		get_parent().select(tabOnLogin)
 		
 		if user != "Guest" and remember.button_pressed:
@@ -52,7 +53,7 @@ func submit():
 
 
 func logout():
-	tabButton.text = "Login"
+	button.text = "Login"
 	
 	settings.hide()
 	login.show()
@@ -60,4 +61,4 @@ func logout():
 
 func updateRating():
 	if not PlayTakI.active: return
-	tabButton.text = "%s (%d)" % [PlayTakI.activeUsername, PlayTakI.ratingList.get(PlayTakI.activeUsername, 1000)]
+	button.text = "%s (%d)" % [PlayTakI.activeUsername, PlayTakI.ratingList.get(PlayTakI.activeUsername, 1000)]

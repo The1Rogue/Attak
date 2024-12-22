@@ -1,9 +1,8 @@
-extends TabMenuTab
+extends VBoxContainer
 class_name Chat
 
 const MAXINT = 2**32
 
-static var rooms: Dictionary = {}
 var room: String
 var type: int
 
@@ -16,6 +15,7 @@ enum {
 }
 
 func _init(name: String, type: int = ROOM):
+	size_flags_vertical |= Control.SIZE_EXPAND
 	self.room = name.lstrip("<").rstrip(">")
 	self.type = type
 	
@@ -30,7 +30,6 @@ func _init(name: String, type: int = ROOM):
 	add_child(textBox)
 	add_child(entryBox)
 	entryBox.text_submitted.connect(send)
-	rooms[name] = self
 	
 	
 	if Globals.isMobile():
@@ -38,17 +37,6 @@ func _init(name: String, type: int = ROOM):
 		add_child(c)
 		entryBox.focus_entered.connect(addKeyboardBuffer)
 		entryBox.focus_exited.connect(removeKeyboardBuffer)
-
-
-func _ready():
-	if type != GLOBAL:
-		var exit = Button.new()
-		exit.text = "X"
-		exit.theme_type_variation = &"ExitButton"
-		tabButton.add_child(exit)
-		exit.pressed.connect(remove)
-		exit.set_anchors_and_offsets_preset(PRESET_CENTER_RIGHT)
-		exit.position.x -= 7
 
 
 static func escape_bbcode(bbcode_text):
@@ -73,12 +61,6 @@ func add_message(user: String, message: String):
 	textBox.append_text("<"+escape_bbcode(user) + ">: ")
 	textBox.pop()
 	textBox.append_text(escape_bbcode(message) + "\n")
-
-
-func remove():
-	get_parent().remove(self)
-	rooms.erase(room)
-	queue_free()
 
 
 func addKeyboardBuffer():

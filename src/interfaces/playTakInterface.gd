@@ -1,18 +1,16 @@
 extends Node
 
-const url = "ws://playtak.com:9999/ws"
-
-var menu: TabMenu
+const url = "ws://playtak.com:9999/ws" #WARNING TODO? unsecured connection?? (is it actually?)
 
 var socket: WebSocketPeer = WebSocketPeer.new()
 var active: bool = false
 var activeUsername: String = ""
-var activePass: String = "" #WARNING having this in ram is *not* secure, but we need it to re-establish broken connections, and i dont think a playtak account is critical, so....
+var activePass: String = "" #WARNING having this in ram is *not* secure, but we need it to re-establish broken connections somehow, and i dont think a playtak account is critical, so....
 
 const ratingURL = "http://playtak.com/ratinglist.json"
 @onready var http = HTTPRequest.new()
 var ratingList: Dictionary = {}
-
+var bots = []
 
 var pingtime: float = 0
 
@@ -58,8 +56,7 @@ func signIn(username: String, password: String) -> bool:
 		activeUsername = packet.substr(8, packet.length()-9)
 		activePass = password
 		active = true
-		Chat.rooms["Global"] = Chat.new("Global", Chat.GLOBAL)
-		menu.addNode(Chat.rooms["Global"], "Chat: Global", false)
+		ChatTab.newChat("Global", Chat.GLOBAL)
 		print("successfully logged in as %s" % activeUsername)
 		return true
 	
@@ -78,9 +75,7 @@ func onLogout():
 			socket.poll()
 	
 	logout.emit()
-	for chat in Chat.rooms.keys():
-		Chat.rooms[chat].remove()
-	Chat.rooms.clear()
+	ChatTab.clear()
 	
 	activeUsername = ""
 
@@ -120,7 +115,7 @@ func _process(delta: float):
 	var packet
 	while socket.get_available_packet_count():
 		packet = await getPacket()
-		var data = packet.replace("#", " ").split(" ")
+		var data = packet.replace("#", " ").split(" ") #TODO BUG this will replace #'s in messages
 		match Array(data):
 			["GameList", "Add", var id, var pw, var pb, var size, var time, var inc, var komi, var flats, var caps, var unrated, var tournament, var triggerMove, var triggerAmount]:
 				var game = GameData.new(
@@ -142,8 +137,8 @@ func _process(delta: float):
 				var players=[pw,pb]
 				players.sort()
 				var room = "-".join(players)
-				if room in Chat.rooms:
-					menu.select(Chat.rooms[room])
+				if room in ChatTab.rooms:
+					ChatTab.select(ChatTab.rooms[room])
 				else:
 					socket.send_text("JoinRoom "+room)
 			
@@ -208,34 +203,24 @@ func _process(delta: float):
 				removeSeek.emit(id.to_int())
 			
 			["Shout", var user, ..]:
-				Chat.rooms["Global"].add_message(user.lstrip("<").rstrip(">"), " ".join(data.slice(2)))
+				ChatTab.parseMsg("Global", user.lstrip("<").rstrip(">"), " ".join(data.slice(2)))
 				
 			["Joined", "room", var room]:
-				Chat.new(room, Chat.ROOM)
-				menu.addNode(Chat.rooms[room], "Chat: " + room)
+				ChatTab.newChat(room, Chat.ROOM)
 			
 			["Left", "room", var room]:
-				pass #not sure if this even ever happens, playtak doesnt seem to handle it
+				pass #not sure if this even ever happens, playtak doesnt seem to handle it 
+				#well perhaps i was stupid for writing that ^
+				#because i realize that we probably *should* tell playtak that we left the room, so we dont get messages from it
 			
 			["ShoutRoom", var room, var user, ..]:
-				if not room in Chat.rooms:
-					Chat.new(room, Chat.ROOM)
-					menu.addNode(Chat.rooms[room], "Chat: " + room)
-				Chat.rooms[room].add_message(user.lstrip("<").rstrip(">"), " ".join(data.slice(3)))
+				ChatTab.parseMsg(room, user.lstrip("<").rstrip(">"), " ".join(data.slice(3)))
 				
 			["Tell", var user, ..]:
-				var u = user.lstrip("<").rstrip(">")
-				if not u in Chat.rooms:
-					Chat.new(u, Chat.PRIVATE)
-					menu.addNode(Chat.rooms[u], "Chat: " + user)
-				Chat.rooms[u].add_message(u, " ".join(data.slice(2)))
+				ChatTab.parseMsg("", user.lstrip("<").rstrip(">"), " ".join(data.slice(2)))
 			
 			["Told", var user, ..]:
-				var u = user.lstrip("<").rstrip(">")
-				if not u in Chat.rooms:
-					Chat.new(u, Chat.PRIVATE)
-					menu.addNode(Chat.rooms[u], "Chat: " + user)
-				Chat.rooms[u].add_message(activeUsername, " ".join(data.slice(2)))
+				ChatTab.parseMsg(user.lstrip("<").rstrip(">"), activeUsername, " ".join(data.slice(2))) #BUG* technically, if you send a msg in a private, and close the tab before getting this response, it will think it is a room instead of private, unlikely to happen though, and equally unlikely to cause real issues
 			
 			["Message", ..]:
 				print(packet)
@@ -262,9 +247,12 @@ func parseRatings(result:int , response_code: int, header: PackedStringArray, bo
 		#Array[ [" ".join(unames), activeRating, rating, gamesplayed, isBot ]   ]
 		var json: Array = JSON.parse_string(body.get_string_from_utf8())
 		ratingList = {}
+		bots = []
 		for entry in json:
-			for name in entry[0].split(" "):
-				ratingList[name] = entry[2]
+			for username in entry[0].split(" "):
+				if entry[4] == 1:
+					bots.append(username)
+				ratingList[username] = entry[2]
 		ratingUpdate.emit()
 	
 	# target time is 10m past the hour, + random to avoid ddos
@@ -283,9 +271,8 @@ func startGame(data: PackedStringArray):
 	GameLogic.resign.connect(resign)
 	
 	var opponent = data[4] if data[7] == "black" else data[6]
-	if not opponent in Chat.rooms:
-		Chat.new(opponent, Chat.PRIVATE)
-		menu.addNode(Chat.rooms[opponent], "Chat: " + opponent)
+	if not opponent in ChatTab.rooms:
+		ChatTab.newChat(opponent, Chat.PRIVATE)
 
 
 func resign():

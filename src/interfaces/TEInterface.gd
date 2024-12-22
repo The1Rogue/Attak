@@ -140,9 +140,11 @@ func startGame(game: GameData):
 
 func botExit():
 	state = INACTIVE
-	if thread != null:
-		OS.kill(pid) #the quit should do it but it doesnt.....
+	if OS.is_process_running(pid):
+		OS.kill(pid)
+	if stdio != null and stdio.is_open():
 		stdio.close()
+	if thread != null and thread.is_started():
 		thread.wait_to_finish()
 
 

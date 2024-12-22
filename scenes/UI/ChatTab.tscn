@@ -1,0 +1,57 @@
+[gd_scene load_steps=4 format=3 uid="uid://d4nsq3du1ndnw"]
+
+[ext_resource type="Script" path="res://src/UI/ChatTab.gd" id="1_u00yi"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s35gf"]
+bg_color = Color(0.74, 0.185, 0.185, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3hkdk"]
+bg_color = Color(0.15, 0.15, 0.15, 1)
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+script = ExtResource("1_u00yi")
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 0.375
+anchor_right = 1.0
+anchor_bottom = 0.625
+offset_left = -17.0
+grow_horizontal = 0
+grow_vertical = 2
+toggle_mode = true
+text = "<"
+
+[node name="Reddot" type="Panel" parent="Button"]
+layout_mode = 1
+offset_left = -7.5
+offset_top = -7.5
+offset_right = 7.5
+offset_bottom = 7.5
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_s35gf")
+
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 256.0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_3hkdk")
+
+[node name="ChatList" type="VBoxContainer" parent="Panel"]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2

@@ -4,10 +4,29 @@
 [ext_resource type="Texture2D" uid="uid://dpunkq0sjcqum" path="res://assets/UI/SwitchOn.png" id="1_lxcww"]
 [ext_resource type="Texture2D" uid="uid://b2meo8xan03jm" path="res://assets/UI/SwitchOff.png" id="2_m7nq1"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0hnp4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1aq6g"]
+content_margin_left = 4.0
+content_margin_right = 4.0
+bg_color = Color(0.376471, 0.431373, 0.709804, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bvv0c"]
+content_margin_left = 4.0
+content_margin_right = 4.0
+bg_color = Color(0.376471, 0.431373, 0.709804, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ikrdi"]
+content_margin_left = 4.0
+content_margin_right = 4.0
+bg_color = Color(0.176471, 0.192157, 0.278431, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1dkqw"]
 content_margin_left = 4.0
 content_margin_right = 4.0
 bg_color = Color(0.376471, 0.431373, 0.709804, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7um5j"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_28cbl"]
 bg_color = Color(0.137255, 0.113725, 0.270588, 1)
@@ -92,26 +111,17 @@ bg_color = Color(0.247059, 0.211765, 0.45098, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h6d2u"]
 bg_color = Color(0.137255, 0.113725, 0.270588, 1)
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aw8ka"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_osg7l"]
-bg_color = Color(0.176471, 0.192157, 0.278431, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oqwsa"]
-bg_color = Color(0.176471, 0.192157, 0.278431, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1k277"]
-bg_color = Color(0.376471, 0.431373, 0.709804, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e132u"]
-bg_color = Color(0.176471, 0.192157, 0.278431, 1)
-
 [resource]
 default_font = ExtResource("1_kk87t")
 default_font_size = 20
+Button/styles/focus = SubResource("StyleBoxEmpty_0hnp4")
+Button/styles/hover = SubResource("StyleBoxFlat_1aq6g")
+Button/styles/hover_pressed = SubResource("StyleBoxFlat_bvv0c")
+Button/styles/normal = SubResource("StyleBoxFlat_ikrdi")
 Button/styles/pressed = SubResource("StyleBoxFlat_1dkqw")
 CheckButton/icons/checked = ExtResource("1_lxcww")
 CheckButton/icons/unchecked = ExtResource("2_m7nq1")
+CheckButton/styles/focus = SubResource("StyleBoxEmpty_7um5j")
 ExitButton/base_type = &"Button"
 ExitButton/styles/normal = SubResource("StyleBoxFlat_28cbl")
 GameUIButton/base_type = &"Button"
@@ -135,10 +145,5 @@ LabelWhite/styles/normal = SubResource("StyleBoxFlat_rrfbf")
 LineEdit/styles/focus = SubResource("StyleBoxFlat_8asyw")
 LineEdit/styles/normal = SubResource("StyleBoxFlat_h6d2u")
 TabButton/base_type = &"Button"
-TabButton/font_sizes/font_size = 24
-TabButton/styles/focus = SubResource("StyleBoxEmpty_aw8ka")
-TabButton/styles/hover = SubResource("StyleBoxFlat_osg7l")
-TabButton/styles/hover_pressed = SubResource("StyleBoxFlat_oqwsa")
-TabButton/styles/normal = SubResource("StyleBoxFlat_1k277")
-TabButton/styles/pressed = SubResource("StyleBoxFlat_e132u")
+TabButton/font_sizes/font_size = 36
 VBoxContainer/constants/separation = 5

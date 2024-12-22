@@ -1,6 +1,6 @@
 extends Node
 
-enum {
+enum { #TODO unused?
 	WHITE = 0,
 	BLACK = 1
 }

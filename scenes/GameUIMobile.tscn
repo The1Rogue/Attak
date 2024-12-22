@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://grf6aae1vam1"]
 
 [ext_resource type="Theme" uid="uid://xkc4r42x2b24" path="res://baseThemeMobile.tres" id="1_7atxf"]
-[ext_resource type="Script" path="res://src/UI/gameUI.gd" id="1_fe04k"]
+[ext_resource type="Script" path="res://src/UI/gameUI.gd" id="2_lh30p"]
 [ext_resource type="Texture2D" uid="uid://buprxxgoqi641" path="res://assets/UI/Left.png" id="3_4aj6d"]
 [ext_resource type="Texture2D" uid="uid://cdhohwsw80oag" path="res://assets/UI/Right.png" id="4_6by62"]
 [ext_resource type="Texture2D" uid="uid://br4bmyueqd5rx" path="res://assets/UI/Resign.png" id="5_gwdo7"]
@@ -17,7 +17,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_7atxf")
 alignment = 1
-script = ExtResource("1_fe04k")
+script = ExtResource("2_lh30p")
 WhiteName = NodePath("PlayerWhite")
 WhiteTime = NodePath("PlayerWhiteTime")
 BlackName = NodePath("PlayerBlack")

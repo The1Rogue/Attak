@@ -3,22 +3,26 @@ class_name Board3D
 
 const SELECTIONHEIGHT = 1
 
-@export var capSize: float = .9: 
-	set(v): capSize = v; for i in caps*2: pieces[i].scale = Vector3(v,capHeight,v)
-@export var capHeight: float = 1.2:
-	set(v): capHeight = v; for i in caps*2: pieces[i].scale = Vector3(capSize,v,capHeight)
+var pieceSize: float = .9:
+	set(value): pieceSize = value; for i in pieces: i.scale = Vector3(value, i.scale.y, value)
+var capHeight: float = 1.2:
+	set(value): 
+		capHeight = value
+		for i in 2*caps: 
+			pieces[i].scale.y = value
+		setState(GameLogic.viewedState())
+var flatHeight: float = .2:
+	set(value): 
+		flatHeight = value
+		for i in 2*flats: 
+			pieces[2*caps + i].scale.y = value
+		setState(GameLogic.viewedState())
 
-@export var pieceSize: float = .9:
-	set(v): pieceSize = v; for i in flats*2: pieces[caps*2 + i].scale = Vector3(v,pieceHeight,v)
-@export var pieceHeight: float = .2:
-	set(v): pieceHeight = v; for i in flats*2: pieces[caps*2 + i].scale = Vector3(pieceSize,v,pieceSize)
-
-const ROTATION = [Vector3.ZERO, Vector3(PI/2, PI/4, 0)]
+var ROTATION = [Vector3.ZERO, Vector3(PI/2, PI/4, 0)]
 
 var pieces: Array[Piece3D]
 @onready var board = $board
 @onready var squares = $board/top
-@onready var shape = $shape
 
 var dragLength: float
 @export var dragThreshHold: float = 8: 
@@ -34,11 +38,27 @@ var I0: Vector2
 
 @onready var pieceHolder = $Pieces
 
-@export var whiteFlatMesh: Mesh
-@export var whiteCapMesh: Mesh
+var whiteFlatMesh: Mesh:
+	set(value): 
+		whiteFlatMesh = value
+		for i in flats:
+			pieces[2 * (i+caps)].mesh.mesh = value
+var whiteCapMesh: Mesh:
+	set(value): 
+		whiteCapMesh = value
+		for i in caps:
+			pieces[2 * i].mesh.mesh = value
 
-@export var blackFlatMesh: Mesh
-@export var blackCapMesh: Mesh
+var blackFlatMesh: Mesh:
+	set(value): 
+		blackFlatMesh = value
+		for i in flats:
+			pieces[2 * (i+caps) + 1].mesh.mesh = value
+var blackCapMesh: Mesh:
+	set(value): 
+		blackCapMesh = value
+		for i in caps:
+			pieces[2 * i + 1].mesh.mesh = value
 
 @export var flatShape: Shape3D
 @export var capShape: Shape3D
@@ -49,6 +69,34 @@ var I0: Vector2
 
 func vecToTile(vec: Vector3) -> Vector2i:
 	return Vector2i(vec.x + size/2.0, size/2.0 - vec.z)
+
+
+func setData(data: SettingData):
+	if not self.is_node_ready():
+		await self.ready
+	
+	pieceSize = data.pieceSize3D
+	capHeight = data.capHeight3D
+	flatHeight = data.flatHeight3D
+	
+	var meshes = data.white3D
+	whiteCapMesh = meshes[0]
+	whiteFlatMesh = meshes[1]
+	
+	meshes = data.black3D
+	blackCapMesh = meshes[0]
+	blackFlatMesh = meshes[1]
+	
+	squares.mesh.material.albedo_texture = data.sq3D
+	for i in 2*caps:
+		pieces[i].scale = Vector3(data.pieceSize3D, data.capHeight3D, data.pieceSize3D)
+	
+	for i in 2*flats:
+		pieces[i + 2*caps].scale = Vector3(data.pieceSize3D, data.flatHeight3D, data.pieceSize3D)
+		
+	ROTATION[1] = data.wallRotation3D
+	
+	setState(GameLogic.viewedState())
 
 
 func _ready():
@@ -69,8 +117,6 @@ func makeBoard():
 	squares.mesh.size = Vector2(size, size)
 	squares.mesh.material.uv1_offset = Vector3(.5, 0, .5) if size % 2 == 1 else Vector3.ZERO
 	board.mesh.size = Vector3(size + 1, .3, size + 1)
-	board.position.y = -.15 - pieceHeight/2
-	shape.position.y = -pieceHeight/2
 	
 	for i in board.get_children():
 		if i is Label3D:
@@ -106,27 +152,26 @@ func makeBoard():
 		l.font_size = 64
 		board.add_child(l)
 	
-	
 	for cap in caps:
 		pieces.append(Piece3D.new(whiteCapMesh, capShape, cap*2))
 		pieceHolder.add_child(pieces[-1])
-		pieces[-1].scale = Vector3(capSize, capHeight, capSize)
+		pieces[-1].scale = Vector3(pieceSize, capHeight, pieceSize)
 		pieces[-1].click.connect(clickPiece)
 		
 		pieces.append(Piece3D.new(blackCapMesh, capShape, cap*2 + 1))
 		pieceHolder.add_child(pieces[-1])
-		pieces[-1].scale = Vector3(capSize, capHeight, capSize)
+		pieces[-1].scale = Vector3(pieceSize, capHeight, pieceSize)
 		pieces[-1].click.connect(clickPiece)
 	
 	for flat in flats:
 		pieces.append(Piece3D.new(whiteFlatMesh, flatShape, (flat + caps)*2))
 		pieceHolder.add_child(pieces[-1])
-		pieces[-1].scale = Vector3(pieceSize, pieceHeight, pieceSize)
+		pieces[-1].scale = Vector3(pieceSize, flatHeight, pieceSize)
 		pieces[-1].click.connect(clickPiece)
 		
 		pieces.append(Piece3D.new(blackFlatMesh, flatShape, (flat + caps)*2 + 1))
 		pieceHolder.add_child(pieces[-1])
-		pieces[-1].scale = Vector3(pieceSize, pieceHeight, pieceSize)
+		pieces[-1].scale = Vector3(pieceSize, flatHeight, pieceSize)
 		pieces[-1].click.connect(clickPiece)
 
 	for i in (caps+flats) * 2:
@@ -134,14 +179,14 @@ func makeBoard():
 
 
 func putPiece(id: int, v: Vector3i):
-	pieces[id].position = Vector3(v.x - size/2.0 + .5, pieceHeight * v.y, size/2.0 - v.z - .5)
+	pieces[id].position = Vector3(v.x - size/2.0 + .5, flatHeight * v.y, size/2.0 - v.z - .5)
 	
 	if id < caps*2:
-		pieces[id].position.y += (capHeight - pieceHeight)/2
-	
-	if pieces[id].rotation == ROTATION[1]:
-		pieces[id].position.y += (pieceSize - pieceHeight)/2
-	
+		pieces[id].position.y += capHeight / 2
+	elif pieces[id].rotation == ROTATION[1]:
+		pieces[id].position.y += pieceSize / 2
+	else:
+		pieces[id].position.y += flatHeight / 2
 	
 	if pieces[id].selected: pieces[id].position.y += SELECTIONHEIGHT
 
@@ -153,7 +198,7 @@ func putReserve(id: int):
 		y = capHeight / 2
 		z = (1 + id/2 * 1.5) * (-1 if id % 2 == 0 else 1)
 	else:
-		y = pieceHeight * (((id-2*caps)/2) % 10 + .5)
+		y = flatHeight * (((id-2*caps)/2) % 10 + .5)
 		z = (1 + (id-2*caps)/20) * (-1 if id % 2 == 1 else 1)
 		
 	pieces[id].position = Vector3(x, y, z)

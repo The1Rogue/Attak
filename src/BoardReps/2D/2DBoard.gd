@@ -7,28 +7,75 @@ class_name Board2D
 @export var selectionHeight: float = 8
 @export var heightOffset: float = 2
 
-@export var pieceSize: float = .5
-@export var sq: Texture2D
+var pieceSize: float: 
+	set(value): pieceSize = value; for i in pieces: i.scale = value * Vector2.ONE * 16 / i.texture.get_size()
+var sq: Texture2D:
+	set(t):
+		sq = t
+		board.texture = t
+		board.region_rect.size = Vector2.ONE * size * sq.get_height()
+		board.scale = Vector2.ONE * (16.0 / sq.get_height())
 
-@export var WhiteCap: Texture2D
-@export var WhiteFlat: Texture2D
-@export var WhiteWall: Texture2D
+var WhiteCap: Texture2D:
+	set(value): WhiteCap = value; for i in caps: 
+		pieces[2*i].texture = value
+		pieces[2*i].scale = pieceSize * Vector2.ONE * 16 / value.get_size()
+var WhiteFlat: Texture2D:
+	set(value):
+		for i in flats: if pieces[2*(caps+i)].texture != WhiteWall: 
+			pieces[2*(caps+i)].texture = value
+			pieces[2*(caps+i)].scale = pieceSize * Vector2.ONE * 16 / value.get_size()
+		WhiteFlat = value
+var WhiteWall: Texture2D:
+	set(value):
+		for i in flats: if pieces[2*(caps+i)].texture == WhiteWall: 
+			pieces[2*(caps+i)].texture = value
+			pieces[2*(caps+i)].scale = pieceSize * Vector2.ONE * 16 / value.get_size()
+		WhiteWall = value
 
-@export var BlackCap: Texture2D
-@export var BlackFlat: Texture2D
-@export var BlackWall: Texture2D
+var BlackCap: Texture2D:
+	set(value): BlackCap = value; for i in caps: 
+		pieces[2*i+1].texture = value
+		pieces[2*i+1].scale = pieceSize * Vector2.ONE * 16 / value.get_size()
+var BlackFlat: Texture2D:
+	set(value):
+		for i in flats: if pieces[2*(caps+i)+1].texture != BlackWall: 
+			pieces[2*(caps+i)+1].texture = value
+			pieces[2*(caps+i)+1].scale = pieceSize * Vector2.ONE * 16 / value.get_size()
+		BlackFlat = value
+var BlackWall: Texture2D:
+	set(value):
+		for i in flats: if pieces[2*(caps+i)+1].texture == BlackWall: 
+			pieces[2*(caps+i)+1].texture = value
+			pieces[2*(caps+i)+1].scale = pieceSize * Vector2.ONE * 16 / value.get_size()
+		BlackWall = value
 
 @export var highlightMaterial: ShaderMaterial
 
 var pieces: Array[Piece2D] = []
 
-func _ready():
-	super()
-
+func setData(data: SettingData):	
+	var tex = data.white2D
+	WhiteCap = tex[0]
+	WhiteFlat = tex[1]
+	WhiteWall = tex[2]
+	
+	tex = data.black2D
+	BlackCap = tex[0]
+	BlackFlat = tex[1]
+	BlackWall = tex[2]
+	
+	pieceSize = data.pieceScale2D
+	
+	if not self.is_node_ready():
+		await self.ready
+	sq = data.sq2D
 
 func makeBoard():
-	assert(sq.get_height() == sq.get_width(), "SQUARE IS NON-SQUARE")
-	var tsize:int = sq.get_height()
+	if sq != null:
+		board.region_rect.size = Vector2.ONE * size * sq.get_height()
+		board.scale = Vector2.ONE * (16.0 / sq.get_height())
+		
 	for i in pieces:
 		reserves.remove_child(i)
 	pieces = []
@@ -37,9 +84,6 @@ func makeBoard():
 		if i is Label: remove_child(i)
 	
 	$Camera2D.zoom = Vector2.ONE * (80 if OS.has_feature("mobile") else 55) /size # SHOULD BE 55 FOR DESKTOP
-	board.texture = sq
-	board.region_rect.size = Vector2.ONE * size * tsize
-	board.scale = Vector2.ONE * (16.0 / tsize)
 	
 	for i in size:
 		var l = Label.new()
@@ -57,8 +101,6 @@ func makeBoard():
 		l.position = Vector2(8 - 16 * (size/2.0 - i), 16 * size/2.0 + 1)
 		l.position.x -= l.size.x * l.scale.x
 		add_child(l)
-
-
 	
 	var piece
 	for i in caps:

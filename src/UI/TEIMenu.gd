@@ -1,5 +1,4 @@
-extends TabMenuTab
-class_name TEIMenu
+extends Control
 
 @onready var entry: LineEdit = $HBoxContainer/LineEdit
 
@@ -17,12 +16,12 @@ var count = 0
 var games: Dictionary = {}
 
 func _ready():
-	if not (OS.has_feature("tei") or OS.has_feature("editor")):
-		if not get_parent().is_node_ready():
-			await get_parent().ready
-		get_parent().remove(self)
-		queue_free()
-		return
+	#if not (OS.has_feature("tei") or OS.has_feature("editor")): TODO
+		#if not get_parent().is_node_ready():
+			#await get_parent().ready
+		#get_parent().remove(self)
+		#queue_free()
+		#return
 		
 	$HBoxContainer/Button.pressed.connect($FileDialog.show)
 	$FileDialog.file_selected.connect(select)
@@ -36,7 +35,7 @@ func select(path: String):
 func start():
 	if GameLogic.active:
 		if GameLogic.gameData.playerWhite == GameData.BOT or GameLogic.gameData.playerBlack == GameData.BOT:
-			GameLogic.end.emit()
+			GameLogic.end.emit(GameState.ONGOING)
 		elif not (GameLogic.gameData.isObserver() or GameLogic.gameData.isScratch()):
 			Notif.message("Can't start a new game while you're still playing!")
 			return

@@ -11,14 +11,14 @@ config_version=5
 [application]
 
 config/name="Attak"
-run/main_scene="res://scenes/mainDesktop.tscn"
+run/main_scene="res://scenes/UI/Menu.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 boot_splash/image="res://assets/Attak256.png"
 boot_splash/fullsize=false
 boot_splash/use_filter=false
 config/icon="res://assets/Attak.png"
 config/windows_native_icon="res://Attak.ico"
-run/main_scene.mobile="res://scenes/mainMobile.tscn"
+run/main_scene.mobile="res://scenes/UI/MenuNew.tscn"
 
 [autoload]
 
@@ -26,6 +26,7 @@ Globals="*res://src/Globals.gd"
 GameLogic="*res://src/Logic/gameLogic.gd"
 Notif="*res://scenes/PopupMsg.tscn"
 PlayTakI="*res://src/interfaces/playTakInterface.gd"
+ChatTab="*res://scenes/UI/ChatTab.tscn"
 
 [debug]
 
@@ -53,5 +54,5 @@ texture={
 [rendering]
 
 textures/vram_compression/import_etc2_astc=true
-environment/defaults/default_clear_color=Color(0.176471, 0.192157, 0.278431, 1)
+environment/defaults/default_clear_color=Color(0.129412, 0.137255, 0.172549, 1)
 anti_aliasing/quality/screen_space_aa=1

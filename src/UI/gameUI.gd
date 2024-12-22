@@ -23,7 +23,6 @@ var blackCritical: bool = false
 
 var i = 0
 
-
 static func timeString(sec: int) -> String:
 	return "%02d:%02d" % [sec / 60, sec % 60]
 

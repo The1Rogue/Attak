@@ -1,8 +1,10 @@
-extends TabMenuTab
+extends Container
 class_name WatchList
 
 var count = 0
 var games: Dictionary = {}
+
+@export var button: Button
 
 func _ready():
 	PlayTakI.addGame.connect(add)
@@ -12,7 +14,7 @@ func _ready():
 
 func add(game: GameData, id: int):
 	count += 1
-	tabButton.text = " Watch Game (%d) " % count
+	button.text = " Ongoing (%d) " % count
 	var b = Button.new()
 	b.text = " %s vs %s %dx%d +%3.1f" % [game.playerWhiteName, game.playerBlackName, game.size, game.size, game.komi/2.0]
 	b.autowrap_mode = TextServer.AUTOWRAP_WORD
@@ -27,7 +29,7 @@ func add(game: GameData, id: int):
 
 func remove(id: int):
 	count -= 1
-	tabButton.text = " Watch Game (%d) " % count
+	button.text = " Ongoing (%d) " % count
 	remove_child(games[id])
 	games.erase(id)
 
@@ -36,7 +38,7 @@ func clear():
 	for id in games:
 		remove_child(games[id])
 	count = 0
-	tabButton.text = " Watch Game (0) "
+	button.text = " Ongoing (0) "
 	games.clear()
 
 

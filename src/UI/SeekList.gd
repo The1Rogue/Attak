@@ -1,13 +1,19 @@
-extends TabMenuTab
+extends VBoxContainer
 class_name SeekList
 
+const BOTS = []
+
 var seeks: Dictionary = {}
-var count: int = 0
+var count: Vector2i = Vector2i.ZERO
+
+@export var button: Button
 
 @export var iconBlack: Texture2D
 @export var iconWhite: Texture2D
 @export var iconBoth: Texture2D
 
+@onready var players = $Players
+@onready var bots = $Bots
 
 func _ready():
 	PlayTakI.ratingUpdate.connect(updateRatings)
@@ -17,13 +23,22 @@ func _ready():
 
 
 func add(seek: SeekData, id: int):
-	count += 1
-	tabButton.text = " Join Game (%d) " % count
+
 	var b = Button.new()
-	add_child(b)
+	
+	if seek.playerName in PlayTakI.bots:
+		bots.add_sibling(b)
+		count.y += 1
+		
+	else:
+		players.add_sibling(b)
+		count.x += 1
+			
+	button.text = " Join (%d + %d) " % [count.x, count.y]
+	
 	var time45 = seek.time + 45 * seek.increment
 	var type = "blitz" if time45 < 600 else "rapid" if time45 < 1200 else "classic"
-	b.text = "%s (%4d) %ds +%3.1f %s" % [seek.playerName, PlayTakI.ratingList.get(seek.playerName, 1000), seek.size, seek.komi/2.0, type]
+	b.text = "%18s (%4d)  %ds +%3.1f %s" % [seek.playerName, PlayTakI.ratingList.get(seek.playerName, 1000), seek.size, seek.komi/2.0, type]
 	b.tooltip_text = "%2d:00 +:%02d" % [seek.time / 60, seek.increment]
 	if seek.triggerTime != 0:
 		b.tooltip_text += " +%2d@%d" % [seek.triggerTime/60, seek.triggerMove]
@@ -47,8 +62,11 @@ func add(seek: SeekData, id: int):
 
 func remove(id: int):
 	if id in seeks:
-		count -= 1
-		tabButton.text = " Join Game (%d) " % count
+		if seeks[id].get_index() < bots.get_index():
+			count.x -= 1
+		else:
+			count.y -= 1
+		button.text = " Join (%d + %d) " % [count.x, count.y]
 		remove_child(seeks[id])
 		seeks.erase(id)
 
@@ -56,8 +74,8 @@ func remove(id: int):
 func clear():
 	for id in seeks:
 		remove_child(seeks[id])
-	count = 0
-	tabButton.text = " Join Game (0) "
+	count = Vector2i.ZERO
+	button.text = " Join (0) "
 	seeks.clear()
 
 
@@ -65,7 +83,19 @@ func accept(id: int):
 	PlayTakI.acceptSeek(id)
 
 
-func updateRatings():
+func updateRatings(): #TODO sort by rating?
+	var index = bots.get_index()
 	for i in seeks:
 		var s = seeks[i].text.split(" ", false, 1)
-		seeks[i].text = s[0] + " (%4d) " % PlayTakI.ratingList.get(s[0], 1000) + s[1].substr(7)
+		if s[0] in PlayTakI.bots:
+			if seeks[i].get_index() < index:
+				count.x -= 1; count.y += 1;
+				move_child(seeks[i], index + 1)
+				index -= 1
+		elif seeks[i].get_index() > index:
+			count.y -= 1; count.x += 1;
+			move_child(seeks[i], index - 2)
+			index += 1
+			
+		seeks[i].text = " %18s (%4d) " % [s[0], PlayTakI.ratingList.get(s[0], 1000)] + s[1].substr(7)
+	button.text = " Join (%d + %d) " % [count.x, count.y]

@@ -37,6 +37,6 @@ func message(msg: String, noise: bool = true):
 		ping(notif)
 
 
-func ping(audio: AudioStream):
+func ping(audio: AudioStream = notif):
 	audioPlayer.stream = audio
 	audioPlayer.play()

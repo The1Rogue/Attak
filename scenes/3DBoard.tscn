@@ -1,12 +1,8 @@
-[gd_scene load_steps=18 format=3 uid="uid://c4esmjnf630vc"]
+[gd_scene load_steps=14 format=3 uid="uid://c4esmjnf630vc"]
 
 [ext_resource type="Script" path="res://src/BoardReps/3D/3DBoard.gd" id="2_4p11y"]
-[ext_resource type="BoxMesh" uid="uid://daablsfdehx7a" path="res://assets/3DPieces/whiteFlat.tres" id="3_gvubj"]
-[ext_resource type="CylinderMesh" uid="uid://bcraohr53d311" path="res://assets/3DPieces/whiteCap.tres" id="4_ulro6"]
-[ext_resource type="BoxMesh" uid="uid://dqqb28lxr4vbf" path="res://assets/3DPieces/blackFlat.tres" id="5_bmxa4"]
-[ext_resource type="CylinderMesh" uid="uid://cksydhk7rhem6" path="res://assets/3DPieces/blackCap.tres" id="6_in0fr"]
-[ext_resource type="Shader" path="res://assets/3DPieces/Highlight3D.gdshader" id="7_fpqoa"]
-[ext_resource type="Texture2D" uid="uid://bp2lq3nfor3hk" path="res://assets/2DPieces/textures/HQ/sq.png" id="7_uaha4"]
+[ext_resource type="Shader" path="res://assets/3D/Highlight3D.gdshader" id="7_fpqoa"]
+[ext_resource type="Texture2D" uid="uid://bp2lq3nfor3hk" path="res://assets/Squares/standard.png" id="7_uaha4"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ood11"]
 
@@ -17,14 +13,14 @@ height = 1.0
 render_priority = 0
 shader = ExtResource("7_fpqoa")
 shader_parameter/offset = 0.02
-shader_parameter/scale = 1.1
+shader_parameter/size = 0.05
 shader_parameter/color = Color(0.266667, 0.701961, 0.513726, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ptg30"]
 render_priority = 0
 shader = ExtResource("7_fpqoa")
 shader_parameter/offset = 0.02
-shader_parameter/scale = 1.1
+shader_parameter/size = 0.05
 shader_parameter/color = Color(0.376471, 0.431373, 0.709804, 1)
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_2c6g0"]
@@ -52,10 +48,6 @@ size = Vector2(6, 6)
 
 [node name="3DBoard" type="StaticBody3D"]
 script = ExtResource("2_4p11y")
-whiteFlatMesh = ExtResource("3_gvubj")
-whiteCapMesh = ExtResource("4_ulro6")
-blackFlatMesh = ExtResource("5_bmxa4")
-blackCapMesh = ExtResource("6_in0fr")
 flatShape = SubResource("BoxShape3D_ood11")
 capShape = SubResource("CylinderShape3D_a6je8")
 highlightMaterial = SubResource("ShaderMaterial_lklc0")
@@ -74,6 +66,7 @@ environment = SubResource("Environment_84367")
 [node name="Pieces" type="Node3D" parent="."]
 
 [node name="board" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.151, 0)
 mesh = SubResource("BoxMesh_ahl31")
 skeleton = NodePath("../3DBoard")
 

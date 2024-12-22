@@ -32,6 +32,10 @@ var drops: Array[int] = []
 var direction: Vector2i = Vector2i.ZERO 
 
 
+func setData(data: SettingData):
+	pass
+
+
 func _ready():
 	GameLogic.viewState.connect(setState)
 	GameLogic.setup.connect(setup)
