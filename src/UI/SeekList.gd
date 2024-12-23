@@ -3,6 +3,9 @@ class_name SeekList
 
 const BOTS = []
 
+var ratingsBots = []
+var ratingsPlayers = []
+
 var seeks: Dictionary = {}
 var count: Vector2i = Vector2i.ZERO
 
@@ -23,22 +26,31 @@ func _ready():
 
 
 func add(seek: SeekData, id: int):
-
 	var b = Button.new()
+	var rating = PlayTakI.ratingList.get(seek.playerName, 1000)
 	
+	var idx = 0
 	if seek.playerName in PlayTakI.bots:
-		bots.add_sibling(b)
+		for r in ratingsBots:
+			if rating < r: idx += 1
+			else: break
+		get_child(bots.get_index() + idx).add_sibling(b)
+		ratingsBots.insert(idx, rating)
 		count.y += 1
 		
 	else:
-		players.add_sibling(b)
+		for r in ratingsPlayers:
+			if rating < r: idx += 1
+			else: break
+		get_child(idx).add_sibling(b)
+		ratingsPlayers.insert(idx, rating)
 		count.x += 1
 			
 	button.text = " Join (%d + %d) " % [count.x, count.y]
 	
 	var time45 = seek.time + 45 * seek.increment
 	var type = "blitz" if time45 < 600 else "rapid" if time45 < 1200 else "classic"
-	b.text = "%18s (%4d)  %ds +%3.1f %s" % [seek.playerName, PlayTakI.ratingList.get(seek.playerName, 1000), seek.size, seek.komi/2.0, type]
+	b.text = "%18s (%4d)  %ds +%3.1f %s" % [seek.playerName, rating, seek.size, seek.komi/2.0, type]
 	b.tooltip_text = "%2d:00 +:%02d" % [seek.time / 60, seek.increment]
 	if seek.triggerTime != 0:
 		b.tooltip_text += " +%2d@%d" % [seek.triggerTime/60, seek.triggerMove]
@@ -83,19 +95,28 @@ func accept(id: int):
 	PlayTakI.acceptSeek(id)
 
 
-func updateRatings(): #TODO sort by rating?
-	var index = bots.get_index()
+func updateRatings():
+	ratingsPlayers = []
+	ratingsBots = []
+	
 	for i in seeks:
+		var idx = 0
 		var s = seeks[i].text.split(" ", false, 1)
+		var rating =  PlayTakI.ratingList.get(s[0], 1000)
 		if s[0] in PlayTakI.bots:
-			if seeks[i].get_index() < index:
-				count.x -= 1; count.y += 1;
-				move_child(seeks[i], index + 1)
-				index -= 1
-		elif seeks[i].get_index() > index:
-			count.y -= 1; count.x += 1;
-			move_child(seeks[i], index - 2)
-			index += 1
+			for r in ratingsBots:
+				if rating < r: idx += 1
+				else: break
+			move_child(seeks[i], bots.get_index() + idx)
+			ratingsBots.insert(idx, rating)
 			
-		seeks[i].text = " %18s (%4d) " % [s[0], PlayTakI.ratingList.get(s[0], 1000)] + s[1].substr(7)
+		else:
+			for r in ratingsPlayers:
+				if rating < r: idx += 1
+				else: break
+			move_child(seeks[i], idx)
+			ratingsPlayers.insert(idx, rating)
+			
+		seeks[i].text = "%18s (%4d) " % [s[0], rating] + s[1].substr(7)
+	count = Vector2i(ratingsPlayers.size(), ratingsBots.size())
 	button.text = " Join (%d + %d) " % [count.x, count.y]
