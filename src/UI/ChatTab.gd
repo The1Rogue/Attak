@@ -21,6 +21,7 @@ func toggle(visible: bool) -> void:
 	set_offset(SIDE_RIGHT, -list.size.x if visible else 0)
 	isVisible = visible
 
+
 func select(chat: Chat):
 	if active != null:
 		active.hide()
@@ -46,8 +47,8 @@ func remove(room):
 	var idx = rooms[room].get_index()
 	remove_child(get_child(idx - 1))
 	remove_child(rooms[room])
+	rooms[room].queue_free()
 	rooms.erase(room)
-	queue_free()
 
 
 func clear():

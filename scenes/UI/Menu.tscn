@@ -1,8 +1,9 @@
-[gd_scene load_steps=22 format=3 uid="uid://blnwws40ddesf"]
+[gd_scene load_steps=23 format=3 uid="uid://blnwws40ddesf"]
 
 [ext_resource type="Script" path="res://src/UI/Selector.gd" id="1_co0ct"]
 [ext_resource type="Script" path="res://src/UI/loginMenu.gd" id="2_n5doj"]
 [ext_resource type="Script" path="res://src/UI/Settings.gd" id="3_2coyu"]
+[ext_resource type="Script" path="res://src/UI/graph.gd" id="3_52c02"]
 [ext_resource type="PackedScene" uid="uid://c4esmjnf630vc" path="res://scenes/3DBoard.tscn" id="4_l2ddi"]
 [ext_resource type="PackedScene" uid="uid://mxvbujo17lyt" path="res://scenes/2DBoard.tscn" id="5_b70kj"]
 [ext_resource type="Script" path="res://src/UI/fileOption.gd" id="6_vmbxg"]
@@ -41,7 +42,6 @@ script = ExtResource("1_co0ct")
 start = NodePath("Login")
 
 [node name="Login" type="VBoxContainer" parent="VTabContainer" node_paths=PackedStringArray("tabOnLogin", "button")]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 alignment = 1
@@ -54,6 +54,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 
 [node name="Login" type="VBoxContainer" parent="VTabContainer/Login/Menu"]
+visible = false
 layout_mode = 2
 
 [node name="User" type="LineEdit" parent="VTabContainer/Login/Menu/Login"]
@@ -75,19 +76,24 @@ layout_mode = 2
 text = "Login"
 
 [node name="Settings" type="VBoxContainer" parent="VTabContainer/Login/Menu"]
-visible = false
-layout_mode = 2
-
-[node name="seperator" type="Control" parent="VTabContainer/Login/Menu/Settings"]
 layout_mode = 2
 
 [node name="Logout" type="Button" parent="VTabContainer/Login/Menu/Settings"]
 layout_mode = 2
+size_flags_horizontal = 8
 text = "Logout
 "
 
-[node name="seperator2" type="Control" parent="VTabContainer/Login/Menu/Settings"]
+[node name="Name" type="Label" parent="VTabContainer/Login/Menu/Settings"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 64
+
+[node name="Games" type="Label" parent="VTabContainer/Login/Menu/Settings"]
+layout_mode = 2
+
+[node name="Graph" type="Panel" parent="VTabContainer/Login/Menu/Settings"]
+layout_mode = 2
+script = ExtResource("3_52c02")
 
 [node name="Settings" type="VBoxContainer" parent="VTabContainer" node_paths=PackedStringArray("boardHolder")]
 layout_mode = 2
@@ -605,6 +611,7 @@ script = ExtResource("18_vxymn")
 button = NodePath("../tabBar/Watch/SubTabs/Current")
 
 [node name="OldGames" type="VBoxContainer" parent="VTabContainer"]
+visible = false
 layout_mode = 2
 alignment = 1
 

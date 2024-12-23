@@ -2,6 +2,8 @@ extends Control
 class_name LoginMenu
 
 const loginResource = "user://playtakLogin.res"
+const GAMES_URL = "https://api.playtak.com/v1/games-history?page=0&limit=100&mirror=true&player_white=%s"
+const RATINGS_URL = "https://api.playtak.com/v1/ratings/%s"
 
 @export var tabOnLogin: Control
 @export var button: Button
@@ -15,7 +17,15 @@ const loginResource = "user://playtakLogin.res"
 @onready var settings: VBoxContainer = $Menu/Settings
 @onready var logoutButton: Button = $Menu/Settings/Logout
 
+@onready var nameLabel: Label = $Menu/Settings/Name
+@onready var gamesLabel: Label = $Menu/Settings/Games
+@onready var graph: Panel = $Menu/Settings/Graph
+
+@onready var http: HTTPRequest = HTTPRequest.new()
+
 func _ready():
+	add_child(http)
+	
 	PlayTakI.ratingUpdate.connect(updateRating)
 	PlayTakI.logout.connect(logout)
 	
@@ -37,14 +47,60 @@ func _ready():
 
 
 func signin(user:String, passw: String):
-	if await PlayTakI.signIn(user, passw):
-		login.hide()
-		settings.show()
-		button.text = "%s (%d)" % [PlayTakI.activeUsername, PlayTakI.ratingList.get(PlayTakI.activeUsername, 1000)]
-		get_parent().select(tabOnLogin)
-		
-		if user != "Guest" and remember.button_pressed:
-			ResourceSaver.save(Login.new(PlayTakI.activeUsername, passw), loginResource)
+	if not await PlayTakI.signIn(user, passw): return
+	
+	login.hide()
+	
+	settings.show()
+	var rating = PlayTakI.ratingList.get(PlayTakI.activeUsername, 1000)
+	
+	button.text = "%s (%d)" % [PlayTakI.activeUsername, rating]
+	get_parent().select(tabOnLogin)
+	
+	if user != "Guest" and remember.button_pressed:
+		ResourceSaver.save(Login.new(PlayTakI.activeUsername, passw), loginResource)
+
+	if user == "Guest": return
+	
+	http.request_completed.connect(makeGraph)
+	http.request(GAMES_URL % PlayTakI.activeUsername)
+	await http.request_completed
+	http.request_completed.disconnect(makeGraph)
+	http.request_completed.connect(setData)
+	http.request(RATINGS_URL % PlayTakI.activeUsername)
+	await http.request_completed
+	http.request_completed.disconnect(setData)
+
+
+func setData(result: int, response_code: int, header: PackedStringArray, body: PackedByteArray):
+	var json: Dictionary = JSON.parse_string(body.get_string_from_utf8()) #TODO error handling
+	
+	nameLabel.text = "%s (%d)" % [json["name"], json["rating"]]
+	gamesLabel.text = "%d games played" % json["ratedgames"]
+
+
+func makeGraph(result: int, response_code: int, header: PackedStringArray, body: PackedByteArray):
+	var json: Dictionary = JSON.parse_string(body.get_string_from_utf8()) #TODO error handling
+	
+	graph.custom_minimum_size = Vector2.ONE * 256
+	
+	var points: Array[Vector2] = []
+	for i in json["items"]:
+		if i["rating_change_white"] == -2000: continue
+		points.append(Vector2(i["date"] / 1000, i["rating_white"] + i["rating_change_white"]/10 if i["player_white"] == PlayTakI.activeUsername else i["rating_black"] + i["rating_change_black"]/10))
+	points.sort_custom(func(a,b): return a.x < b.x)
+	var min = Vector2(points[0].x, points.reduce(func(a, b): return Vector2i(0,min(a.y, b.y))).y)
+	var max = Vector2(points[-1].x, points.reduce(func(a, b): return Vector2i(0,max(a.y, b.y))).y)
+	
+	for i in points.size():
+		points[i] -= min
+		points[i] /= max-min
+		points[i].y = 1 - points[i].y
+	
+	graph.points = points
+	graph.min = min
+	graph.max = max
+	graph.queue_redraw()
 
 
 func submit():
@@ -61,4 +117,6 @@ func logout():
 
 func updateRating():
 	if not PlayTakI.active: return
-	button.text = "%s (%d)" % [PlayTakI.activeUsername, PlayTakI.ratingList.get(PlayTakI.activeUsername, 1000)]
+	var rating = PlayTakI.ratingList.get(PlayTakI.activeUsername, 1000)
+	button.text = "%s (%d)" % [PlayTakI.activeUsername, rating]
+	nameLabel.text = "%s (%d)" % [PlayTakI.activeUsername, rating]
