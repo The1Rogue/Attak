@@ -604,15 +604,129 @@ alignment = 1
 script = ExtResource("18_vxymn")
 button = NodePath("../tabBar/Watch/SubTabs/Current")
 
-[node name="OldGames" type="ScrollContainer" parent="VTabContainer"]
+[node name="OldGames" type="VBoxContainer" parent="VTabContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VTabContainer/OldGames"]
+layout_mode = 2
+alignment = 1
+
+[node name="Search" type="Button" parent="VTabContainer/OldGames/HBoxContainer"]
+layout_mode = 2
+text = " Search "
+
+[node name="PopupPanel" type="PopupPanel" parent="VTabContainer/OldGames/HBoxContainer/Search"]
+initial_position = 2
+size = Vector2i(342, 156)
+
+[node name="GridContainer" type="GridContainer" parent="VTabContainer/OldGames/HBoxContainer/Search/PopupPanel"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 338.0
+offset_bottom = 152.0
+grow_horizontal = 2
+grow_vertical = 2
+columns = 2
+
+[node name="ID" type="LineEdit" parent="VTabContainer/OldGames/HBoxContainer/Search/PopupPanel/GridContainer"]
+layout_mode = 2
+placeholder_text = "Game ID"
+
+[node name="type" type="OptionButton" parent="VTabContainer/OldGames/HBoxContainer/Search/PopupPanel/GridContainer"]
+layout_mode = 2
+selected = 0
+item_count = 4
+popup/item_0/text = "Game Type"
+popup/item_1/text = "Normal"
+popup/item_1/id = 1
+popup/item_2/text = "Tournament"
+popup/item_2/id = 2
+popup/item_3/text = "Unrated"
+popup/item_3/id = 3
+
+[node name="white" type="LineEdit" parent="VTabContainer/OldGames/HBoxContainer/Search/PopupPanel/GridContainer"]
+layout_mode = 2
+placeholder_text = "Player White"
+
+[node name="result" type="OptionButton" parent="VTabContainer/OldGames/HBoxContainer/Search/PopupPanel/GridContainer"]
+layout_mode = 2
+selected = 0
+item_count = 10
+popup/item_0/text = "Result"
+popup/item_1/text = "X-0"
+popup/item_1/id = 1
+popup/item_2/text = "R-0"
+popup/item_2/id = 2
+popup/item_3/text = "F-0"
+popup/item_3/id = 3
+popup/item_4/text = "1-0"
+popup/item_4/id = 4
+popup/item_5/text = "0-X"
+popup/item_5/id = 5
+popup/item_6/text = "0-R"
+popup/item_6/id = 6
+popup/item_7/text = "0-F"
+popup/item_7/id = 7
+popup/item_8/text = "0-1"
+popup/item_8/id = 8
+popup/item_9/text = "1/2-1/2"
+popup/item_9/id = 9
+
+[node name="black" type="LineEdit" parent="VTabContainer/OldGames/HBoxContainer/Search/PopupPanel/GridContainer"]
+layout_mode = 2
+placeholder_text = "Player Black"
+
+[node name="size" type="OptionButton" parent="VTabContainer/OldGames/HBoxContainer/Search/PopupPanel/GridContainer"]
+layout_mode = 2
+selected = 0
+item_count = 7
+popup/item_0/text = "Board Size"
+popup/item_1/text = "3x3"
+popup/item_1/id = 1
+popup/item_2/text = "4x4"
+popup/item_2/id = 2
+popup/item_3/text = "5x5"
+popup/item_3/id = 3
+popup/item_4/text = "6x6"
+popup/item_4/id = 4
+popup/item_5/text = "7x7"
+popup/item_5/id = 5
+popup/item_6/text = "8x8"
+popup/item_6/id = 6
+
+[node name="mirror" type="CheckButton" parent="VTabContainer/OldGames/HBoxContainer/Search/PopupPanel/GridContainer"]
+layout_mode = 2
+text = "Mirror Search"
+
+[node name="Confirm" type="Button" parent="VTabContainer/OldGames/HBoxContainer/Search/PopupPanel/GridContainer"]
+layout_mode = 2
+text = "Search"
+
+[node name="Prev" type="Button" parent="VTabContainer/OldGames/HBoxContainer"]
+layout_mode = 2
+text = " < "
+
+[node name="Count" type="Label" parent="VTabContainer/OldGames/HBoxContainer"]
 layout_mode = 2
 
-[node name="Entries" type="GridContainer" parent="VTabContainer/OldGames"]
-custom_minimum_size = Vector2(10, 10)
+[node name="Next" type="Button" parent="VTabContainer/OldGames/HBoxContainer"]
+layout_mode = 2
+text = " > "
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VTabContainer/OldGames"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Entries" type="VBoxContainer" parent="VTabContainer/OldGames/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 6
-theme_override_constants/h_separation = 50
-columns = 11
+alignment = 1
 script = ExtResource("19_ge6g1")
 
 [node name="tabBar" type="BoxContainer" parent="VTabContainer"]

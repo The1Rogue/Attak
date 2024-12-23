@@ -51,9 +51,9 @@ static func fromPlayTak(playtak: String, oldState) -> Ply:
 			dir = Spread.DIRECTION.UP if t2.y > tile.y else Spread.DIRECTION.DOWN
 		else:
 			dir = Spread.DIRECTION.RIGHT if t2.x > tile.x else Spread.DIRECTION.LEFT
-		var drops = []
+		var drops: Array[int] = []
 		for i in m.get_string(5).replace(" ", ""):
-			drops.append(i)
+			drops.append(int(i))
 		return Spread.new(tile, dir, drops, smash)
 		
 	else:
