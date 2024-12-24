@@ -25,8 +25,8 @@ func _ready() -> void:
 	saveData = SettingData.loadOrNew()
 	
 	# 2D
-	$"Board/2D Board/Squares".setNoSignal(saveData.sq3DPath)
-	$"Board/2D Board/Squares".setSetting.connect(set3DSq)
+	$"Board/2D Board/Squares".setNoSignal(saveData.sq2DPath)
+	$"Board/2D Board/Squares".setSetting.connect(set2DSq)
 	
 	$"Board/2D Board/White".setNoSignal(saveData.white2DPath)
 	$"Board/2D Board/White".setSetting.connect(set2DWhite)
@@ -81,7 +81,7 @@ func set2DSq(path: String):
 		Notif.message("Failed to load file %s!" % path)
 		return
 	
-	saveData.sq3DPath = path
+	saveData.sq2DPath = path
 	if board is Board2D:
 		board.sq = tex
 	saveData.save()
@@ -119,6 +119,7 @@ func set2DBlack(path: String):
 		
 	if tex.size() < 3:
 		Notif.message("Could not find the correct files in %s!" % path)
+		return
 	if tex[0] == null or tex[1] == null or tex[2] == null:
 		Notif.message("Failed to load %s!" % path)
 		return

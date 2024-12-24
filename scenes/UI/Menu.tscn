@@ -42,7 +42,6 @@ script = ExtResource("1_co0ct")
 start = NodePath("Login")
 
 [node name="Login" type="VBoxContainer" parent="VTabContainer" node_paths=PackedStringArray("tabOnLogin", "button")]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 alignment = 1
@@ -400,6 +399,7 @@ text = "Create Custom Seek
 "
 
 [node name="Join" type="VBoxContainer" parent="VTabContainer" node_paths=PackedStringArray("button")]
+visible = false
 layout_mode = 2
 alignment = 1
 script = ExtResource("11_5g5h5")
@@ -634,10 +634,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 338.0
-offset_bottom = 152.0
+offset_left = -167.0
+offset_top = -74.0
+offset_right = 167.0
+offset_bottom = 74.0
 grow_horizontal = 2
 grow_vertical = 2
 columns = 2
@@ -710,6 +710,7 @@ popup/item_6/id = 6
 
 [node name="mirror" type="CheckButton" parent="VTabContainer/OldGames/HBoxContainer/Search/PopupPanel/GridContainer"]
 layout_mode = 2
+button_pressed = true
 text = "Mirror Search"
 
 [node name="Confirm" type="Button" parent="VTabContainer/OldGames/HBoxContainer/Search/PopupPanel/GridContainer"]

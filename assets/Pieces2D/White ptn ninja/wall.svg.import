@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bkiwmiw5su4sd"
-path="res://.godot/imported/cap.png-695044629a84f52ca6e32722fffe0265.ctex"
+uid="uid://c7osko4kdteba"
+path="res://.godot/imported/wall.svg-b451b8d7b893a0dff3dd78faa70a13e2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Pieces2D/White Standard/cap.png"
-dest_files=["res://.godot/imported/cap.png-695044629a84f52ca6e32722fffe0265.ctex"]
+source_file="res://assets/Pieces2D/White ptn ninja/wall.svg"
+dest_files=["res://.godot/imported/wall.svg-b451b8d7b893a0dff3dd78faa70a13e2.ctex"]
 
 [params]
 
@@ -32,3 +32,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

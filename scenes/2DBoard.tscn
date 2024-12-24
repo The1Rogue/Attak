@@ -1,29 +1,17 @@
-[gd_scene load_steps=10 format=3 uid="uid://mxvbujo17lyt"]
+[gd_scene load_steps=5 format=3 uid="uid://mxvbujo17lyt"]
 
 [ext_resource type="Script" path="res://src/BoardReps/2D/2DBoard.gd" id="1_485fe"]
 [ext_resource type="Texture2D" uid="uid://dbm7r0b1yi8y7" path="res://assets/Squares/sphere.png" id="2_883rs"]
-[ext_resource type="Texture2D" uid="uid://bkiwmiw5su4sd" path="res://assets/Pieces2D/White Standard/cap.png" id="3_1bmfs"]
-[ext_resource type="Texture2D" uid="uid://bl2cy6kdvchi5" path="res://assets/Pieces2D/White Standard/flat.png" id="4_774uj"]
-[ext_resource type="Texture2D" uid="uid://cp6saoe4b0nu" path="res://assets/Pieces2D/White Standard/wall.png" id="5_yyu00"]
-[ext_resource type="Texture2D" uid="uid://sxg2g4wvrxfk" path="res://assets/2D/textures/HQ/CapBlack.png" id="6_ulsqi"]
-[ext_resource type="Texture2D" uid="uid://bv50mt24yjjpp" path="res://assets/2D/textures/HQ/FlatBlack.png" id="7_8oxu8"]
 [ext_resource type="Shader" path="res://assets/2D/Highlight2D.gdshader" id="9_spr7x"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_m7t6u"]
 shader = ExtResource("9_spr7x")
 shader_parameter/outline_color = Color(0.266667, 0.701961, 0.513726, 1)
-shader_parameter/progress = 0.05
+shader_parameter/progress = 0.035
 
 [node name="2DBoard" type="Node2D"]
-texture_filter = 1
 script = ExtResource("1_485fe")
 heightOffset = 1.25
-pieceSize = 0.75
-WhiteCap = ExtResource("3_1bmfs")
-WhiteFlat = ExtResource("4_774uj")
-WhiteWall = ExtResource("5_yyu00")
-BlackCap = ExtResource("6_ulsqi")
-BlackFlat = ExtResource("7_8oxu8")
 highlightMaterial = SubResource("ShaderMaterial_m7t6u")
 
 [node name="Reserves" type="Node2D" parent="."]
