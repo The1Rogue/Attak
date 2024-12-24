@@ -74,9 +74,12 @@ func add(seek: SeekData, id: int):
 
 func remove(id: int):
 	if id in seeks:
-		if seeks[id].get_index() < bots.get_index():
+		var idx = seeks[id].get_index()
+		if idx < bots.get_index():
+			ratingsPlayers.remove_at(idx - 1)
 			count.x -= 1
 		else:
+			ratingsBots.remove_at(idx - bots.get_index() - 1)
 			count.y -= 1
 		button.text = " Join (%d + %d) " % [count.x, count.y]
 		remove_child(seeks[id])
