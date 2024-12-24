@@ -16,12 +16,16 @@ class_name GameUI
 
 @export var gameInfo: Label
 @export var ptnDisplay: GridContainer
+@export var ptnCurrent: Button
+@export var ptnLast: Button
+
 
 @export var criticalTime: int = 30
 var whiteCritical: bool = false
 var blackCritical: bool = false
 
 var i = 0
+var currentButton: Button
 
 static func timeString(sec: int) -> String:
 	return "%02d:%02d" % [sec / 60, sec % 60]
@@ -29,6 +33,7 @@ static func timeString(sec: int) -> String:
 
 func _ready() -> void:
 	GameLogic.setup.connect(setup)
+	GameLogic.viewState.connect(view)
 	GameLogic.move.connect(addPly)
 	GameLogic.undo.connect(removeLast)
 	GameLogic.end.connect(end)
@@ -102,11 +107,32 @@ func addPly(origin: Node, ply: Ply):
 		ptnDisplay.add_child(Control.new()) #empty filler to align things
 
 	var b = Button.new()
+	b.theme_type_variation = &"PlyButton"
 	b.text = ply.toPTN()
 	var c = i #this ensures the lambda expression works correctly
-	b.pressed.connect(func(): GameLogic.setView(c+1))
+	b.pressed.connect(GameLogic.setView.bind(c+1))
 	ptnDisplay.add_child(b)
 	i += 1
+	
+	ptnLast.text = " >| %d. %s " % [(ply.boardState.ply + 1) /2, b.text]
+	var conn = ptnLast.pressed.get_connections()
+	for con in conn: ptnLast.pressed.disconnect(con["callable"])
+	ptnLast.pressed.connect(GameLogic.setView.bind(c+1))
+
+
+
+func view(state: GameState):
+	var startPly = GameLogic.startState.ply
+	if currentButton != null:
+		currentButton.disabled = false
+	if state.ply == startPly:
+		ptnCurrent.text = "%d. " % ((state.ply + 1) /2)
+		currentButton = null
+	else:
+		var button = (state.ply + 1) / 2 + state.ply - 1 - startPly / 2 + startPly % 2 - startPly
+		currentButton = ptnDisplay.get_child(button)
+		currentButton.disabled = true
+		ptnCurrent.text = " %d. %s " % [(state.ply + 1) /2, currentButton.text]
 
 
 func removeLast():
@@ -120,6 +146,10 @@ func removeLast():
 	if c is Label:
 		ptnDisplay.remove_child(c)
 	i -= 1
+	ptnLast.text = " >| %d. %s " % [(GameLogic.currentPly() + 1) /2, ptnDisplay.get_child(-1).text]
+	var d = i
+	ptnLast.pressed.disconnect(ptnLast.pressed.get_connections()[0]["callable"])
+	ptnLast.pressed.connect(GameLogic.setView.bind(d))
 
 
 func undoRequest(origin: Node, revoke: bool):

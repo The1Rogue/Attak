@@ -10,13 +10,13 @@ void vertex() {
 void fragment() {
 	vec2 uv = UV * (1.0 + 2.0 * progress) - progress;
 	COLOR = texture(TEXTURE, uv);
-	
+
 	if (uv != clamp(uv, vec2(0), vec2(1)))
 		COLOR.a = 0.0;
-	
+
 	if (COLOR.a < 1.0){
 		COLOR.rgb = mix(outline_color, COLOR.rgb, COLOR.a);
-		
+
 		vec2 s = sign(.5 - UV);
 		if(uv.y >= 0.0 && uv.y <= 1.0)
 			COLOR.a += texture(TEXTURE, uv + vec2(s.x * progress, 0.0)).a;

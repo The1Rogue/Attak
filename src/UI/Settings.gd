@@ -15,14 +15,15 @@ var board: BoardLogic
 
 
 func loadFull(data: SettingData):
-	ProjectSettings.set_setting("rendering/environment/defaults/default_clear_color", data.bgColor)
+	RenderingServer.set_default_clear_color(data.bgColor)
 
-	$Board.current_tab = 0 if data.is2D else 1
-	#TODO load setting buttons for all settings
 
 
 func _ready() -> void:
 	saveData = SettingData.loadOrNew()
+	
+	$"GridContainer/BG".color = saveData.bgColor
+	$"GridContainer/BG".color_changed.connect(setBG)
 	
 	# 2D
 	$"Board/2D Board/Squares".setNoSignal(saveData.sq2DPath)
@@ -61,7 +62,14 @@ func _ready() -> void:
 	
 	loadFull(saveData)
 	setBoard(0 if saveData.is2D else 1)
+	$Board.current_tab = 0 if saveData.is2D else 1
 	$Board.tab_changed.connect(setBoard)
+
+
+func setBG(color: Color):
+	RenderingServer.set_default_clear_color(color)
+	saveData.bgColor = color
+	saveData.save()
 
 
 func setBoard(i: int):

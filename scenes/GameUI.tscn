@@ -5,13 +5,14 @@
 [ext_resource type="Texture2D" uid="uid://d2m550pgmw7ah" path="res://assets/UI/Draw.png" id="3_ij83d"]
 [ext_resource type="Texture2D" uid="uid://br4bmyueqd5rx" path="res://assets/UI/Resign.png" id="4_3jk82"]
 
-[node name="GameUI" type="VBoxContainer" node_paths=PackedStringArray("WhiteName", "WhiteTime", "BlackName", "BlackTime", "undoButton", "drawButton", "resignButton", "gameInfo", "ptnDisplay")]
+[node name="GameUI" type="VBoxContainer" node_paths=PackedStringArray("WhiteName", "WhiteTime", "BlackName", "BlackTime", "undoButton", "drawButton", "resignButton", "leftButton", "rightButton", "gameInfo", "ptnDisplay", "ptnCurrent", "ptnLast")]
 custom_minimum_size = Vector2(120, 0)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 alignment = 1
 script = ExtResource("1_dr7ju")
 WhiteName = NodePath("PlayerWhite")
@@ -21,8 +22,12 @@ BlackTime = NodePath("PlayerBlackTime")
 undoButton = NodePath("HBoxContainer/Undo")
 drawButton = NodePath("HBoxContainer/Draw")
 resignButton = NodePath("HBoxContainer/Resign")
+leftButton = NodePath("MobilePTN/HBoxContainer/Prev")
+rightButton = NodePath("MobilePTN/HBoxContainer/Next")
 gameInfo = NodePath("GameInfo")
-ptnDisplay = NodePath("ScrollContainer/PtnDisplay")
+ptnDisplay = NodePath("DesktopPTN/PtnDisplay")
+ptnCurrent = NodePath("MobilePTN/HBoxContainer/Current")
+ptnLast = NodePath("MobilePTN/HBoxContainer/Last")
 
 [node name="PlayerWhite" type="Label" parent="."]
 layout_mode = 2
@@ -76,13 +81,69 @@ layout_mode = 2
 size_flags_vertical = 1
 horizontal_alignment = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
+[node name="MobilePTN" type="Control" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MobilePTN"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+alignment = 1
+
+[node name="Control5" type="Control" parent="MobilePTN/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Prev" type="Button" parent="MobilePTN/HBoxContainer"]
+layout_mode = 2
+text = "
+<
+   "
+
+[node name="Control" type="Control" parent="MobilePTN/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Current" type="Button" parent="MobilePTN/HBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"PlyButton"
+disabled = true
+text = "-"
+
+[node name="Control2" type="Control" parent="MobilePTN/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Next" type="Button" parent="MobilePTN/HBoxContainer"]
+layout_mode = 2
+text = "
+>
+   "
+
+[node name="Control3" type="Control" parent="MobilePTN/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Last" type="Button" parent="MobilePTN/HBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"PlyButton"
+text = "-"
+
+[node name="Control4" type="Control" parent="MobilePTN/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DesktopPTN" type="ScrollContainer" parent="."]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="PtnDisplay" type="GridContainer" parent="ScrollContainer"]
+[node name="PtnDisplay" type="GridContainer" parent="DesktopPTN"]
 layout_mode = 2
 size_flags_vertical = 3
 columns = 3

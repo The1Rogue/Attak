@@ -10,5 +10,6 @@ func _ready():
 	ptnRegex.compile(rPTN)
 	playTakRegex.compile(rPlayTak)
 
+
 func isMobile():
 	return OS.has_feature("mobile") or OS.has_feature("web_android") or OS.has_feature("web_ios")

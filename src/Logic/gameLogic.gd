@@ -108,17 +108,17 @@ func doMove(origin: Node, ply: Ply):
 	else:
 		Notif.ping(Notif.move)
 	
-	if view == history.size():
-		view += 1
-		viewState.emit(ply.boardState)
-	history.append(ply)
-	
 	var i = ply.boardState.ply % 2
 	
 	timerWhite.paused = i == 1 or ply.boardState.win != GameState.ONGOING
 	timerBlack.paused = i == 0 or ply.boardState.win != GameState.ONGOING
 	
 	move.emit(origin, ply)
+	
+	if view == history.size():
+		view += 1
+		viewState.emit(ply.boardState)
+	history.append(ply)
 
 
 #handles undos in local games

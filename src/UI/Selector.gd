@@ -4,16 +4,21 @@ class_name Selector
 @onready var tabBar = $tabBar
 @export var start: Control
 
+@export var th: Theme
+
 var active: Control
 
 func _ready() -> void:
 	assert(start in get_children(), "start node is invalid!")
 	
+	
+	if Globals.isMobile():
+		th.default_font_size *= 4
+		th.set_font_size(&"font_size", &"TabButton", th.get_font_size(&"font_size", &"TabButton") * 4)
+	
 	tabBar.vertical = not Globals.isMobile()
 	
 	active = start
-	redraw()
-	tabBar.resized.connect(redraw)
 	for i in get_children():
 		i.visible = i == start or i == tabBar
 
@@ -38,7 +43,7 @@ func select(node: Control) -> void:
 	active = node
 
 
-func redraw():
+func _draw():
 	if tabBar.vertical:
 		tabBar.set_anchors_and_offsets_preset(PRESET_LEFT_WIDE)
 		for i in get_children():

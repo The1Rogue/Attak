@@ -121,9 +121,9 @@ static func loadMeshes(path: String) -> Array[Mesh]:
 		var flat
 		for i in files:
 			if i.begins_with("cap."):
-				cap = i.trim_suffix(".import")
+				cap = i.trim_suffix(".import").trim_suffix(".remap")
 			elif i.begins_with("flat."):
-				flat = i.trim_suffix(".import")
+				flat = i.trim_suffix(".import").trim_suffix(".remap")
 		if cap == null or flat == null: return []
 		return [load(path + "/" + cap), load(path + "/" + flat)]
 		
@@ -138,11 +138,11 @@ static func loadTextures(path: String) -> Array[Texture2D]:
 	var wall
 	for i in files:
 		if i.begins_with("cap."):
-			cap = i.trim_suffix(".import")
+			cap = i.trim_suffix(".import").trim_suffix(".remap")
 		elif i.begins_with("flat."):
-			flat = i.trim_suffix(".import")
+			flat = i.trim_suffix(".import").trim_suffix(".remap")
 		elif i.begins_with("wall."):
-			wall = i.trim_suffix(".import")
+			wall = i.trim_suffix(".import").trim_suffix(".remap")
 	if cap == null or flat == null or wall == null: return []
 	return [loadTexture(path+"/"+cap), loadTexture(path+"/"+flat), loadTexture(path+"/"+wall)]
 
