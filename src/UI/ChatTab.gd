@@ -45,8 +45,8 @@ func newChat(name: String, type: int = Chat.ROOM):
 
 func remove(room):
 	var idx = rooms[room].get_index()
-	remove_child(get_child(idx - 1))
-	remove_child(rooms[room])
+	list.remove_child(list.get_child(idx - 1))
+	list.remove_child(rooms[room])
 	rooms[room].queue_free()
 	rooms.erase(room)
 
