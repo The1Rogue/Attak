@@ -92,7 +92,8 @@ func clear():
 	count = Vector2i.ZERO
 	button.text = " Join (0) "
 	seeks.clear()
-
+	ratingsPlayers.clear()
+	ratingsBots.clear()
 
 func accept(id: int):
 	PlayTakI.acceptSeek(id)

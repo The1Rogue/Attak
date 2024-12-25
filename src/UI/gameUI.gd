@@ -127,7 +127,7 @@ func view(state: GameState):
 	if currentButton != null:
 		currentButton.disabled = false
 	if state.ply == startPly:
-		ptnCurrent.text = "%d. " % ((state.ply + 1) /2)
+		ptnCurrent.text = " %d. - " % ((state.ply + 1) /2)
 		currentButton = null
 	else:
 		var button = (state.ply + 1) / 2 + state.ply - 1 - startPly / 2 + startPly % 2 - startPly
@@ -149,7 +149,7 @@ func removeLast():
 	if c is Label:
 		ptnDisplay.remove_child(c)
 	i -= 1
-	ptnLast.text = " >| %d. %s " % [(GameLogic.currentPly() + 1) /2, ptnDisplay.get_child(-1).text]
+	ptnLast.text = " >> %d. %s " % [(GameLogic.currentPly() + 1) /2, ptnDisplay.get_child(-1).text] if i != 0 else " >> %d. - " % ((GameLogic.currentPly() + 1) /2)
 	var d = i
 	ptnLast.pressed.disconnect(ptnLast.pressed.get_connections()[0]["callable"])
 	ptnLast.pressed.connect(GameLogic.setView.bind(d))

@@ -13,6 +13,7 @@ var ratingList: Dictionary = {}
 var bots = []
 
 var pingtime: float = 0
+var t: float
 
 signal addSeek(seek: SeekData, id: int)
 signal removeSeek(id: int)
@@ -20,6 +21,7 @@ signal removeSeek(id: int)
 signal addGame(game: GameData, id: int)
 signal removeGame(id: int)
 
+signal login(username: String)
 signal logout
 signal ratingUpdate
 
@@ -58,6 +60,7 @@ func signIn(username: String, password: String) -> bool:
 		active = true
 		ChatTab.newChat("Global", Chat.GLOBAL)
 		print("successfully logged in as %s" % activeUsername)
+		login.emit(activeUsername)
 		return true
 	
 	print("failed to login")
@@ -68,11 +71,15 @@ func signIn(username: String, password: String) -> bool:
 
 func onLogout():
 	active = false
+
 	if socket.get_ready_state() == WebSocketPeer.STATE_OPEN:
 		socket.close()
-		while socket.get_ready_state() != WebSocketPeer.STATE_CLOSED:
-			await get_tree().create_timer(.1).timeout
-			socket.poll()
+
+	while socket.get_ready_state() != WebSocketPeer.STATE_CLOSED:
+		await get_tree().create_timer(.1).timeout
+		socket.poll()
+
+	
 	
 	logout.emit()
 	ChatTab.clear()
@@ -94,27 +101,45 @@ func getPacket() -> String:
 func _process(delta: float):
 	if not active: return
 	
-	pingtime += delta
-	if pingtime >= 30:
-		socket.send_text("PING")
-		pingtime -= 30
+	var nt = Time.get_unix_time_from_system()
 	
+	socket.poll()
+
 	var state = socket.get_ready_state()
 	if state != WebSocketPeer.STATE_OPEN:
 		var u = activeUsername
 		onLogout()
 		if socket.get_close_code() == -1:
-			Notif.message("You were disconnected")
-			return
+			print("disconnected. was idle for %fs" % (nt - t))
+			if (nt - t) > 30:
+				if not await signIn(u, activePass):
+					Notif.message("Disconnected Unexpectedly!", false)
+					return
+			else:
+				Notif.message("You were disconnected")
+				return
 		else:
-			print("websocket isnt open while it should be, trying to reconnect")
+			print("websocket closed with code %d, reason: %d | trying to reconnect" % [socket.get_close_code(), socket.get_close_reason()])
 			if not await signIn(u, activePass):
 				Notif.message("Disconnected Unexpectedly!", false)
 				return
 	
+	pingtime += nt - t
+	if pingtime >= 30:
+		socket.send_text("PING")
+		pingtime -= 30
+	
+	if nt - t > 1:
+		print("dt > 1! -> %fs" % (nt - t))
+	if delta > 1:
+		print("delta > 1! -> %fs" % delta)
+	
+	t = nt
+	
+	
 	var packet
 	while socket.get_available_packet_count():
-		packet = await getPacket()
+		packet = getPacket()
 		var data = packet.replace("#", " ").split(" ") #TODO BUG this will replace #'s in messages
 		match Array(data):
 			["GameList", "Add", var id, var pw, var pb, var size, var time, var inc, var komi, var flats, var caps, var unrated, var tournament, var triggerMove, var triggerAmount]:
@@ -236,7 +261,6 @@ func _process(delta: float):
 				print("Unparsed Message:")
 				print(packet)
 				
-	socket.poll()
 
 
 func parseRatings(result:int , response_code: int, header: PackedStringArray, body: PackedByteArray):

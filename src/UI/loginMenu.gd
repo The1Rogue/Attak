@@ -27,7 +27,8 @@ func _ready():
 	add_child(http)
 	
 	PlayTakI.ratingUpdate.connect(updateRating)
-	PlayTakI.logout.connect(logout)
+	PlayTakI.login.connect(onLogin)
+	PlayTakI.logout.connect(onLogout)
 	
 	userEntry.text_submitted.connect(passEntry.grab_focus)
 	passEntry.text_submitted.connect(submit)
@@ -49,27 +50,8 @@ func _ready():
 func signin(user:String, passw: String):
 	if not await PlayTakI.signIn(user, passw): return
 	
-	login.hide()
-	
-	settings.show()
-	var rating = PlayTakI.ratingList.get(PlayTakI.activeUsername, 1000)
-	
-	button.text = "%s (%d)" % [PlayTakI.activeUsername, rating]
-	get_parent().select(tabOnLogin)
-	
 	if user != "Guest" and remember.button_pressed:
 		ResourceSaver.save(Login.new(PlayTakI.activeUsername, passw), loginResource)
-
-	if user == "Guest": return
-	
-	http.request_completed.connect(setData)
-	http.request(RATINGS_URL % PlayTakI.activeUsername)
-	await http.request_completed
-	http.request_completed.disconnect(setData)
-	http.request_completed.connect(makeGraph)
-	http.request(GAMES_URL % PlayTakI.activeUsername)
-	await http.request_completed
-	http.request_completed.disconnect(makeGraph)
 
 
 func setData(result: int, response_code: int, header: PackedStringArray, body: PackedByteArray):
@@ -109,7 +91,27 @@ func submit():
 	passEntry.clear()
 
 
-func logout():
+func onLogin(username: String):
+	login.hide()
+	
+	settings.show()
+	var rating = PlayTakI.ratingList.get(username, 1000)
+	
+	button.text = "%s (%d)" % [username, rating]
+	get_parent().select(tabOnLogin)
+	
+	if username == "Guest": return
+	
+	http.request_completed.connect(setData)
+	http.request(RATINGS_URL % username)
+	await http.request_completed
+	http.request_completed.disconnect(setData)
+	http.request_completed.connect(makeGraph)
+	http.request(GAMES_URL % username)
+	await http.request_completed
+	http.request_completed.disconnect(makeGraph)
+
+func onLogout():
 	button.text = "Login"
 	
 	settings.hide()
