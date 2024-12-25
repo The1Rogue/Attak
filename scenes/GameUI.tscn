@@ -49,8 +49,9 @@ alignment = 1
 
 [node name="Undo" type="Button" parent="HBoxContainer"]
 texture_filter = 2
-custom_minimum_size = Vector2(75, 0)
+custom_minimum_size = Vector2(75, 60)
 layout_mode = 2
+size_flags_horizontal = 3
 theme_type_variation = &"GameUIButton"
 toggle_mode = true
 text = "Undo"
@@ -61,6 +62,7 @@ expand_icon = true
 texture_filter = 2
 custom_minimum_size = Vector2(75, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 theme_type_variation = &"GameUIButton"
 toggle_mode = true
 text = "Draw"
@@ -71,6 +73,7 @@ expand_icon = true
 texture_filter = 2
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 theme_type_variation = &"GameUIButton"
 text = "Resign"
 icon = ExtResource("4_3jk82")

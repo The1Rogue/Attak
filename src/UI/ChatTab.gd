@@ -15,6 +15,9 @@ func _ready() -> void:
 	get_parent().move_child.call_deferred(self, -1)
 	hide()
 
+func _draw():
+	list.custom_minimum_size.x = get_viewport_rect().size.y / 6
+	
 
 func toggle(visible: bool) -> void:
 	reddot.hide()
@@ -72,3 +75,14 @@ func parseMsg(room: String, user: String, msg: String):
 		if not rooms.has(room):
 			ChatTab.newChat(room, Chat.ROOM)
 		rooms[room].add_message(user, msg)
+
+const BOUND = 60
+func _input(event):
+	if event is InputEventMouseMotion and event.button_mask != 0:
+		if event.relative.abs().max_axis_index() == Vector2.AXIS_X:
+			if event.relative.x > 0:
+				if get_viewport_rect().size.x - event.position.x - event.relative.x < BOUND:
+					toggle(false)
+			else:
+				if get_viewport_rect().size.x - event.position.x + event.relative.x < BOUND:
+					toggle(true)
