@@ -54,7 +54,18 @@ var BlackWall: Texture2D:
 
 var pieces: Array[Piece2D] = []
 
-func setData(data: SettingData):	
+func _ready():
+	super()
+	get_viewport().size_changed.connect(resizeCam)
+
+
+func resizeCam():
+	var sizeLimit = Vector2(size * 16 + 48, size * 16 + 18)
+	var z: Vector2 = $Camera2D.get_viewport_rect().size / sizeLimit
+	$Camera2D.zoom = Vector2.ONE * min(z.x, z.y)
+
+
+func setData(data: SettingData):
 	var tex = data.white2D
 	WhiteCap = tex[0]
 	WhiteFlat = tex[1]
@@ -83,7 +94,9 @@ func makeBoard():
 	for i in get_children():
 		if i is Label: remove_child(i)
 	
-	$Camera2D.zoom = Vector2.ONE * (80 if OS.has_feature("mobile") else 55) /size # SHOULD BE 55 FOR DESKTOP
+	var sizeLimit = Vector2(size * 16 + 48, size * 16 + 18)
+	var z: Vector2 = $Camera2D.get_viewport_rect().size / sizeLimit
+	$Camera2D.zoom = Vector2.ONE * min(z.x, z.y)
 	
 	for i in size:
 		var l = Label.new()

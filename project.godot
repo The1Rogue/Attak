@@ -18,7 +18,6 @@ boot_splash/fullsize=false
 boot_splash/use_filter=false
 config/icon="res://assets/Attak.png"
 config/windows_native_icon="res://Attak.ico"
-run/main_scene.mobile="res://scenes/UI/MenuNew.tscn"
 
 [autoload]
 

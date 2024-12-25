@@ -763,7 +763,7 @@ theme_override_constants/separation = 0
 layout_mode = 2
 mouse_filter = 1
 theme_type_variation = &"TabButton"
-text = "Home"
+text = " Home "
 script = ExtResource("19_s1ous")
 
 [node name="SubTabs" type="BoxContainer" parent="VTabContainer/tabBar/Home"]
@@ -803,12 +803,12 @@ URL = "https://ustak.org/"
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"TabButton"
-text = "Board"
+text = " Board "
 
 [node name="Play" type="Button" parent="VTabContainer/tabBar"]
 layout_mode = 2
 theme_type_variation = &"TabButton"
-text = "Play"
+text = " Play "
 script = ExtResource("19_s1ous")
 
 [node name="SubTabs" type="VBoxContainer" parent="VTabContainer/tabBar/Play"]
@@ -842,7 +842,7 @@ text = "Scratch"
 [node name="Watch" type="Button" parent="VTabContainer/tabBar"]
 layout_mode = 2
 theme_type_variation = &"TabButton"
-text = "Watch"
+text = " Watch "
 script = ExtResource("19_s1ous")
 
 [node name="SubTabs" type="VBoxContainer" parent="VTabContainer/tabBar/Watch"]
