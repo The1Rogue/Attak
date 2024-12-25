@@ -114,11 +114,12 @@ func addPly(origin: Node, ply: Ply):
 	ptnDisplay.add_child(b)
 	i += 1
 	
+	#(ptnDisplay.get_parent() as ScrollContainer).scroll_vertical = (ptnDisplay.get_parent() as ScrollContainer).get_v_scroll_bar().max_value
+	
 	ptnLast.text = " >| %d. %s " % [(ply.boardState.ply + 1) /2, b.text]
 	var conn = ptnLast.pressed.get_connections()
 	for con in conn: ptnLast.pressed.disconnect(con["callable"])
 	ptnLast.pressed.connect(GameLogic.setView.bind(c+1))
-
 
 
 func view(state: GameState):
@@ -133,6 +134,8 @@ func view(state: GameState):
 		currentButton = ptnDisplay.get_child(button)
 		currentButton.disabled = true
 		ptnCurrent.text = " %d. %s " % [(state.ply + 1) /2, currentButton.text]
+		await get_tree().process_frame #incase the button was just added this frame
+		ptnDisplay.get_parent().ensure_control_visible(currentButton)
 
 
 func removeLast():
