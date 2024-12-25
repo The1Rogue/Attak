@@ -116,7 +116,7 @@ func addPly(origin: Node, ply: Ply):
 	
 	#(ptnDisplay.get_parent() as ScrollContainer).scroll_vertical = (ptnDisplay.get_parent() as ScrollContainer).get_v_scroll_bar().max_value
 	
-	ptnLast.text = " >| %d. %s " % [(ply.boardState.ply + 1) /2, b.text]
+	ptnLast.text = " >> %d. %s " % [(ply.boardState.ply + 1) /2, b.text]
 	var conn = ptnLast.pressed.get_connections()
 	for con in conn: ptnLast.pressed.disconnect(con["callable"])
 	ptnLast.pressed.connect(GameLogic.setView.bind(c+1))

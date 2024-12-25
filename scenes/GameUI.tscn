@@ -93,48 +93,32 @@ anchor_right = 1.0
 grow_horizontal = 2
 alignment = 1
 
-[node name="Control5" type="Control" parent="MobilePTN/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
 [node name="Prev" type="Button" parent="MobilePTN/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 text = "
 <
    "
 
-[node name="Control" type="Control" parent="MobilePTN/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
 [node name="Current" type="Button" parent="MobilePTN/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 theme_type_variation = &"PlyButton"
 disabled = true
-text = "-"
-
-[node name="Control2" type="Control" parent="MobilePTN/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
+text = "0. -"
 
 [node name="Next" type="Button" parent="MobilePTN/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 text = "
 >
    "
 
-[node name="Control3" type="Control" parent="MobilePTN/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
 [node name="Last" type="Button" parent="MobilePTN/HBoxContainer"]
 layout_mode = 2
-theme_type_variation = &"PlyButton"
-text = "-"
-
-[node name="Control4" type="Control" parent="MobilePTN/HBoxContainer"]
-layout_mode = 2
 size_flags_horizontal = 3
+theme_type_variation = &"PlyButton"
+text = ">> 0. -"
 
 [node name="DesktopPTN" type="ScrollContainer" parent="."]
 visible = false

@@ -4,6 +4,8 @@ class_name Board2D
 @onready var board = $Board
 @onready var reserves = $Reserves
 
+@onready var cam = $Camera2D
+
 @export var selectionHeight: float = 8
 @export var heightOffset: float = 2
 
@@ -61,8 +63,8 @@ func _ready():
 
 func resizeCam():
 	var sizeLimit = Vector2(size * 16 + 48, size * 16 + 18)
-	var z: Vector2 = $Camera2D.get_viewport_rect().size / sizeLimit
-	$Camera2D.zoom = Vector2.ONE * min(z.x, z.y)
+	var z: Vector2 = cam.get_viewport_rect().size / sizeLimit
+	cam.zoom = Vector2.ONE * min(z.x, z.y)
 
 
 func setData(data: SettingData):

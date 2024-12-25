@@ -62,20 +62,21 @@ func signin(user:String, passw: String):
 
 	if user == "Guest": return
 	
-	http.request_completed.connect(makeGraph)
-	http.request(GAMES_URL % PlayTakI.activeUsername)
-	await http.request_completed
-	http.request_completed.disconnect(makeGraph)
 	http.request_completed.connect(setData)
 	http.request(RATINGS_URL % PlayTakI.activeUsername)
 	await http.request_completed
 	http.request_completed.disconnect(setData)
+	http.request_completed.connect(makeGraph)
+	http.request(GAMES_URL % PlayTakI.activeUsername)
+	await http.request_completed
+	http.request_completed.disconnect(makeGraph)
 
 
 func setData(result: int, response_code: int, header: PackedStringArray, body: PackedByteArray):
 	var json: Dictionary = JSON.parse_string(body.get_string_from_utf8()) #TODO error handling
 	
 	nameLabel.text = "%s (%d)" % [json["name"], json["rating"]]
+	nameLabel.add_theme_font_size_override(&"font_size", 160 if Globals.isMobile() else 80)
 	gamesLabel.text = "%d games played" % json["ratedgames"]
 
 
