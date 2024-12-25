@@ -42,7 +42,7 @@ window/handheld/orientation=1
 
 [gui]
 
-theme/custom="res://baseTheme.tres"
+theme/custom="res://assets/Theme/baseTheme.tres"
 
 [importer_defaults]
 

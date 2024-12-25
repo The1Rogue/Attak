@@ -10,11 +10,11 @@ const playtakFlat = "res://assets/3D/PlayTak/flat.obj"
 static var DA: DirAccess = DirAccess.open("res://")
 
 @export_category("Global")
-@export var bgColor: Color = Color("21232c")
+@export var bgColor: Color = Color("222a61")
 @export var is2D: bool = false
 
 @export_category("2D")
-@export var sq2DPath: String = "res://assets/Squares/standard.png"
+@export var sq2DPath: String = "res://assets/Squares/Standard.svg"
 var sq2D: Texture2D:
 	get: return loadTexture(sq2DPath)
 	set(value): sq2DPath = value.resource_path 
@@ -38,7 +38,7 @@ var black2D: Array[Texture2D]:
 @export var pieceScale2D: float = .75
 
 @export_category("3D")
-@export var sq3DPath: String = "res://assets/Squares/standard.png"
+@export var sq3DPath: String = "res://assets/Squares/Standard.svg"
 var sq3D: Texture2D:
 	get: return loadTexture(sq3DPath)
 	set(value): sq3DPath = value.resource_path 

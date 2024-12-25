@@ -1,7 +1,7 @@
 [gd_scene load_steps=24 format=3 uid="uid://blnwws40ddesf"]
 
 [ext_resource type="Script" path="res://src/UI/Selector.gd" id="1_co0ct"]
-[ext_resource type="Theme" uid="uid://3w4qd4ooj08t" path="res://baseTheme.tres" id="2_3pers"]
+[ext_resource type="Theme" uid="uid://3w4qd4ooj08t" path="res://assets/Theme/baseTheme.tres" id="2_3pers"]
 [ext_resource type="Script" path="res://src/UI/loginMenu.gd" id="2_n5doj"]
 [ext_resource type="Script" path="res://src/UI/Settings.gd" id="3_2coyu"]
 [ext_resource type="Script" path="res://src/UI/graph.gd" id="3_52c02"]
@@ -650,10 +650,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 338.0
-offset_bottom = 152.0
+offset_left = -167.0
+offset_top = -74.0
+offset_right = 167.0
+offset_bottom = 74.0
 grow_horizontal = 2
 grow_vertical = 2
 columns = 2

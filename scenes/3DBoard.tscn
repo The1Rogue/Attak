@@ -1,8 +1,8 @@
 [gd_scene load_steps=14 format=3 uid="uid://c4esmjnf630vc"]
 
 [ext_resource type="Script" path="res://src/BoardReps/3D/3DBoard.gd" id="2_4p11y"]
+[ext_resource type="Texture2D" uid="uid://dak6fg4nhw1h4" path="res://assets/Squares/Standard.svg" id="3_kh5br"]
 [ext_resource type="Shader" path="res://assets/3D/Highlight3D.gdshader" id="7_fpqoa"]
-[ext_resource type="Texture2D" uid="uid://bp2lq3nfor3hk" path="res://assets/Squares/standard.png" id="7_uaha4"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ood11"]
 
@@ -38,7 +38,7 @@ material = SubResource("ORMMaterial3D_1i0kw")
 size = Vector3(7, 0.3, 7)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6pysb"]
-albedo_texture = ExtResource("7_uaha4")
+albedo_texture = ExtResource("3_kh5br")
 uv1_triplanar = true
 texture_filter = 0
 

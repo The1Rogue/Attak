@@ -18,9 +18,6 @@ func _draw():
 		Board.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 		$GameUI/MobilePTN.show()
 		$GameUI/DesktopPTN.hide()
-		#UI.get_child(4).get_child(0).mouse_filter = MOUSE_FILTER_IGNORE
-		#UI.get_child(4).mouse_filter = MOUSE_FILTER_IGNORE
-		#UI.mouse_filter = MOUSE_FILTER_IGNORE
 		
 	else:
 		UI.set_anchors_and_offsets_preset(PRESET_RIGHT_WIDE)
