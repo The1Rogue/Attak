@@ -94,9 +94,7 @@ func makeBoard():
 	for i in get_children():
 		if i is Label: remove_child(i)
 	
-	var sizeLimit = Vector2(size * 16 + 48, size * 16 + 18)
-	var z: Vector2 = $Camera2D.get_viewport_rect().size / sizeLimit
-	$Camera2D.zoom = Vector2.ONE * min(z.x, z.y)
+	resizeCam()
 	
 	for i in size:
 		var l = Label.new()
