@@ -84,6 +84,7 @@ func setData(data: SettingData):
 		await self.ready
 	sq = data.sq2D
 
+
 func makeBoard():
 	if sq != null:
 		board.region_rect.size = Vector2.ONE * size * sq.get_height()
@@ -98,12 +99,13 @@ func makeBoard():
 	
 	resizeCam()
 	
+	
 	for i in size:
 		var l = Label.new()
 		l.text = str(i+1)
 		l.add_theme_font_size_override(&"font_size", 32)
 		l.scale = Vector2.ONE * .2
-		l.position = Vector2(-16 * size/2.0 - 4, 16 * (size/2.0 - i) - 8)
+		l.position = Vector2(-16 * size/2.0 - 4, 16 * (size/2.0 - i - .5) + 1)
 		l.position.y -= l.size.y * l.scale.y
 		add_child(l)
 
@@ -111,7 +113,7 @@ func makeBoard():
 		l.text = char(i + 65)
 		l.add_theme_font_size_override(&"font_size", 32)
 		l.scale = Vector2.ONE * .2
-		l.position = Vector2(8 - 16 * (size/2.0 - i), 16 * size/2.0 + 1)
+		l.position = Vector2(- 16 * (size/2.0 - i - .5), 16 * size/2.0)
 		l.position.x -= l.size.x * l.scale.x
 		add_child(l)
 	

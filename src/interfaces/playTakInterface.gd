@@ -129,13 +129,7 @@ func _process(delta: float):
 		socket.send_text("PING")
 		pingtime -= 30
 	
-	if nt - t > 1:
-		print("dt > 1! -> %fs" % (nt - t))
-	if delta > 1:
-		print("delta > 1! -> %fs" % delta)
-	
 	t = nt
-	
 	
 	var packet
 	while socket.get_available_packet_count():
