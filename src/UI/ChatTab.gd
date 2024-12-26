@@ -28,8 +28,10 @@ func toggle(visible: bool) -> void:
 func select(chat: Chat):
 	if active != null:
 		active.hide()
+		list.get_child(active.get_index()-1).disabled = false
 	active = chat
 	chat.show()
+	list.get_child(chat.get_index()-1).disabled = true
 
 
 func newChat(name: String, type: int = Chat.ROOM):
@@ -44,6 +46,8 @@ func newChat(name: String, type: int = Chat.ROOM):
 	list.add_child(chat)
 	chat.hide()
 	rooms[name] = chat
+	if active == null:
+		select(chat)
 
 
 func remove(room):
@@ -76,13 +80,17 @@ func parseMsg(room: String, user: String, msg: String):
 			ChatTab.newChat(room, Chat.ROOM)
 		rooms[room].add_message(user, msg)
 
-const BOUND = 60
+
+const BOUND = 120
 func _input(event):
-	if event is InputEventMouseMotion and event.button_mask != 0:
+	if event is InputEventScreenDrag:
 		if event.relative.abs().max_axis_index() == Vector2.AXIS_X:
 			if event.relative.x > 0:
 				if get_viewport_rect().size.x - event.position.x - event.relative.x < BOUND:
 					toggle(false)
+					get_viewport().set_input_as_handled()
 			else:
 				if get_viewport_rect().size.x - event.position.x + event.relative.x < BOUND:
 					toggle(true)
+					get_viewport().set_input_as_handled()
+					

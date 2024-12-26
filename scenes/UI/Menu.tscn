@@ -24,16 +24,7 @@
 [ext_resource type="Script" path="res://src/UI/ExtendableTab.gd" id="19_s1ous"]
 [ext_resource type="Script" path="res://src/UI/URLButton.gd" id="20_fuxcv"]
 
-[node name="Control" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="VTabContainer" type="Container" parent="." node_paths=PackedStringArray("start")]
-layout_mode = 1
+[node name="VTabContainer" type="Container" node_paths=PackedStringArray("start")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -45,7 +36,7 @@ script = ExtResource("1_co0ct")
 start = NodePath("Login")
 th = ExtResource("2_3pers")
 
-[node name="Login" type="VBoxContainer" parent="VTabContainer" node_paths=PackedStringArray("tabOnLogin", "button")]
+[node name="Login" type="VBoxContainer" parent="." node_paths=PackedStringArray("tabOnLogin", "button")]
 layout_mode = 2
 size_flags_horizontal = 4
 alignment = 1
@@ -53,53 +44,53 @@ script = ExtResource("2_n5doj")
 tabOnLogin = NodePath("../Board")
 button = NodePath("../tabBar/Home/SubTabs/Profile")
 
-[node name="Menu" type="MarginContainer" parent="VTabContainer/Login"]
+[node name="Menu" type="MarginContainer" parent="Login"]
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="Login" type="VBoxContainer" parent="VTabContainer/Login/Menu"]
+[node name="Login" type="VBoxContainer" parent="Login/Menu"]
 layout_mode = 2
 
-[node name="User" type="LineEdit" parent="VTabContainer/Login/Menu/Login"]
+[node name="User" type="LineEdit" parent="Login/Menu/Login"]
 layout_mode = 2
 placeholder_text = "Username"
 
-[node name="Pass" type="LineEdit" parent="VTabContainer/Login/Menu/Login"]
+[node name="Pass" type="LineEdit" parent="Login/Menu/Login"]
 layout_mode = 2
 placeholder_text = "Password"
 secret = true
 
-[node name="Remember" type="CheckBox" parent="VTabContainer/Login/Menu/Login"]
+[node name="Remember" type="CheckBox" parent="Login/Menu/Login"]
 layout_mode = 2
 button_pressed = true
 text = " Remember Me  "
 
-[node name="Button" type="Button" parent="VTabContainer/Login/Menu/Login"]
+[node name="Button" type="Button" parent="Login/Menu/Login"]
 layout_mode = 2
 text = "Login"
 
-[node name="Settings" type="VBoxContainer" parent="VTabContainer/Login/Menu"]
+[node name="Settings" type="VBoxContainer" parent="Login/Menu"]
 visible = false
 layout_mode = 2
 
-[node name="Logout" type="Button" parent="VTabContainer/Login/Menu/Settings"]
+[node name="Logout" type="Button" parent="Login/Menu/Settings"]
 layout_mode = 2
 size_flags_horizontal = 8
 text = "Logout
 "
 
-[node name="Name" type="Label" parent="VTabContainer/Login/Menu/Settings"]
+[node name="Name" type="Label" parent="Login/Menu/Settings"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 64
 
-[node name="Games" type="Label" parent="VTabContainer/Login/Menu/Settings"]
+[node name="Games" type="Label" parent="Login/Menu/Settings"]
 layout_mode = 2
 
-[node name="Graph" type="Panel" parent="VTabContainer/Login/Menu/Settings"]
+[node name="Graph" type="Panel" parent="Login/Menu/Settings"]
 layout_mode = 2
 script = ExtResource("3_52c02")
 
-[node name="Settings" type="VBoxContainer" parent="VTabContainer" node_paths=PackedStringArray("boardHolder")]
+[node name="Settings" type="VBoxContainer" parent="." node_paths=PackedStringArray("boardHolder")]
 visible = false
 layout_mode = 2
 alignment = 1
@@ -108,48 +99,48 @@ board3D = ExtResource("4_l2ddi")
 board2D = ExtResource("5_b70kj")
 boardHolder = NodePath("../Board/Board/SubViewport")
 
-[node name="GridContainer" type="GridContainer" parent="VTabContainer/Settings"]
+[node name="GridContainer" type="GridContainer" parent="Settings"]
 layout_mode = 2
 columns = 2
 
-[node name="Label" type="Label" parent="VTabContainer/Settings/GridContainer"]
+[node name="Label" type="Label" parent="Settings/GridContainer"]
 layout_mode = 2
 text = "Background Color: "
 
-[node name="BG" type="ColorPickerButton" parent="VTabContainer/Settings/GridContainer"]
+[node name="BG" type="ColorPickerButton" parent="Settings/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 edit_alpha = false
 
-[node name="Board" type="TabContainer" parent="VTabContainer/Settings"]
+[node name="Board" type="TabContainer" parent="Settings"]
 layout_mode = 2
 tab_alignment = 1
 current_tab = 1
 
-[node name="2D Board" type="VBoxContainer" parent="VTabContainer/Settings/Board"]
+[node name="2D Board" type="VBoxContainer" parent="Settings/Board"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="Squares" type="GridContainer" parent="VTabContainer/Settings/Board/2D Board"]
+[node name="Squares" type="GridContainer" parent="Settings/Board/2D Board"]
 layout_mode = 2
 script = ExtResource("6_vmbxg")
 path = "res://assets/Squares/"
 label = "Squares"
 
-[node name="White" type="GridContainer" parent="VTabContainer/Settings/Board/2D Board"]
+[node name="White" type="GridContainer" parent="Settings/Board/2D Board"]
 layout_mode = 2
 script = ExtResource("6_vmbxg")
 path = "res://assets/Pieces2D/"
 label = "White Pieces"
 
-[node name="Black" type="GridContainer" parent="VTabContainer/Settings/Board/2D Board"]
+[node name="Black" type="GridContainer" parent="Settings/Board/2D Board"]
 layout_mode = 2
 script = ExtResource("6_vmbxg")
 path = "res://assets/Pieces2D/"
 label = "Black Pieces"
 
-[node name="PieceSize" type="GridContainer" parent="VTabContainer/Settings/Board/2D Board"]
+[node name="PieceSize" type="GridContainer" parent="Settings/Board/2D Board"]
 layout_mode = 2
 script = ExtResource("7_k3e5v")
 min = 0.3
@@ -157,36 +148,36 @@ max = 1.0
 increment = 0.01
 label = "Piece Size"
 
-[node name="3D Board" type="VBoxContainer" parent="VTabContainer/Settings/Board"]
+[node name="3D Board" type="VBoxContainer" parent="Settings/Board"]
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="Squares" type="GridContainer" parent="VTabContainer/Settings/Board/3D Board"]
+[node name="Squares" type="GridContainer" parent="Settings/Board/3D Board"]
 layout_mode = 2
 script = ExtResource("6_vmbxg")
 path = "res://assets/Squares/"
 label = "Squares"
 
-[node name="White" type="GridContainer" parent="VTabContainer/Settings/Board/3D Board"]
+[node name="White" type="GridContainer" parent="Settings/Board/3D Board"]
 layout_mode = 2
 script = ExtResource("6_vmbxg")
 path = "res://assets/Pieces3D/"
 label = "White Pieces"
 
-[node name="Black" type="GridContainer" parent="VTabContainer/Settings/Board/3D Board"]
+[node name="Black" type="GridContainer" parent="Settings/Board/3D Board"]
 layout_mode = 2
 script = ExtResource("6_vmbxg")
 path = "res://assets/Pieces3D/"
 label = "Black Pieces"
 
-[node name="WallAngle" type="GridContainer" parent="VTabContainer/Settings/Board/3D Board"]
+[node name="WallAngle" type="GridContainer" parent="Settings/Board/3D Board"]
 layout_mode = 2
 script = ExtResource("7_k3e5v")
 max = 90.0
 increment = 1.0
 label = "Wall Angle"
 
-[node name="PieceSize" type="GridContainer" parent="VTabContainer/Settings/Board/3D Board"]
+[node name="PieceSize" type="GridContainer" parent="Settings/Board/3D Board"]
 layout_mode = 2
 script = ExtResource("7_k3e5v")
 min = 0.3
@@ -194,7 +185,7 @@ max = 1.0
 increment = 0.01
 label = "Piece Size"
 
-[node name="FlatHeight" type="GridContainer" parent="VTabContainer/Settings/Board/3D Board"]
+[node name="FlatHeight" type="GridContainer" parent="Settings/Board/3D Board"]
 layout_mode = 2
 script = ExtResource("7_k3e5v")
 min = 0.05
@@ -202,7 +193,7 @@ max = 0.5
 increment = 0.01
 label = "Piece Height"
 
-[node name="CapHeight" type="GridContainer" parent="VTabContainer/Settings/Board/3D Board"]
+[node name="CapHeight" type="GridContainer" parent="Settings/Board/3D Board"]
 layout_mode = 2
 script = ExtResource("7_k3e5v")
 min = 0.4
@@ -210,26 +201,26 @@ max = 2.0
 increment = 0.01
 label = "Cap Height"
 
-[node name="Board" type="Container" parent="VTabContainer"]
+[node name="Board" type="Container" parent="."]
 visible = false
 layout_mode = 2
 script = ExtResource("8_c5sep")
 
-[node name="Board" type="SubViewportContainer" parent="VTabContainer/Board"]
+[node name="Board" type="SubViewportContainer" parent="Board"]
 layout_mode = 2
 size_flags_horizontal = 3
 stretch = true
 
-[node name="SubViewport" type="SubViewport" parent="VTabContainer/Board/Board"]
+[node name="SubViewport" type="SubViewport" parent="Board/Board"]
 handle_input_locally = false
 physics_object_picking = true
 size = Vector2i(2, 2)
 render_target_update_mode = 0
 
-[node name="GameUI" parent="VTabContainer/Board" instance=ExtResource("9_6h3q2")]
+[node name="GameUI" parent="Board" instance=ExtResource("9_6h3q2")]
 layout_mode = 2
 
-[node name="New" type="VBoxContainer" parent="VTabContainer" node_paths=PackedStringArray("opponent", "color", "options", "confirmStandard", "type", "sizeCustom", "komi", "time", "inc", "trigger", "amount", "confirmCustom")]
+[node name="New" type="VBoxContainer" parent="." node_paths=PackedStringArray("opponent", "color", "options", "confirmStandard", "type", "sizeCustom", "komi", "time", "inc", "trigger", "amount", "confirmCustom")]
 visible = false
 layout_mode = 2
 alignment = 1
@@ -247,25 +238,25 @@ trigger = NodePath("GridContainer/Trigger2")
 amount = NodePath("GridContainer/Extra2")
 confirmCustom = NodePath("Button2")
 
-[node name="Opponent_Color" type="GridContainer" parent="VTabContainer/New"]
+[node name="Opponent_Color" type="GridContainer" parent="New"]
 layout_mode = 2
 columns = 2
 
-[node name="Label" type="Label" parent="VTabContainer/New/Opponent_Color"]
+[node name="Label" type="Label" parent="New/Opponent_Color"]
 layout_mode = 2
 text = "Opponent: "
 
-[node name="Opponent" type="LineEdit" parent="VTabContainer/New/Opponent_Color"]
+[node name="Opponent" type="LineEdit" parent="New/Opponent_Color"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Anyone"
 
-[node name="Label2" type="Label" parent="VTabContainer/New/Opponent_Color"]
+[node name="Label2" type="Label" parent="New/Opponent_Color"]
 layout_mode = 2
 text = "My Color:"
 
-[node name="OptionButton" type="OptionButton" parent="VTabContainer/New/Opponent_Color"]
+[node name="OptionButton" type="OptionButton" parent="New/Opponent_Color"]
 layout_mode = 2
 selected = 0
 allow_reselect = true
@@ -276,15 +267,15 @@ popup/item_1/id = 1
 popup/item_2/text = "Black"
 popup/item_2/id = 2
 
-[node name="HSeparator" type="HSeparator" parent="VTabContainer/New"]
+[node name="HSeparator" type="HSeparator" parent="New"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VTabContainer/New"]
+[node name="Label" type="Label" parent="New"]
 layout_mode = 2
 size_flags_vertical = 1
 text = "Presets:"
 
-[node name="Presets" type="ItemList" parent="VTabContainer/New"]
+[node name="Presets" type="ItemList" parent="New"]
 layout_mode = 2
 auto_height = true
 item_count = 8
@@ -297,28 +288,28 @@ item_5/text = "League Game"
 item_6/text = "Beginner Tourney"
 item_7/text = "Intermediate Tourney"
 
-[node name="Button" type="Button" parent="VTabContainer/New"]
+[node name="Button" type="Button" parent="New"]
 layout_mode = 2
 text = "Create Seek"
 
-[node name="HSeparator2" type="HSeparator" parent="VTabContainer/New"]
+[node name="HSeparator2" type="HSeparator" parent="New"]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="VTabContainer/New"]
+[node name="Label2" type="Label" parent="New"]
 layout_mode = 2
 size_flags_vertical = 1
 text = "Custom Settings:"
 
-[node name="GridContainer" type="GridContainer" parent="VTabContainer/New"]
+[node name="GridContainer" type="GridContainer" parent="New"]
 layout_mode = 2
 theme_override_constants/h_separation = 20
 columns = 4
 
-[node name="Type" type="Label" parent="VTabContainer/New/GridContainer"]
+[node name="Type" type="Label" parent="New/GridContainer"]
 layout_mode = 2
 text = "Game Type:"
 
-[node name="Type2" type="OptionButton" parent="VTabContainer/New/GridContainer"]
+[node name="Type2" type="OptionButton" parent="New/GridContainer"]
 layout_mode = 2
 selected = 0
 allow_reselect = true
@@ -329,11 +320,11 @@ popup/item_1/id = 1
 popup/item_2/text = "Unrated"
 popup/item_2/id = 2
 
-[node name="Size" type="Label" parent="VTabContainer/New/GridContainer"]
+[node name="Size" type="Label" parent="New/GridContainer"]
 layout_mode = 2
 text = "Size:"
 
-[node name="Size2" type="OptionButton" parent="VTabContainer/New/GridContainer"]
+[node name="Size2" type="OptionButton" parent="New/GridContainer"]
 layout_mode = 2
 selected = 0
 allow_reselect = true
@@ -351,70 +342,70 @@ popup/item_4/id = 7
 popup/item_5/text = "8x8"
 popup/item_5/id = 8
 
-[node name="Komi" type="Label" parent="VTabContainer/New/GridContainer"]
+[node name="Komi" type="Label" parent="New/GridContainer"]
 layout_mode = 2
 text = "Komi:"
 
-[node name="Komi2" type="SpinBox" parent="VTabContainer/New/GridContainer"]
+[node name="Komi2" type="SpinBox" parent="New/GridContainer"]
 layout_mode = 2
 max_value = 4.0
 step = 0.5
 value = 2.0
 custom_arrow_step = 0.5
 
-[node name="Filler" type="Control" parent="VTabContainer/New/GridContainer"]
+[node name="Filler" type="Control" parent="New/GridContainer"]
 layout_mode = 2
 
-[node name="Filler2" type="Control" parent="VTabContainer/New/GridContainer"]
+[node name="Filler2" type="Control" parent="New/GridContainer"]
 layout_mode = 2
 
-[node name="Time" type="Label" parent="VTabContainer/New/GridContainer"]
+[node name="Time" type="Label" parent="New/GridContainer"]
 layout_mode = 2
 text = "Time:
 "
 
-[node name="Time2" type="SpinBox" parent="VTabContainer/New/GridContainer"]
+[node name="Time2" type="SpinBox" parent="New/GridContainer"]
 layout_mode = 2
 min_value = 1.0
 value = 15.0
 suffix = "min"
 
-[node name="Incr" type="Label" parent="VTabContainer/New/GridContainer"]
+[node name="Incr" type="Label" parent="New/GridContainer"]
 layout_mode = 2
 text = "Increment:"
 
-[node name="Incr2" type="SpinBox" parent="VTabContainer/New/GridContainer"]
+[node name="Incr2" type="SpinBox" parent="New/GridContainer"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 step = 5.0
 value = 10.0
 suffix = "sec"
 
-[node name="Trigger" type="Label" parent="VTabContainer/New/GridContainer"]
+[node name="Trigger" type="Label" parent="New/GridContainer"]
 layout_mode = 2
 text = "Extra Time Trigger:"
 
-[node name="Trigger2" type="SpinBox" parent="VTabContainer/New/GridContainer"]
+[node name="Trigger2" type="SpinBox" parent="New/GridContainer"]
 layout_mode = 2
 max_value = 60.0
 step = 5.0
 prefix = "move"
 
-[node name="Extra" type="Label" parent="VTabContainer/New/GridContainer"]
+[node name="Extra" type="Label" parent="New/GridContainer"]
 layout_mode = 2
 text = "Extra Time"
 
-[node name="Extra2" type="SpinBox" parent="VTabContainer/New/GridContainer"]
+[node name="Extra2" type="SpinBox" parent="New/GridContainer"]
 layout_mode = 2
 max_value = 60.0
 suffix = "min"
 
-[node name="Button2" type="Button" parent="VTabContainer/New"]
+[node name="Button2" type="Button" parent="New"]
 layout_mode = 2
 text = "Create Custom Seek
 "
 
-[node name="Join" type="VBoxContainer" parent="VTabContainer" node_paths=PackedStringArray("button")]
+[node name="Join" type="VBoxContainer" parent="." node_paths=PackedStringArray("button")]
 visible = false
 layout_mode = 2
 alignment = 1
@@ -424,24 +415,24 @@ iconBlack = ExtResource("12_uoku6")
 iconWhite = ExtResource("13_0jqqh")
 iconBoth = ExtResource("14_8fhho")
 
-[node name="Players" type="Label" parent="VTabContainer/Join"]
+[node name="Players" type="Label" parent="Join"]
 layout_mode = 2
 text = "Players:"
 
-[node name="HSeparator" type="HSeparator" parent="VTabContainer/Join"]
+[node name="HSeparator" type="HSeparator" parent="Join"]
 layout_mode = 2
 
-[node name="Bots" type="Label" parent="VTabContainer/Join"]
+[node name="Bots" type="Label" parent="Join"]
 layout_mode = 2
 text = "Bots:"
 
-[node name="TEI" type="VBoxContainer" parent="VTabContainer"]
+[node name="TEI" type="VBoxContainer" parent="."]
 visible = false
 layout_mode = 2
 alignment = 1
 script = ExtResource("15_4x6hv")
 
-[node name="FileDialog" type="FileDialog" parent="VTabContainer/TEI"]
+[node name="FileDialog" type="FileDialog" parent="TEI"]
 auto_translate_mode = 1
 title = "Open a File"
 initial_position = 2
@@ -450,28 +441,28 @@ ok_button_text = "Open"
 file_mode = 0
 access = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VTabContainer/TEI"]
+[node name="HBoxContainer" type="HBoxContainer" parent="TEI"]
 layout_mode = 2
 
-[node name="LineEdit" type="LineEdit" parent="VTabContainer/TEI/HBoxContainer"]
+[node name="LineEdit" type="LineEdit" parent="TEI/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "/"
 
-[node name="Button" type="Button" parent="VTabContainer/TEI/HBoxContainer"]
+[node name="Button" type="Button" parent="TEI/HBoxContainer"]
 layout_mode = 2
 text = " Select Bot Program "
 
-[node name="GridContainer" type="GridContainer" parent="VTabContainer/TEI"]
+[node name="GridContainer" type="GridContainer" parent="TEI"]
 layout_mode = 2
 theme_override_constants/h_separation = 20
 columns = 4
 
-[node name="Color" type="Label" parent="VTabContainer/TEI/GridContainer"]
+[node name="Color" type="Label" parent="TEI/GridContainer"]
 layout_mode = 2
 text = "My Color:"
 
-[node name="Color2" type="OptionButton" parent="VTabContainer/TEI/GridContainer"]
+[node name="Color2" type="OptionButton" parent="TEI/GridContainer"]
 layout_mode = 2
 selected = 0
 allow_reselect = true
@@ -480,11 +471,11 @@ popup/item_0/text = "White"
 popup/item_1/text = "Black"
 popup/item_1/id = 1
 
-[node name="Size" type="Label" parent="VTabContainer/TEI/GridContainer"]
+[node name="Size" type="Label" parent="TEI/GridContainer"]
 layout_mode = 2
 text = "Size:"
 
-[node name="Size2" type="OptionButton" parent="VTabContainer/TEI/GridContainer"]
+[node name="Size2" type="OptionButton" parent="TEI/GridContainer"]
 layout_mode = 2
 selected = 0
 allow_reselect = true
@@ -502,53 +493,53 @@ popup/item_4/id = 7
 popup/item_5/text = "8x8"
 popup/item_5/id = 8
 
-[node name="Komi" type="Label" parent="VTabContainer/TEI/GridContainer"]
+[node name="Komi" type="Label" parent="TEI/GridContainer"]
 layout_mode = 2
 text = "Komi:"
 
-[node name="Komi2" type="SpinBox" parent="VTabContainer/TEI/GridContainer"]
+[node name="Komi2" type="SpinBox" parent="TEI/GridContainer"]
 layout_mode = 2
 max_value = 4.0
 step = 0.5
 value = 2.0
 custom_arrow_step = 0.5
 
-[node name="Filler" type="Control" parent="VTabContainer/TEI/GridContainer"]
+[node name="Filler" type="Control" parent="TEI/GridContainer"]
 layout_mode = 2
 
-[node name="Filler2" type="Control" parent="VTabContainer/TEI/GridContainer"]
+[node name="Filler2" type="Control" parent="TEI/GridContainer"]
 layout_mode = 2
 
-[node name="Time" type="Label" parent="VTabContainer/TEI/GridContainer"]
+[node name="Time" type="Label" parent="TEI/GridContainer"]
 layout_mode = 2
 text = "Time:
 "
 
-[node name="Time2" type="SpinBox" parent="VTabContainer/TEI/GridContainer"]
+[node name="Time2" type="SpinBox" parent="TEI/GridContainer"]
 layout_mode = 2
 min_value = 1.0
 value = 15.0
 suffix = "min"
 
-[node name="Incr" type="Label" parent="VTabContainer/TEI/GridContainer"]
+[node name="Incr" type="Label" parent="TEI/GridContainer"]
 layout_mode = 2
 text = "Increment:"
 
-[node name="Incr2" type="SpinBox" parent="VTabContainer/TEI/GridContainer"]
+[node name="Incr2" type="SpinBox" parent="TEI/GridContainer"]
 custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 step = 5.0
 value = 10.0
 suffix = "sec"
 
-[node name="Button" type="Button" parent="VTabContainer/TEI"]
+[node name="Button" type="Button" parent="TEI"]
 layout_mode = 2
 text = "Start Game"
 
-[node name="TEI" type="Node" parent="VTabContainer/TEI"]
+[node name="TEI" type="Node" parent="TEI"]
 script = ExtResource("16_xb3sm")
 
-[node name="Scratch" type="VBoxContainer" parent="VTabContainer" node_paths=PackedStringArray("sizeEntry", "flats", "caps", "notationEntry", "confirm")]
+[node name="Scratch" type="VBoxContainer" parent="." node_paths=PackedStringArray("sizeEntry", "flats", "caps", "notationEntry", "confirm")]
 visible = false
 layout_mode = 2
 alignment = 1
@@ -559,21 +550,21 @@ caps = NodePath("BoxContainer/GridContainer/Caps2")
 notationEntry = NodePath("BoxContainer/TextEdit")
 confirm = NodePath("Create")
 
-[node name="BoxContainer" type="BoxContainer" parent="VTabContainer/Scratch"]
+[node name="BoxContainer" type="BoxContainer" parent="Scratch"]
 layout_mode = 2
 alignment = 1
 
-[node name="GridContainer" type="GridContainer" parent="VTabContainer/Scratch/BoxContainer"]
+[node name="GridContainer" type="GridContainer" parent="Scratch/BoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 columns = 2
 
-[node name="Size" type="Label" parent="VTabContainer/Scratch/BoxContainer/GridContainer"]
+[node name="Size" type="Label" parent="Scratch/BoxContainer/GridContainer"]
 layout_mode = 2
 text = "Size:"
 
-[node name="Size2" type="OptionButton" parent="VTabContainer/Scratch/BoxContainer/GridContainer"]
+[node name="Size2" type="OptionButton" parent="Scratch/BoxContainer/GridContainer"]
 layout_mode = 2
 selected = 0
 allow_reselect = true
@@ -591,60 +582,65 @@ popup/item_4/id = 7
 popup/item_5/text = "8x8"
 popup/item_5/id = 8
 
-[node name="Caps" type="Label" parent="VTabContainer/Scratch/BoxContainer/GridContainer"]
+[node name="Caps" type="Label" parent="Scratch/BoxContainer/GridContainer"]
 layout_mode = 2
 text = "Caps:"
 
-[node name="Caps2" type="SpinBox" parent="VTabContainer/Scratch/BoxContainer/GridContainer"]
+[node name="Caps2" type="SpinBox" parent="Scratch/BoxContainer/GridContainer"]
 layout_mode = 2
 value = 1.0
 custom_arrow_step = 0.5
 
-[node name="Flats" type="Label" parent="VTabContainer/Scratch/BoxContainer/GridContainer"]
+[node name="Flats" type="Label" parent="Scratch/BoxContainer/GridContainer"]
 layout_mode = 2
 text = "Flats:"
 
-[node name="Flats2" type="SpinBox" parent="VTabContainer/Scratch/BoxContainer/GridContainer"]
+[node name="Flats2" type="SpinBox" parent="Scratch/BoxContainer/GridContainer"]
 layout_mode = 2
 max_value = 200.0
 value = 30.0
 custom_arrow_step = 0.5
 
-[node name="TextEdit" type="TextEdit" parent="VTabContainer/Scratch/BoxContainer"]
+[node name="TextEdit" type="TextEdit" parent="Scratch/BoxContainer"]
 custom_minimum_size = Vector2(256, 256)
 layout_mode = 2
 placeholder_text = "PTN"
 
-[node name="Create" type="Button" parent="VTabContainer/Scratch"]
+[node name="Create" type="Button" parent="Scratch"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = " Create "
 
-[node name="Watch" type="VBoxContainer" parent="VTabContainer" node_paths=PackedStringArray("button")]
+[node name="Watch" type="VBoxContainer" parent="." node_paths=PackedStringArray("button")]
 visible = false
 layout_mode = 2
 alignment = 1
 script = ExtResource("18_vxymn")
 button = NodePath("../tabBar/Watch/SubTabs/Current")
 
-[node name="OldGames" type="VBoxContainer" parent="VTabContainer"]
+[node name="Label" type="Label" parent="Watch"]
+layout_mode = 2
+text = "Its Quiet...."
+horizontal_alignment = 1
+
+[node name="OldGames" type="VBoxContainer" parent="."]
 visible = false
 layout_mode = 2
 alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VTabContainer/OldGames"]
+[node name="HBoxContainer" type="HBoxContainer" parent="OldGames"]
 layout_mode = 2
 alignment = 1
 
-[node name="Search" type="Button" parent="VTabContainer/OldGames/HBoxContainer"]
+[node name="Search" type="Button" parent="OldGames/HBoxContainer"]
 layout_mode = 2
 text = " Search "
 
-[node name="PopupPanel" type="PopupPanel" parent="VTabContainer/OldGames/HBoxContainer/Search"]
+[node name="PopupPanel" type="PopupPanel" parent="OldGames/HBoxContainer/Search"]
 initial_position = 2
 size = Vector2i(342, 156)
 
-[node name="GridContainer" type="GridContainer" parent="VTabContainer/OldGames/HBoxContainer/Search/PopupPanel"]
+[node name="GridContainer" type="GridContainer" parent="OldGames/HBoxContainer/Search/PopupPanel"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -658,11 +654,11 @@ grow_horizontal = 2
 grow_vertical = 2
 columns = 2
 
-[node name="ID" type="LineEdit" parent="VTabContainer/OldGames/HBoxContainer/Search/PopupPanel/GridContainer"]
+[node name="ID" type="LineEdit" parent="OldGames/HBoxContainer/Search/PopupPanel/GridContainer"]
 layout_mode = 2
 placeholder_text = "Game ID"
 
-[node name="type" type="OptionButton" parent="VTabContainer/OldGames/HBoxContainer/Search/PopupPanel/GridContainer"]
+[node name="type" type="OptionButton" parent="OldGames/HBoxContainer/Search/PopupPanel/GridContainer"]
 layout_mode = 2
 selected = 0
 item_count = 4
@@ -674,11 +670,11 @@ popup/item_2/id = 2
 popup/item_3/text = "Unrated"
 popup/item_3/id = 3
 
-[node name="white" type="LineEdit" parent="VTabContainer/OldGames/HBoxContainer/Search/PopupPanel/GridContainer"]
+[node name="white" type="LineEdit" parent="OldGames/HBoxContainer/Search/PopupPanel/GridContainer"]
 layout_mode = 2
 placeholder_text = "Player White"
 
-[node name="result" type="OptionButton" parent="VTabContainer/OldGames/HBoxContainer/Search/PopupPanel/GridContainer"]
+[node name="result" type="OptionButton" parent="OldGames/HBoxContainer/Search/PopupPanel/GridContainer"]
 layout_mode = 2
 selected = 0
 item_count = 10
@@ -702,11 +698,11 @@ popup/item_8/id = 8
 popup/item_9/text = "1/2-1/2"
 popup/item_9/id = 9
 
-[node name="black" type="LineEdit" parent="VTabContainer/OldGames/HBoxContainer/Search/PopupPanel/GridContainer"]
+[node name="black" type="LineEdit" parent="OldGames/HBoxContainer/Search/PopupPanel/GridContainer"]
 layout_mode = 2
 placeholder_text = "Player Black"
 
-[node name="size" type="OptionButton" parent="VTabContainer/OldGames/HBoxContainer/Search/PopupPanel/GridContainer"]
+[node name="size" type="OptionButton" parent="OldGames/HBoxContainer/Search/PopupPanel/GridContainer"]
 layout_mode = 2
 selected = 0
 item_count = 7
@@ -724,49 +720,49 @@ popup/item_5/id = 5
 popup/item_6/text = "8x8"
 popup/item_6/id = 6
 
-[node name="mirror" type="CheckButton" parent="VTabContainer/OldGames/HBoxContainer/Search/PopupPanel/GridContainer"]
+[node name="mirror" type="CheckButton" parent="OldGames/HBoxContainer/Search/PopupPanel/GridContainer"]
 layout_mode = 2
 button_pressed = true
 text = "Mirror Search"
 
-[node name="Confirm" type="Button" parent="VTabContainer/OldGames/HBoxContainer/Search/PopupPanel/GridContainer"]
+[node name="Confirm" type="Button" parent="OldGames/HBoxContainer/Search/PopupPanel/GridContainer"]
 layout_mode = 2
 text = "Search"
 
-[node name="Prev" type="Button" parent="VTabContainer/OldGames/HBoxContainer"]
+[node name="Prev" type="Button" parent="OldGames/HBoxContainer"]
 layout_mode = 2
 text = " < "
 
-[node name="Count" type="Label" parent="VTabContainer/OldGames/HBoxContainer"]
+[node name="Count" type="Label" parent="OldGames/HBoxContainer"]
 layout_mode = 2
 
-[node name="Next" type="Button" parent="VTabContainer/OldGames/HBoxContainer"]
+[node name="Next" type="Button" parent="OldGames/HBoxContainer"]
 layout_mode = 2
 text = " > "
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VTabContainer/OldGames"]
+[node name="ScrollContainer" type="ScrollContainer" parent="OldGames"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Entries" type="VBoxContainer" parent="VTabContainer/OldGames/ScrollContainer"]
+[node name="Entries" type="VBoxContainer" parent="OldGames/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 6
 alignment = 1
 script = ExtResource("19_ge6g1")
 
-[node name="tabBar" type="BoxContainer" parent="VTabContainer"]
+[node name="tabBar" type="BoxContainer" parent="."]
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Home" type="Button" parent="VTabContainer/tabBar"]
+[node name="Home" type="Button" parent="tabBar"]
 layout_mode = 2
 mouse_filter = 1
 theme_type_variation = &"TabButton"
 text = " Home "
 script = ExtResource("19_s1ous")
 
-[node name="SubTabs" type="BoxContainer" parent="VTabContainer/tabBar/Home"]
+[node name="SubTabs" type="BoxContainer" parent="tabBar/Home"]
 visible = false
 layout_mode = 0
 offset_right = 272.0
@@ -774,90 +770,90 @@ offset_bottom = 96.0
 theme_override_constants/separation = 0
 vertical = true
 
-[node name="Profile" type="Button" parent="VTabContainer/tabBar/Home/SubTabs"]
+[node name="Profile" type="Button" parent="tabBar/Home/SubTabs"]
 layout_mode = 2
 mouse_filter = 1
 theme_type_variation = &"TabButton"
 text = "Login"
 
-[node name="Settings" type="Button" parent="VTabContainer/tabBar/Home/SubTabs"]
+[node name="Settings" type="Button" parent="tabBar/Home/SubTabs"]
 layout_mode = 2
 theme_type_variation = &"TabButton"
 text = "Settings"
 
-[node name="Discord" type="Button" parent="VTabContainer/tabBar/Home/SubTabs"]
+[node name="Discord" type="Button" parent="tabBar/Home/SubTabs"]
 layout_mode = 2
 theme_type_variation = &"TabButton"
 text = "Discord"
 script = ExtResource("20_fuxcv")
 URL = "https://discord.gg/2xEt42X"
 
-[node name="USTA" type="Button" parent="VTabContainer/tabBar/Home/SubTabs"]
+[node name="USTA" type="Button" parent="tabBar/Home/SubTabs"]
 layout_mode = 2
 theme_type_variation = &"TabButton"
 text = "USTA"
 script = ExtResource("20_fuxcv")
 URL = "https://ustak.org/"
 
-[node name="Board" type="Button" parent="VTabContainer/tabBar"]
+[node name="Board" type="Button" parent="tabBar"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"TabButton"
 text = " Board "
 
-[node name="Play" type="Button" parent="VTabContainer/tabBar"]
+[node name="Play" type="Button" parent="tabBar"]
 layout_mode = 2
 theme_type_variation = &"TabButton"
 text = " Play "
 script = ExtResource("19_s1ous")
 
-[node name="SubTabs" type="VBoxContainer" parent="VTabContainer/tabBar/Play"]
+[node name="SubTabs" type="VBoxContainer" parent="tabBar/Play"]
 visible = false
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 theme_override_constants/separation = 0
 
-[node name="New" type="Button" parent="VTabContainer/tabBar/Play/SubTabs"]
+[node name="New" type="Button" parent="tabBar/Play/SubTabs"]
 layout_mode = 2
 theme_type_variation = &"TabButton"
 text = "New Game
 "
 
-[node name="Join" type="Button" parent="VTabContainer/tabBar/Play/SubTabs"]
+[node name="Join" type="Button" parent="tabBar/Play/SubTabs"]
 layout_mode = 2
 theme_type_variation = &"TabButton"
 text = "Join (0)"
 
-[node name="TEI" type="Button" parent="VTabContainer/tabBar/Play/SubTabs"]
+[node name="TEI" type="Button" parent="tabBar/Play/SubTabs"]
 layout_mode = 2
 theme_type_variation = &"TabButton"
 text = "TEI"
 
-[node name="Scratch" type="Button" parent="VTabContainer/tabBar/Play/SubTabs"]
+[node name="Scratch" type="Button" parent="tabBar/Play/SubTabs"]
 layout_mode = 2
 theme_type_variation = &"TabButton"
 text = "Scratch"
 
-[node name="Watch" type="Button" parent="VTabContainer/tabBar"]
+[node name="Watch" type="Button" parent="tabBar"]
 layout_mode = 2
 theme_type_variation = &"TabButton"
 text = " Watch "
 script = ExtResource("19_s1ous")
 
-[node name="SubTabs" type="VBoxContainer" parent="VTabContainer/tabBar/Watch"]
+[node name="SubTabs" type="VBoxContainer" parent="tabBar/Watch"]
 visible = false
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 theme_override_constants/separation = 0
 
-[node name="Current" type="Button" parent="VTabContainer/tabBar/Watch/SubTabs"]
+[node name="Current" type="Button" parent="tabBar/Watch/SubTabs"]
 layout_mode = 2
 theme_type_variation = &"TabButton"
 text = " Ongoing (0) "
 
-[node name="Past" type="Button" parent="VTabContainer/tabBar/Watch/SubTabs"]
+[node name="Past" type="Button" parent="tabBar/Watch/SubTabs"]
 layout_mode = 2
 theme_type_variation = &"TabButton"
 text = "Old Games"

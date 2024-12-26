@@ -53,5 +53,5 @@ texture={
 [rendering]
 
 textures/vram_compression/import_etc2_astc=true
-environment/defaults/default_clear_color=Color(0.129412, 0.137255, 0.172549, 1)
+environment/defaults/default_clear_color=Color(0.133333, 0.164706, 0.380392, 1)
 anti_aliasing/quality/screen_space_aa=1

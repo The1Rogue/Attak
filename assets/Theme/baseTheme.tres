@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=17 format=3 uid="uid://3w4qd4ooj08t"]
+[gd_resource type="Theme" load_steps=19 format=3 uid="uid://3w4qd4ooj08t"]
 
 [ext_resource type="StyleBox" uid="uid://c7bkligpe61xk" path="res://assets/Theme/ButtonActive.tres" id="1_wdenm"]
 [ext_resource type="StyleBox" uid="uid://b5qu7ymxg2nrv" path="res://assets/Theme/ButtonInActive.tres" id="2_ikfa3"]
@@ -12,6 +12,8 @@
 [ext_resource type="StyleBox" uid="uid://k5jijakxiaxi" path="res://assets/Theme/lineEditFocussed.tres" id="7_7kmvp"]
 [ext_resource type="StyleBox" uid="uid://5pbcpgsk5c8q" path="res://assets/Theme/gameButtonPending.tres" id="7_8g5o4"]
 [ext_resource type="StyleBox" uid="uid://dwn0d7okrcdn7" path="res://assets/Theme/lineEditUnfocussed.tres" id="8_6pg4u"]
+[ext_resource type="StyleBox" uid="uid://caam5hdhu4u3t" path="res://assets/Theme/PanelDark.tres" id="12_sljj6"]
+[ext_resource type="StyleBox" uid="uid://bgdiuyv4e2po8" path="res://assets/Theme/PanelLight.tres" id="13_cb88j"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0hnp4"]
 
@@ -43,6 +45,7 @@ expand_margin_bottom = 1.0
 [resource]
 default_font = ExtResource("5_odh5y")
 default_font_size = 20
+Button/styles/disabled = ExtResource("1_wdenm")
 Button/styles/focus = SubResource("StyleBoxEmpty_0hnp4")
 Button/styles/hover = ExtResource("1_wdenm")
 Button/styles/hover_pressed = ExtResource("1_wdenm")
@@ -69,13 +72,12 @@ LabelWhite/colors/font_color = Color(0.164706, 0.164706, 0.164706, 1)
 LabelWhite/styles/normal = ExtResource("6_e0q6n")
 LineEdit/styles/focus = ExtResource("7_7kmvp")
 LineEdit/styles/normal = ExtResource("8_6pg4u")
+PanelDark/base_type = &"PanelContainer"
+PanelDark/styles/panel = ExtResource("12_sljj6")
+PanelLight/base_type = &"PanelContainer"
+PanelLight/styles/panel = ExtResource("13_cb88j")
 PlyButton/base_type = &"Button"
 PlyButton/colors/font_disabled_color = Color(0.831373, 0.831373, 0.831373, 1)
-PlyButton/styles/disabled = ExtResource("1_wdenm")
-PlyButton/styles/hover = ExtResource("1_wdenm")
-PlyButton/styles/hover_pressed = ExtResource("1_wdenm")
-PlyButton/styles/normal = ExtResource("2_ikfa3")
-PlyButton/styles/pressed = ExtResource("1_wdenm")
 TabButton/base_type = &"Button"
 TabButton/font_sizes/font_size = 36
 VBoxContainer/constants/separation = 5

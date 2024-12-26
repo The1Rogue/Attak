@@ -5,6 +5,7 @@ var count = 0
 var games: Dictionary = {}
 
 @export var button: Button
+@onready var empty: Label = $Label
 
 func _ready():
 	PlayTakI.addGame.connect(add)
@@ -13,6 +14,7 @@ func _ready():
 
 
 func add(game: GameData, id: int):
+	empty.hide()
 	count += 1
 	button.text = " Ongoing (%d) " % count
 	var b = Button.new()
@@ -29,6 +31,7 @@ func add(game: GameData, id: int):
 
 func remove(id: int):
 	count -= 1
+	if count == 0: empty.show()
 	button.text = " Ongoing (%d) " % count
 	remove_child(games[id])
 	games.erase(id)

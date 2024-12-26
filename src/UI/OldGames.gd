@@ -80,11 +80,12 @@ func clear():
 
 func appendEntry(data: GameData, result: String, date: int, notation: String):
 	var entry = ENTRY.instantiate()
-	entry.get_child(0).text = data.id
+	var hbox = entry.get_child(0)
+	hbox.get_child(0).text = data.id
 	
 	var results = result.split("-")
 	
-	var grid = entry.get_child(2)
+	var grid = hbox.get_child(2)
 	grid.get_child(0).text = str(data.size)
 	grid.get_child(2).text = "%18s " % data.playerWhiteName
 	grid.get_child(3).text = results[0]
@@ -95,11 +96,16 @@ func appendEntry(data: GameData, result: String, date: int, notation: String):
 	grid.get_child(9).text = results[1]
 	grid.get_child(11).text = "+%d@%d" % [data.triggerTime / 60, data.triggerMove] if data.triggerTime > 0 else ""
 	
-	entry.get_child(4).text = Time.get_datetime_string_from_unix_time(date, true)
-	entry.get_child(5).pressed.connect(loadGame.bind(data, notation))
-	entry.get_child(6).URL = "https://playtak.com/games/%s/ninjaviewer" % data.id
+	hbox.get_child(4).text = Time.get_datetime_string_from_unix_time(date, true)
+	hbox.get_child(5).pressed.connect(loadGame.bind(data, notation))
+	hbox.get_child(6).URL = "https://playtak.com/games/%s/ninjaviewer" % data.id
 	
 	add_child(entry)
+	if get_child_count() % 2:
+		entry.theme_type_variation = &"PanelDark"
+	else:
+		entry.theme_type_variation = &"PanelLight"
+
 
 
 func parseResults(result:int, response_code: int, header: PackedStringArray, body: PackedByteArray):

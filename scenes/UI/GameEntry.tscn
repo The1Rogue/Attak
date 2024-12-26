@@ -2,81 +2,86 @@
 
 [ext_resource type="Script" path="res://src/UI/URLButton.gd" id="1_jcigm"]
 
-[node name="Control" type="HBoxContainer"]
-offset_right = 376.0
+[node name="PanelContainer" type="PanelContainer"]
+offset_left = 620.0
+offset_right = 620.0
 offset_bottom = 52.0
+mouse_filter = 2
 
-[node name="Id" type="Label" parent="."]
+[node name="Control" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Id" type="Label" parent="Control"]
 layout_mode = 2
 text = "000000"
 
-[node name="|" type="VSeparator" parent="."]
+[node name="|" type="VSeparator" parent="Control"]
 layout_mode = 2
 
-[node name="GridContainer" type="GridContainer" parent="."]
+[node name="GridContainer" type="GridContainer" parent="Control"]
 layout_mode = 2
 columns = 6
 
-[node name="size" type="Label" parent="GridContainer"]
+[node name="size" type="Label" parent="Control/GridContainer"]
 layout_mode = 2
 text = "6"
 
-[node name="|0" type="VSeparator" parent="GridContainer"]
+[node name="|0" type="VSeparator" parent="Control/GridContainer"]
 layout_mode = 2
 
-[node name="white" type="Label" parent="GridContainer"]
+[node name="white" type="Label" parent="Control/GridContainer"]
 layout_mode = 2
 theme_type_variation = &"LabelWhite"
 text = " player white "
 horizontal_alignment = 1
 
-[node name="whiteResult" type="Label" parent="GridContainer"]
+[node name="whiteResult" type="Label" parent="Control/GridContainer"]
 layout_mode = 2
 text = "R"
 
-[node name="|1" type="VSeparator" parent="GridContainer"]
+[node name="|1" type="VSeparator" parent="Control/GridContainer"]
 layout_mode = 2
 
-[node name="time" type="Label" parent="GridContainer"]
+[node name="time" type="Label" parent="Control/GridContainer"]
 layout_mode = 2
 text = "15'+20\""
 
-[node name="komi" type="Label" parent="GridContainer"]
+[node name="komi" type="Label" parent="Control/GridContainer"]
 layout_mode = 2
 text = "+2"
 
-[node name="|2" type="VSeparator" parent="GridContainer"]
+[node name="|2" type="VSeparator" parent="Control/GridContainer"]
 layout_mode = 2
 
-[node name="black" type="Label" parent="GridContainer"]
+[node name="black" type="Label" parent="Control/GridContainer"]
 layout_mode = 2
 theme_type_variation = &"LabelBlack"
 text = " player black "
 horizontal_alignment = 1
 
-[node name="blackResult" type="Label" parent="GridContainer"]
+[node name="blackResult" type="Label" parent="Control/GridContainer"]
 layout_mode = 2
 text = "0"
 
-[node name="|3" type="VSeparator" parent="GridContainer"]
+[node name="|3" type="VSeparator" parent="Control/GridContainer"]
 layout_mode = 2
 
-[node name="extraTime" type="Label" parent="GridContainer"]
+[node name="extraTime" type="Label" parent="Control/GridContainer"]
 layout_mode = 2
 text = "+15@35"
 
-[node name="|2" type="VSeparator" parent="."]
+[node name="|2" type="VSeparator" parent="Control"]
 layout_mode = 2
 
-[node name="time" type="Label" parent="."]
+[node name="time" type="Label" parent="Control"]
 layout_mode = 2
 text = "01 Jan 1970"
 
-[node name="Button" type="Button" parent="."]
+[node name="Button" type="Button" parent="Control"]
 layout_mode = 2
-text = "Load"
+text = " Load "
 
-[node name="URLButton" type="Button" parent="."]
+[node name="URLButton" type="Button" parent="Control"]
 layout_mode = 2
-text = "Ptn.ninja"
+text = " ptn.ninja "
 script = ExtResource("1_jcigm")
