@@ -32,9 +32,11 @@ var dragLength: float
 
 const dist = 300
 const mobileZoomMod: float = .02
+const CAM_MAX = 50
+const CAM_MIN = 1
 var I0: Vector2
-@onready var Cam = $Pivot/Camera3D
-@onready var Pivot = $Pivot
+@onready var Cam: Camera3D = $Pivot/Camera3D
+@onready var Pivot: Node3D = $Pivot
 
 @onready var pieceHolder = $Pieces
 
@@ -95,6 +97,7 @@ func setData(data: SettingData):
 		pieces[i + 2*caps].scale = Vector3(data.pieceSize3D, data.flatHeight3D, data.pieceSize3D)
 		
 	ROTATION[1] = data.wallRotation3D
+	Cam.fov = data.FOV3D
 	
 	setState(GameLogic.viewedState())
 
@@ -255,15 +258,15 @@ func _input_event(camera: Camera3D, event: InputEvent, event_position: Vector3, 
 		else:
 			var diff = I0 - event.position
 			var drag = diff.dot(event.relative) / diff.length()
-			Cam.position.z = clamp(Cam.position.z + drag * mobileZoomMod, 1, 15)
+			Cam.position.z = clamp(Cam.position.z + drag * mobileZoomMod, CAM_MIN, CAM_MAX)
 
 
 func _unhandled_input(event: InputEvent) -> void: #these are seperate so they work while hovering Piece3D
 	if event is InputEventMouseButton:
 			if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-				Cam.position.z = clamp(Cam.position.z - .5, 1, 15)
+				Cam.position.z = clamp(Cam.position.z - .5, CAM_MIN, CAM_MAX)
 			elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-				Cam.position.z = clamp(Cam.position.z + .5, 1, 15)
+				Cam.position.z = clamp(Cam.position.z + .5, CAM_MIN, CAM_MAX)
 				
 	elif event is InputEventMouseMotion:
 		if event.button_mask & MOUSE_BUTTON_MASK_LEFT != 0:

@@ -35,9 +35,11 @@ var black2D: Array[Texture2D]:
 		return playtakTo2D(loadTexture(black2DPath))
 	set(value): assert(false, "Cant set this var!")
 
-@export var pieceScale2D: float = .75
+@export var pieceScale2D: float = .5
 
 @export_category("3D")
+@export var FOV3D: int = 75
+
 @export var sq3DPath: String = "res://assets/Squares/Standard.svg"
 var sq3D: Texture2D:
 	get: return loadTexture(sq3DPath)
@@ -69,9 +71,9 @@ var black3D: Array[Mesh]:
 
 @export var wallRotation3D: Vector3 = Vector3(PI/2, PI/4, 0)
 
-@export var pieceSize3D: float = .9
-@export var flatHeight3D: float = .2
-@export var capHeight3D: float = 1.2
+@export var pieceSize3D: float = .65
+@export var flatHeight3D: float = .14
+@export var capHeight3D: float = .87
 
 
 func repair():

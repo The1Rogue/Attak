@@ -152,6 +152,14 @@ label = "Piece Size"
 layout_mode = 2
 metadata/_tab_index = 1
 
+[node name="FOV" type="GridContainer" parent="Settings/Board/3D Board"]
+layout_mode = 2
+script = ExtResource("7_k3e5v")
+min = 10.0
+max = 90.0
+increment = 1.0
+label = "FOV"
+
 [node name="Squares" type="GridContainer" parent="Settings/Board/3D Board"]
 layout_mode = 2
 script = ExtResource("6_vmbxg")

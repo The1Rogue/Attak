@@ -18,7 +18,6 @@ func loadFull(data: SettingData):
 	RenderingServer.set_default_clear_color(data.bgColor)
 
 
-
 func _ready() -> void:
 	saveData = SettingData.loadOrNew()
 	
@@ -39,6 +38,9 @@ func _ready() -> void:
 	$"Board/2D Board/PieceSize".setSetting.connect(set2DPieceSize)
 	
 	# 3D
+	$"Board/3D Board/FOV".setNoSignal(saveData.FOV3D)
+	$"Board/3D Board/FOV".setSetting.connect(set3DFOV)
+	
 	$"Board/3D Board/Squares".setNoSignal(saveData.sq3DPath)
 	$"Board/3D Board/Squares".setSetting.connect(set3DSq)
 	
@@ -145,6 +147,13 @@ func set2DPieceSize(size: float):
 	saveData.pieceScale2D = size
 	if board is Board2D:
 		board.pieceSize = size
+	saveData.save()
+
+
+func set3DFOV(value: int):
+	saveData.FOV3D = value
+	if board is Board3D:
+		board.Cam.fov = value
 	saveData.save()
 
 
