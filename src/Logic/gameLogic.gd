@@ -115,10 +115,10 @@ func doMove(origin: Node, ply: Ply):
 	
 	move.emit(origin, ply)
 	
-	if view == history.size():
+	history.append(ply)
+	if view+1 == history.size():
 		view += 1
 		viewState.emit(ply.boardState)
-	history.append(ply)
 
 
 #handles undos in local games

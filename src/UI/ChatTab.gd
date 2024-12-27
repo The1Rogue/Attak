@@ -46,8 +46,7 @@ func newChat(name: String, type: int = Chat.ROOM):
 	list.add_child(chat)
 	chat.hide()
 	rooms[name] = chat
-	if active == null:
-		select(chat)
+	select(chat)
 
 
 func remove(room):

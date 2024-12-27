@@ -179,16 +179,16 @@ func makeBoard():
 
 
 func putPiece(id: int, v: Vector3i):
-	pieces[id].position = Vector3(v.x - size/2.0 + .5, flatHeight * v.y, size/2.0 - v.z - .5)
-	
+	var p = Vector3(v.x - size/2.0 + .5, flatHeight * v.y, size/2.0 - v.z - .5)
 	if id < caps*2:
-		pieces[id].position.y += capHeight / 2
+		p.y += capHeight / 2
 	elif pieces[id].rotation == ROTATION[1]:
-		pieces[id].position.y += pieceSize / 2
+		p.y += pieceSize / 2
 	else:
-		pieces[id].position.y += flatHeight / 2
+		p.y += flatHeight / 2
 	
-	if pieces[id].selected: pieces[id].position.y += SELECTIONHEIGHT
+	if pieces[id].selected: p.y += SELECTIONHEIGHT
+	pieces[id].setPosition(p)
 
 
 func putReserve(id: int):
@@ -201,7 +201,7 @@ func putReserve(id: int):
 		y = flatHeight * (((id-2*caps)/2) % 10 + .5)
 		z = (1 + (id-2*caps)/20) * (-1 if id % 2 == 1 else 1)
 		
-	pieces[id].position = Vector3(x, y, z)
+	pieces[id].setPosition(Vector3(x, y, z))
 
 
 func highlight(id: int):
@@ -217,12 +217,12 @@ func setWall(id: int, wall: bool):
 
 
 func select(id: int):
-	pieces[id].position.y += SELECTIONHEIGHT
+	pieces[id].setPosition(pieces[id].getPosition() + Vector3.UP * SELECTIONHEIGHT)
 	pieces[id].selected = true
 
 
 func deselect(id: int):
-	pieces[id].position.y -= SELECTIONHEIGHT 
+	pieces[id].setPosition(pieces[id].getPosition() - Vector3.UP * SELECTIONHEIGHT)
 	pieces[id].selected = false
 
 

@@ -17,6 +17,9 @@ var dragLength: float = 0
 var id: int
 var mesh: MeshInstance3D
 
+var tween: Tween
+var target: Vector3 = position
+
 signal click(piece: Piece3D, isRight: bool)
 
 func _init(m: Mesh, shape: Shape3D, id: int):
@@ -27,6 +30,7 @@ func _init(m: Mesh, shape: Shape3D, id: int):
 	var collider = CollisionShape3D.new()
 	collider.shape = shape
 	add_child(collider)
+
 
 func _mouse_enter() -> void:
 	mesh.material_overlay = hover
@@ -50,3 +54,14 @@ func _input_event(camera: Camera3D, event: InputEvent, event_position: Vector3, 
 		
 		else:
 			dragLength = 0
+
+
+func getPosition():
+	return target
+
+func setPosition(pos: Vector3):
+	target = pos
+	if tween != null and tween.is_running():
+		tween.kill()
+	tween = get_tree().create_tween()
+	tween.tween_property(self, "position", target, .1).set_trans(Tween.TRANS_SINE)

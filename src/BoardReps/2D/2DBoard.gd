@@ -142,27 +142,40 @@ func makeBoard():
 
 
 func putPiece(id: int, v: Vector3i):
+	var h = GameLogic.viewedState().board[v.x][v.z].size()
 	pieces[id].z_index = v.y + 1
-	pieces[id].position = Vector2((v.x - size/2.0 + .5) * 16, (size/2.0 - v.z - .5) * 16 - v.y * heightOffset)
+	if h > size:
+		v.y -= h - size
+	
+	var p: Vector2
+	if v.y < 0:
+		p = Vector2((v.x - size/2.0 + .6) * 16, (size/2.0 - v.z -.5) * 16 - (v.y + h - size))
+	else:
+		p = Vector2((v.x - size/2.0 + .5) * 16, (size/2.0 - v.z - .5) * 16 - v.y * heightOffset)
+	
 	if pieces[id].selected: 
-		pieces[id].position.y -= selectionHeight
+		p.y -= selectionHeight
 		pieces[id].z_index += 10
+	pieces[id].setPosition(p)
 
 
 func putReserve(id: int):
+	var p: Vector2
 	if id < 2*caps:
-		pieces[id].position = Vector2(
+		p = Vector2(
 			16 * (size/2.0 + .75) * (-1 if id %2 == 1 else 1),
 			16 * (size/2.0 - .75 - (id/2 + flats) * (size-1) / (caps+flats - 1.0))
 		)
 		pieces[id].z_index = (id/2 + flats)
 		
 	else:
-		pieces[id].position = Vector2(
+		p = Vector2(
 			16 * (size/2.0 + .75) * (-1 if id %2 == 1 else 1),
 			16 * (size/2.0 - (id/2 - caps) * (size-1) / (caps+flats - 1.0))
 		)
 		pieces[id].z_index = (id/2 - caps)
+		
+	pieces[id].setPosition(p)
 
 
 func highlight(id: int):
@@ -181,13 +194,13 @@ func setWall(id: int, wall: bool):
 
 
 func select(id: int):
-	pieces[id].position.y -= selectionHeight
+	pieces[id].setPosition(pieces[id].getPosition() + Vector2.UP * selectionHeight)
 	pieces[id].z_index += 10
 	pieces[id].selected = true
 
 
 func deselect(id: int):
-	pieces[id].position.y += selectionHeight
+	pieces[id].setPosition(pieces[id].getPosition() - Vector2.UP * selectionHeight)
 	pieces[id].z_index -= 10
 	pieces[id].selected = false
 

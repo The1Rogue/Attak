@@ -314,10 +314,10 @@ func rightClickTile(tile: Vector2i):
 					if drops.size() > 0:
 						l = drops[-1]
 					else:
-						l = 0
+						l = -selectedPile.size()
 						direction = Vector2i.ZERO
 						
-					var pile = GameLogic.activeState().getPile(tile)
+					var pile = GameLogic.activeState().getPile(currentTile)
 					for i in selectedPile.size() - totals:
 						putPiece(selectedPile[totals + i], Vector3(currentTile.x, pile.size() + l + i , currentTile.y))
 			

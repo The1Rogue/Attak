@@ -76,6 +76,7 @@ func setBoard(i: int):
 	saveData.is2D = i == 0
 	if board != null:
 		boardHolder.remove_child(board)
+		board.queue_free()
 	board = (board2D if i == 0 else board3D).instantiate()
 	board.setData(saveData)
 	boardHolder.add_child(board)
@@ -145,7 +146,6 @@ func set2DPieceSize(size: float):
 	if board is Board2D:
 		board.pieceSize = size
 	saveData.save()
-
 
 
 func set3DSq(path: String):
