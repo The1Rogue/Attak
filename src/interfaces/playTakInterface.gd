@@ -210,7 +210,7 @@ func _process(delta: float):
 			["Game", var id, "Abandoned.", var player, "quit"] when id == GameLogic.gameData.id:
 				endGame(GameState.DEFAULT_WIN_WHITE if player == GameLogic.gameData.playerWhiteName else GameState.DEFAULT_WIN_BLACK)
 			
-			["Seek", "new", var id, var name, var size, var time, var inc, var color, var komi, var flats, var caps, var unrated, var tourney, var trigger, var extra, var opponent] when opponent == "" or opponent == activeUsername:
+			["Seek", "new", var id, var name, var size, var time, var inc, var color, var komi, var flats, var caps, var unrated, var tourney, var trigger, var extra, var opponent] when opponent == "" or opponent.to_lower() == activeUsername.to_lower() or name == activeUsername:
 				var seek = SeekData.new(
 					name, size.to_int(), time.to_int(), inc.to_int(), trigger.to_int(), extra.to_int(),
 					color, komi.to_int(), flats.to_int(), caps.to_int(), 

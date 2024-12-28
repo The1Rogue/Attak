@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=19 format=3 uid="uid://3w4qd4ooj08t"]
+[gd_resource type="Theme" load_steps=18 format=3 uid="uid://3w4qd4ooj08t"]
 
 [ext_resource type="StyleBox" uid="uid://c7bkligpe61xk" path="res://assets/Theme/ButtonActive.tres" id="1_wdenm"]
 [ext_resource type="StyleBox" uid="uid://b5qu7ymxg2nrv" path="res://assets/Theme/ButtonInActive.tres" id="2_ikfa3"]
@@ -31,17 +31,6 @@ content_margin_right = 5.0
 content_margin_bottom = 5.0
 bg_color = Color(0.223529, 0.301961, 0.619608, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_28cbl"]
-bg_color = Color(0.137255, 0.113725, 0.270588, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-expand_margin_left = 5.0
-expand_margin_top = 1.0
-expand_margin_right = 5.0
-expand_margin_bottom = 1.0
-
 [resource]
 default_font = ExtResource("5_odh5y")
 default_font_size = 20
@@ -56,7 +45,10 @@ CheckButton/icons/unchecked = ExtResource("4_ocacp")
 ColorPickerButton/styles/hover = SubResource("StyleBoxFlat_t2yk7")
 ColorPickerButton/styles/normal = SubResource("StyleBoxFlat_iurck")
 ExitButton/base_type = &"Button"
-ExitButton/styles/normal = SubResource("StyleBoxFlat_28cbl")
+ExitButton/styles/hover = ExtResource("7_7kmvp")
+ExitButton/styles/hover_pressed = ExtResource("7_7kmvp")
+ExitButton/styles/normal = ExtResource("8_6pg4u")
+ExitButton/styles/pressed = ExtResource("7_7kmvp")
 GameUIButton/base_type = &"Button"
 GameUIButton/styles/hover = ExtResource("5_pgtts")
 GameUIButton/styles/hover_pressed = ExtResource("5_pgtts")

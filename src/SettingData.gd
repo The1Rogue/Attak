@@ -121,16 +121,23 @@ static func loadOrNew() -> SettingData:
 
 
 static func loadGLB(path: String) -> Array[Mesh]:
-	var doc = GLTFDocument.new()
-	var state = GLTFState.new()
-	var error = doc.append_from_file(path, state)
-	if error != OK:
-		return []
-	var root = doc.generate_scene(state)
+	var root: Node
+	if path.begins_with("res://"):
+		root = load(path).instantiate()
+		
+	else:
+		var doc = GLTFDocument.new()
+		var state = GLTFState.new()
+		var error = doc.append_from_file(path, state)
+		if error != OK:
+			return [null, null]
+		root = doc.generate_scene(state)
+		
 	var paths = [root.get_node("Cap"), root.get_node("Flat")]
 	if paths[0] == null or paths[1] == null:
 		return []
 	return [paths[0].mesh, paths[1].mesh]
+
 
 static func loadMeshes(path: String) -> Array[Mesh]:
 	if path.begins_with("res://"):
@@ -194,7 +201,5 @@ static func loadTexture(path: String) -> Texture2D:
 
 
 static func isDir(path: String):
-	#print("checking " + path)
-	var t = not DA.file_exists(path)
-	#print(t)
+	var t = DA.dir_exists(path)
 	return t
