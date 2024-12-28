@@ -7,6 +7,7 @@ class_name RangeSetting
 
 var slider: HSlider
 var marker: Label
+var format: String = " %"
 
 func _ready():
 	super()
@@ -20,7 +21,11 @@ func _ready():
 	slider.size_flags_horizontal |= Control.SIZE_EXPAND
 	
 	marker = Label.new()
-	marker.text = str(slider.value) + " "
+	if increment as int == increment:
+		format = "%%%dd" % str(max as int).length()
+	else:
+		format = "%%%d.%df" % [str(max as int).length(), str(increment).split(".")[-1].length()]
+	marker.text = format % slider.value
 	add_child(marker)
 	
 	add_child(slider)
@@ -30,11 +35,11 @@ func _ready():
 
 
 func select(value: float):
-	marker.text = str(slider.value) + " "
+	marker.text = format % slider.value
 	setSetting.emit(value)
 
 
 func setNoSignal(value: Variant):
 	assert(value is float or value is int)
 	slider.set_value_no_signal(value)
-	marker.text = str(slider.value) + " "
+	marker.text = format % slider.value
