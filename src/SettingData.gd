@@ -50,6 +50,8 @@ var white3D: Array[Mesh]:
 	get:
 		if isDir(white3DPath):
 			return loadMeshes(white3DPath)
+		elif white3DPath.ends_with(".glb") or white3DPath.ends_with(".gltf"):
+			return loadGLB(white3DPath)
 		var cap = load(playtakCap)
 		var flat = load(playtakFlat)
 		cap.surface_get_material(0).albedo_texture = loadTexture(white3DPath)
@@ -62,6 +64,8 @@ var black3D: Array[Mesh]:
 	get:
 		if isDir(black3DPath):
 			return loadMeshes(black3DPath)
+		elif black3DPath.ends_with(".glb") or black3DPath.ends_with(".gltf"):
+			return loadGLB(black3DPath)
 		var cap = load(playtakCap)
 		var flat = load(playtakFlat)
 		cap.surface_get_material(0).albedo_texture = loadTexture(black3DPath)
@@ -115,6 +119,18 @@ static func loadOrNew() -> SettingData:
 		data.is2D = Globals.isMobile()
 	return data
 
+
+static func loadGLB(path: String) -> Array[Mesh]:
+	var doc = GLTFDocument.new()
+	var state = GLTFState.new()
+	var error = doc.append_from_file(path, state)
+	if error != OK:
+		return []
+	var root = doc.generate_scene(state)
+	var paths = [root.get_node("Cap"), root.get_node("Flat")]
+	if paths[0] == null or paths[1] == null:
+		return []
+	return [paths[0].mesh, paths[1].mesh]
 
 static func loadMeshes(path: String) -> Array[Mesh]:
 	if path.begins_with("res://"):

@@ -174,7 +174,10 @@ func set3DWhite(path: String):
 	var meshes = [null, null]
 	if SettingData.isDir(path):
 		meshes = SettingData.loadMeshes(path)
-		
+	
+	elif path.ends_with(".glb") or path.ends_with(".gltf"):
+		meshes = SettingData.loadGLB(path)
+	
 	else:
 		var tex = SettingData.loadTexture(path)
 		if tex != null:
@@ -200,6 +203,9 @@ func set3DBlack(path: String):
 	var meshes = [null, null]
 	if SettingData.isDir(path):
 		meshes = SettingData.loadMeshes(path)
+		
+	elif path.ends_with(".glb") or path.ends_with(".gltf"):
+		meshes = SettingData.loadGLB(path)
 		
 	else:
 		var tex = SettingData.loadTexture(path)
