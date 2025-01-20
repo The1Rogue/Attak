@@ -7,6 +7,8 @@ const ENTRY = preload("res://scenes/UI/GameEntry.tscn")
 var lastQueries: Dictionary
 var maxPage: int = 0
 
+@onready var tz = Time.get_time_zone_from_system()["bias"] * 60
+
 @onready var http = HTTPRequest.new()
 
 @onready var pageLabel = $"../../HBoxContainer/Count"
@@ -107,7 +109,6 @@ func appendEntry(data: GameData, result: String, date: int, notation: String):
 		entry.theme_type_variation = &"PanelLight"
 
 
-
 func parseResults(result:int, response_code: int, header: PackedStringArray, body: PackedByteArray):
 	clear()
 	var json: Dictionary = JSON.parse_string(body.get_string_from_utf8()) #TODO error handling
@@ -122,7 +123,7 @@ func parseResults(result:int, response_code: int, header: PackedStringArray, bod
 		var data: GameData = GameData.new(str(entry["id"]), entry["size"], GameData.LOCAL, GameData.LOCAL, 
 		entry["player_white"], entry["player_black"], entry["timertime"], entry["timerinc"], entry["extra_time_trigger"], entry["extra_time_amount"], 
 		entry["komi"], entry["pieces"], entry["capstones"])
-		appendEntry(data, entry["result"], entry["date"] / 1000, entry["notation"])
+		appendEntry(data, entry["result"], entry["date"] / 1000 + tz, entry["notation"])
 
 
 func loadGame(data: GameData, notation: String):

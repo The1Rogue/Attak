@@ -56,10 +56,11 @@ func doSetup(game: GameData, start: GameState = null):
 		assert(start.size == game.size, "STARTSTATE SIZE DOES NOT MATCH GAME DATA SIZE")
 		startState = start
 	
-	if game.playerWhite == GameData.LOCAL and game.playerBlack == GameData.LOCAL: #apparently this gives "Condion "det == 0" is true" error, i dont understand why, but its not fatal and still correct... so....
-		undoRequest.connect(localUndoReq)
-	elif undoRequest.is_connected(localUndoReq):
-		undoRequest.disconnect(localUndoReq)
+	if undoRequest.is_connected(localUndoReq):
+		if game.playerWhite == GameData.LOCAL and game.playerBlack == GameData.LOCAL: #apparently this gives "Condion "det == 0" is true" error, i dont understand why, but its not fatal and still correct... so....
+			undoRequest.connect(localUndoReq)
+		else:
+			undoRequest.disconnect(localUndoReq)
 	
 	timerWhite.paused = true
 	timerBlack.paused = true
