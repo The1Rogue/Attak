@@ -25,9 +25,13 @@ func send(s: String):
 	while state == THINKING or state == STARTING:
 		await get_tree().create_timer(.1).timeout
 	if state == INACTIVE: return
-	state = THINKING
-	#print("> " + s)
+	print("> " + s)
 	stdio.store_line(s)
+
+
+func askReady():
+	state = THINKING
+	print("> isready")
 	stdio.store_line("isready")
 
 
@@ -36,8 +40,9 @@ func _threadFunc():
 		var s = stdio.get_line()
 		if not s.is_empty(): parse(s)
 	
-	if state == INACTIVE: return #it was simply closed, all good
+	if state == INACTIVE or stdio.get_error() == OK: return #it was simply closed, all good
 	
+	#clean up a crash
 	botExit.call_deferred()
 	GameLogic.endGame.call_deferred(GameState.DEFAULT_WIN_WHITE if GameLogic.gameData.playerWhite == GameData.LOCAL else GameState.DEFAULT_WIN_BLACK)
 	Notif.message.call_deferred("The Bot program has crashed!", false)
@@ -46,7 +51,7 @@ func _threadFunc():
 
 func parse(s: String):
 	var data = s.split(" ")
-	#print("< " + s)
+	print("< " + s)
 	match Array(data):
 		["id", "name", ..]:
 			botName = " ".join(data.slice(2))
@@ -64,6 +69,7 @@ func parse(s: String):
 			pass #TODO
 		
 		["bestmove", ..]:
+			state = READY
 			var move = Ply.fromPTN(data[1])
 			GameLogic.doMove.call_deferred(self, move)
 		
@@ -108,6 +114,7 @@ func sendMove(origin: Node, ply: Ply):
 		pos += " %s" % i.toPTN()
 	send(pos)
 	send("go wtime %d btime %d winc %d binc %d" % [GameLogic.timerWhite.time_left * 1000, GameLogic.timerBlack.time_left * 1000, GameLogic.gameData.increment * 1000, GameLogic.gameData.increment * 1000])
+	state = THINKING
 
 
 func onResign():
@@ -133,6 +140,7 @@ func startGame(game: GameData):
 	
 	send("setoption name HalfKomi value %d" % game.komi)
 	send("teinewgame %d" % game.size)
+	askReady()
 	if game.playerWhite == GameData.BOT:
 		send("position tps %s" % startTPS)
 		send("go wtime %d btime %d winc %d binc %d" % [game.time*1000, game.time*1000, game.increment*1000, game.increment*1000])
@@ -140,12 +148,12 @@ func startGame(game: GameData):
 
 func botExit():
 	state = INACTIVE
-	if OS.is_process_running(pid):
-		OS.kill(pid)
-	if stdio != null and stdio.is_open():
-		stdio.close()
 	if thread != null and thread.is_started():
 		thread.wait_to_finish()
+	if stdio != null and stdio.is_open():
+		stdio.close()
+	if OS.is_process_running(pid):
+		OS.kill(pid)
 
 
 func endGame(type: int):
@@ -153,7 +161,9 @@ func endGame(type: int):
 	GameLogic.end.disconnect(endGame)
 	GameLogic.resign.disconnect(onResign)
 	stdio.store_line("quit")
-	await get_tree().create_timer(.1).timeout
+	state = INACTIVE
+	while stdio.is_open():
+		await get_tree().create_timer(.1).timeout
 	botExit()
 
 

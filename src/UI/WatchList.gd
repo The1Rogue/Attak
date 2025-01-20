@@ -23,7 +23,6 @@ func add(game: GameData, id: int):
 	add_child(b)
 	b.reset_size()
 	
-	
 	games[id] = b
 	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	b.pressed.connect(func(): observe(id))

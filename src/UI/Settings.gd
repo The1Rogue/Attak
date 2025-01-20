@@ -3,7 +3,7 @@ class_name Settings
 
 var saveData: SettingData
 
-var squares: Array[Texture2D] = []
+signal experimental(bool)
 
 @export var board3D: PackedScene
 @export var board2D: PackedScene
@@ -15,11 +15,15 @@ var board: BoardLogic
 
 
 func loadFull(data: SettingData):
+	experimental.emit(data.experimental)
 	RenderingServer.set_default_clear_color(data.bgColor)
 
 
 func _ready() -> void:
 	saveData = SettingData.loadOrNew()
+	
+	$"GridContainer/EXP".set_pressed_no_signal(saveData.experimental)
+	$"GridContainer/EXP".toggled.connect(setEXP)
 	
 	$"GridContainer/BG".color = saveData.bgColor
 	$"GridContainer/BG".color_changed.connect(setBG)
@@ -66,6 +70,12 @@ func _ready() -> void:
 	setBoard(0 if saveData.is2D else 1)
 	$Board.current_tab = 0 if saveData.is2D else 1
 	$Board.tab_changed.connect(setBoard)
+
+
+func setEXP(on: bool):
+	experimental.emit(on)
+	saveData.experimental = on
+	saveData.save()
 
 
 func setBG(color: Color):

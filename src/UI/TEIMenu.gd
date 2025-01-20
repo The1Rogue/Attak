@@ -16,16 +16,16 @@ var count = 0
 var games: Dictionary = {}
 
 func _ready():
-	#if not (OS.has_feature("tei") or OS.has_feature("editor")): TODO
-		#if not get_parent().is_node_ready():
-			#await get_parent().ready
-		#get_parent().remove(self)
-		#queue_free()
-		#return
-		
+	$"../Settings".experimental.connect(toggle)
+	toggle($"../Settings".saveData.experimental)
+	
 	$HBoxContainer/Button.pressed.connect($FileDialog.show)
 	$FileDialog.file_selected.connect(select)
 	$Button.pressed.connect(start)
+
+
+func toggle(a: bool):
+	$"../tabBar/Play/SubTabs/TEI".visible = a
 
 
 func select(path: String):

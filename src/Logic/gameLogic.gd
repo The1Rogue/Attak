@@ -63,8 +63,15 @@ func doSetup(game: GameData, start: GameState = null):
 	
 	timerWhite.paused = true
 	timerBlack.paused = true
-	timerWhite.start(game.time)
-	timerBlack.start(game.time)
+	if game.playerBlack != GameData.BOT: #no timer if you play against a bot locally
+		timerWhite.start(game.time)
+	else:
+		timerWhite.start(0)
+		
+	if game.playerWhite != GameData.BOT:
+		timerBlack.start(game.time)
+	else:
+		timerBlack.start(0)
 	
 	setup.emit(gameData, start)
 
@@ -113,9 +120,8 @@ func doMove(origin: Node, ply: Ply):
 	timerWhite.paused = i == 1 or ply.boardState.win != GameState.ONGOING
 	timerBlack.paused = i == 0 or ply.boardState.win != GameState.ONGOING
 	
-	move.emit(origin, ply)
-	
 	history.append(ply)
+	move.emit(origin, ply)
 	if view+1 == history.size():
 		view += 1
 		viewState.emit(ply.boardState)

@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=18 format=3 uid="uid://3w4qd4ooj08t"]
+[gd_resource type="Theme" load_steps=22 format=3 uid="uid://3w4qd4ooj08t"]
 
 [ext_resource type="StyleBox" uid="uid://c7bkligpe61xk" path="res://assets/Theme/ButtonActive.tres" id="1_wdenm"]
 [ext_resource type="StyleBox" uid="uid://b5qu7ymxg2nrv" path="res://assets/Theme/ButtonInActive.tres" id="2_ikfa3"]
@@ -16,6 +16,14 @@
 [ext_resource type="StyleBox" uid="uid://bgdiuyv4e2po8" path="res://assets/Theme/PanelLight.tres" id="13_cb88j"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0hnp4"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nm3b1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2g3ak"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c6107"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ss6g3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t2yk7"]
 content_margin_left = 5.0
@@ -42,6 +50,10 @@ Button/styles/normal = ExtResource("2_ikfa3")
 Button/styles/pressed = ExtResource("1_wdenm")
 CheckButton/icons/checked = ExtResource("3_g6srj")
 CheckButton/icons/unchecked = ExtResource("4_ocacp")
+CheckButton/styles/hover = SubResource("StyleBoxEmpty_nm3b1")
+CheckButton/styles/hover_pressed = SubResource("StyleBoxEmpty_2g3ak")
+CheckButton/styles/normal = SubResource("StyleBoxEmpty_c6107")
+CheckButton/styles/pressed = SubResource("StyleBoxEmpty_ss6g3")
 ColorPickerButton/styles/hover = SubResource("StyleBoxFlat_t2yk7")
 ColorPickerButton/styles/normal = SubResource("StyleBoxFlat_iurck")
 ExitButton/base_type = &"Button"

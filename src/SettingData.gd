@@ -10,6 +10,7 @@ const playtakFlat = "res://assets/3D/PlayTak/flat.obj"
 static var DA: DirAccess = DirAccess.open("res://")
 
 @export_category("Global")
+@export var experimental: bool = false
 @export var bgColor: Color = Color("222a61")
 @export var is2D: bool = false
 

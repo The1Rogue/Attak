@@ -103,7 +103,15 @@ boardHolder = NodePath("../Board/Board/SubViewport")
 layout_mode = 2
 columns = 2
 
-[node name="Label" type="Label" parent="Settings/GridContainer"]
+[node name="EXPLabel" type="Label" parent="Settings/GridContainer"]
+layout_mode = 2
+text = "Enable Experimental Features:"
+
+[node name="EXP" type="CheckButton" parent="Settings/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+
+[node name="BGLabel" type="Label" parent="Settings/GridContainer"]
 layout_mode = 2
 text = "Background Color: "
 
@@ -485,7 +493,7 @@ text = "Size:"
 
 [node name="Size2" type="OptionButton" parent="TEI/GridContainer"]
 layout_mode = 2
-selected = 0
+selected = 3
 allow_reselect = true
 item_count = 6
 popup/item_0/text = "6x6"
@@ -520,13 +528,13 @@ layout_mode = 2
 
 [node name="Time" type="Label" parent="TEI/GridContainer"]
 layout_mode = 2
-text = "Time:
+text = "Bot Time:
 "
 
 [node name="Time2" type="SpinBox" parent="TEI/GridContainer"]
 layout_mode = 2
 min_value = 1.0
-value = 15.0
+value = 1.0
 suffix = "min"
 
 [node name="Incr" type="Label" parent="TEI/GridContainer"]
@@ -537,7 +545,6 @@ text = "Increment:"
 custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 step = 5.0
-value = 10.0
 suffix = "sec"
 
 [node name="Button" type="Button" parent="TEI"]

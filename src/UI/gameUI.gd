@@ -63,10 +63,11 @@ func setup(game: GameData, startState: GameState):
 			ptnDisplay.remove_child(child)
 	
 	i = 0
-	WhiteName.text = game.playerWhiteName
 	BlackName.text = game.playerBlackName
-	WhiteTime.text = timeString(game.time)
 	BlackTime.text = timeString(game.time)
+	WhiteName.text = game.playerWhiteName
+	WhiteTime.text = timeString(game.time)
+
 	whiteCritical = game.time == 0 #prevent critical sound on not timed game
 	blackCritical = game.time == 0
 	
