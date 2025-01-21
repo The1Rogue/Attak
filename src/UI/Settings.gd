@@ -13,7 +13,6 @@ signal experimental(bool)
 var board: BoardLogic
 
 
-
 func loadFull(data: SettingData):
 	experimental.emit(data.experimental)
 	RenderingServer.set_default_clear_color(data.bgColor)
@@ -110,15 +109,9 @@ func set2DSq(path: String):
 
 func set2DWhite(path: String):
 	var tex = [null, null, null]
-	if SettingData.isDir(path):
-		tex = SettingData.loadTextures(path)
+	tex = SettingData.loadPlaytak2D(path)
 		
-	else:
-		tex = SettingData.playtakTo2D(SettingData.loadTexture(path))
-		
-	if tex.size() < 3:
-		Notif.message("Could not find the correct files in %s!" % path)
-	if tex[0] == null or tex[1] == null or tex[2] == null:
+	if tex.size() != 3 or null in tex:
 		Notif.message("Failed to load %s!" % path)
 		return
 	
@@ -132,16 +125,9 @@ func set2DWhite(path: String):
 
 func set2DBlack(path: String):
 	var tex = [null, null, null]
-	if SettingData.isDir(path):
-		tex = SettingData.loadTextures(path)
+	tex = SettingData.loadPlaytak2D(path)
 		
-	else:
-		return #TODO
-		
-	if tex.size() < 3:
-		Notif.message("Could not find the correct files in %s!" % path)
-		return
-	if tex[0] == null or tex[1] == null or tex[2] == null:
+	if tex.size() != 3 or null in tex:
 		Notif.message("Failed to load %s!" % path)
 		return
 	
@@ -181,24 +167,9 @@ func set3DSq(path: String):
 
 
 func set3DWhite(path: String):
-	var meshes = [null, null]
-	if SettingData.isDir(path):
-		meshes = SettingData.loadMeshes(path)
-	
-	elif path.ends_with(".glb") or path.ends_with(".gltf"):
-		meshes = SettingData.loadGLB(path)
-	
-	else:
-		var tex = SettingData.loadTexture(path)
-		if tex != null:
-			meshes[0] = load(SettingData.playtakCap)
-			meshes[0].surface_get_material(0).albedo_texture = tex
-			meshes[1] = load(SettingData.playtakFlat)
-			meshes[1].surface_get_material(0).albedo_texture = tex
+	var meshes = SettingData.loadGLB(path) if path.ends_with(".glb") or path.ends_with(".gltf") else SettingData.loadPlaytak3D(path)
 		
-	if meshes.size() < 2:
-		Notif.message("Could not find the correct files in %s!" % path)
-	if meshes[0] == null or meshes[1] == null:
+	if meshes.size() != 2 or null in meshes:
 		Notif.message("Failed to load %s!" % path)
 		return
 	
@@ -210,24 +181,9 @@ func set3DWhite(path: String):
 
 
 func set3DBlack(path: String):
-	var meshes = [null, null]
-	if SettingData.isDir(path):
-		meshes = SettingData.loadMeshes(path)
+	var meshes = SettingData.loadGLB(path) if path.ends_with(".glb") or path.ends_with(".gltf") else SettingData.loadPlaytak3D(path)
 		
-	elif path.ends_with(".glb") or path.ends_with(".gltf"):
-		meshes = SettingData.loadGLB(path)
-		
-	else:
-		var tex = SettingData.loadTexture(path)
-		if tex != null:
-			meshes[0] = load(SettingData.playtakCap)
-			meshes[0].surface_get_material(0).albedo_texture = tex
-			meshes[1] = load(SettingData.playtakFlat)
-			meshes[1].surface_get_material(0).albedo_texture = tex
-		
-	if meshes.size() < 2:
-		Notif.message("Could not find the correct files in %s!" % path)
-	if meshes[0] == null or meshes[1] == null:
+	if meshes.size() != 2 or null in meshes:
 		Notif.message("Failed to load %s!" % path)
 		return
 	

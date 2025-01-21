@@ -189,8 +189,10 @@ func deHighlight(id: int):
 func setWall(id: int, wall: bool):
 	if id % 2 == 0:
 		pieces[id].texture = WhiteWall if wall else WhiteFlat
+		pieces[id].rotation = PI/4 if wall else 0
 	else:
 		pieces[id].texture = BlackWall if wall else BlackFlat
+		pieces[id].rotation = -PI/4 if wall else 0
 
 
 func select(id: int):

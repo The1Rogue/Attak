@@ -139,13 +139,13 @@ label = "Squares"
 [node name="White" type="GridContainer" parent="Settings/Board/2D Board"]
 layout_mode = 2
 script = ExtResource("6_vmbxg")
-path = "res://assets/Pieces2D/"
+path = "res://assets/Pieces2D/White/"
 label = "White Pieces"
 
 [node name="Black" type="GridContainer" parent="Settings/Board/2D Board"]
 layout_mode = 2
 script = ExtResource("6_vmbxg")
-path = "res://assets/Pieces2D/"
+path = "res://assets/Pieces2D/Black/"
 label = "Black Pieces"
 
 [node name="PieceSize" type="GridContainer" parent="Settings/Board/2D Board"]
@@ -177,13 +177,13 @@ label = "Squares"
 [node name="White" type="GridContainer" parent="Settings/Board/3D Board"]
 layout_mode = 2
 script = ExtResource("6_vmbxg")
-path = "res://assets/Pieces3D/"
+path = "res://assets/Pieces3D/White/"
 label = "White Pieces"
 
 [node name="Black" type="GridContainer" parent="Settings/Board/3D Board"]
 layout_mode = 2
 script = ExtResource("6_vmbxg")
-path = "res://assets/Pieces3D/"
+path = "res://assets/Pieces3D/Black/"
 label = "Black Pieces"
 
 [node name="WallAngle" type="GridContainer" parent="Settings/Board/3D Board"]
@@ -661,10 +661,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -167.0
-offset_top = -74.0
-offset_right = 167.0
-offset_bottom = 74.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 338.0
+offset_bottom = 152.0
 grow_horizontal = 2
 grow_vertical = 2
 columns = 2

@@ -53,5 +53,6 @@ texture={
 [rendering]
 
 textures/vram_compression/import_etc2_astc=true
+anti_aliasing/screen_space_roughness_limiter/enabled=false
+scaling_3d/scale=2.0
 environment/defaults/default_clear_color=Color(0.133333, 0.164706, 0.380392, 1)
-anti_aliasing/quality/screen_space_aa=1

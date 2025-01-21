@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://mxvbujo17lyt"]
 
 [ext_resource type="Script" path="res://src/BoardReps/2D/2DBoard.gd" id="1_485fe"]
-[ext_resource type="Texture2D" uid="uid://dbm7r0b1yi8y7" path="res://assets/Squares/sphere.png" id="2_883rs"]
-[ext_resource type="Shader" path="res://assets/2D/Highlight2D.gdshader" id="9_spr7x"]
+[ext_resource type="Texture2D" uid="uid://dak6fg4nhw1h4" path="res://assets/Squares/Standard.svg" id="3_dm71m"]
+[ext_resource type="Shader" path="res://assets/shaders/Highlight2D.gdshader" id="9_spr7x"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_m7t6u"]
 shader = ExtResource("9_spr7x")
@@ -18,7 +18,7 @@ highlightMaterial = SubResource("ShaderMaterial_m7t6u")
 
 [node name="Board" type="Sprite2D" parent="."]
 texture_repeat = 2
-texture = ExtResource("2_883rs")
+texture = ExtResource("3_dm71m")
 region_enabled = true
 region_rect = Rect2(0, 0, 80, 80)
 

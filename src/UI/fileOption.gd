@@ -26,7 +26,6 @@ func _ready() -> void:
 	p.file_selected.connect(selectCustom)
 	p.dir_selected.connect(selectCustom)
 	p.file_mode = FileDialog.FILE_MODE_OPEN_FILE
-	#p.file_mode = FileDialog.FILE_MODE_OPEN_ANY TODO if user needs to select directories, use this
 	p.access = FileDialog.ACCESS_FILESYSTEM
 	p.initial_position = Window.WINDOW_INITIAL_POSITION_CENTER_MAIN_WINDOW_SCREEN
 	p.size = get_viewport_rect().size / 2
@@ -41,10 +40,6 @@ func _ready() -> void:
 		var name = i.split(".", false, 1)[0]
 		options.append(i.trim_suffix(".import"))
 		optionButton.add_item(name, options.size())
-		
-	for i in DirAccess.get_directories_at(path):
-		options.append(i)
-		optionButton.add_item(i, options.size())
 		
 	optionButton.item_selected.connect(select)
 

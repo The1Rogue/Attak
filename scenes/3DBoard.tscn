@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/BoardReps/3D/3DBoard.gd" id="2_4p11y"]
 [ext_resource type="Texture2D" uid="uid://dak6fg4nhw1h4" path="res://assets/Squares/Standard.svg" id="3_kh5br"]
-[ext_resource type="Shader" path="res://assets/3D/Highlight3D.gdshader" id="7_fpqoa"]
+[ext_resource type="Shader" path="res://assets/shaders/Highlight3D.gdshader" id="7_fpqoa"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ood11"]
 
@@ -28,7 +28,7 @@ shader_parameter/color = Color(0.376471, 0.431373, 0.709804, 1)
 [sub_resource type="Environment" id="Environment_84367"]
 ambient_light_source = 2
 ambient_light_color = Color(1, 1, 1, 1)
-ambient_light_energy = 0.2
+ambient_light_energy = 0.7
 reflected_light_source = 1
 
 [sub_resource type="ORMMaterial3D" id="ORMMaterial3D_1i0kw"]
@@ -80,5 +80,6 @@ transform = Transform3D(0.872922, 0.338896, -0.350937, 0, 0.71934, 0.694658, 0.4
 
 [node name="Camera3D" type="Camera3D" parent="Pivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+size = 0.01
 
 [node name="3DBoard" type="Node3D" parent="."]
