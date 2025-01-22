@@ -132,5 +132,6 @@ func loadGame(data: GameData, notation: String):
 		return
 		
 	GameLogic.doSetup(data)
+	if notation.is_empty(): return
 	for i in notation.split(","):
 		GameLogic.doMove(self, Ply.fromPlayTak(i, null))
