@@ -57,10 +57,10 @@ func doSetup(game: GameData, start: GameState = null):
 		startState = start
 	
 	if undoRequest.is_connected(localUndoReq):
-		if game.playerWhite == GameData.LOCAL and game.playerBlack == GameData.LOCAL: #apparently this gives "Condion "det == 0" is true" error, i dont understand why, but its not fatal and still correct... so....
-			undoRequest.connect(localUndoReq)
-		else:
-			undoRequest.disconnect(localUndoReq)
+		undoRequest.disconnect(localUndoReq)
+	if game.playerWhite == GameData.LOCAL and game.playerBlack == GameData.LOCAL: #apparently this gives "Condion "det == 0" is true" error, i dont understand why, but its not fatal and still correct... so....
+		undoRequest.connect(localUndoReq)
+	
 	
 	timerWhite.paused = true
 	timerBlack.paused = true

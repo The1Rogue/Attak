@@ -16,23 +16,21 @@ time = ExtResource("5_wo0o2")
 notif = ExtResource("6_5sg0s")
 
 [node name="Panel" type="PanelContainer" parent="."]
-visible = false
-anchors_preset = 8
+custom_minimum_size = Vector2(300, 0)
+anchors_preset = -1
 anchor_left = 0.5
-anchor_top = 0.5
+anchor_top = 0.8
 anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -50.0
-offset_top = -20.0
-offset_right = 50.0
-offset_bottom = 20.0
+anchor_bottom = 0.8
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="Panel"]
+[node name="Label" type="RichTextLabel" parent="Panel"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 32
-horizontal_alignment = 1
-vertical_alignment = 1
+theme_override_font_sizes/normal_font_size = 32
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]

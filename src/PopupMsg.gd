@@ -3,7 +3,7 @@ extends Node
 
 @onready var audioPlayer: AudioStreamPlayer = $AudioStreamPlayer
 @onready var popUp: PanelContainer = $Panel
-@onready var popUpLabel: Label = $Panel/Label
+@onready var popUpLabel: RichTextLabel = $Panel/Label
 
 @export var popUpLength: float = 5
 
@@ -17,9 +17,13 @@ extends Node
 
 var PopUpTimer: float = 0
 
+static func escape_bbcode(bbcode_text):
+	return bbcode_text.replace("[", "[lb]")
+
 func _ready():
-	popUpLabel.add_theme_font_size_override(&"font_size",
-	(128 if Globals.isMobile() else 32))
+	var s = (4 if Globals.isMobile() else 1)
+	popUpLabel.add_theme_font_size_override(&"normal_font_size", 32*s)
+	popUp.custom_minimum_size.x = 300 * s
 
 
 func _process(delta: float) -> void:
@@ -30,11 +34,23 @@ func _process(delta: float) -> void:
 
 
 func message(msg: String, noise: bool = true):
-	popUpLabel.text = " " + msg + " "
+	popUpLabel.text = "[center]" + escape_bbcode(msg) + "[/center]"
 	popUp.show()
 	PopUpTimer = popUpLength
 	if noise:
 		ping(notif)
+
+
+func chatMessage(user: String, msg: String):
+	popUp.show()
+	PopUpTimer = popUpLength
+	var c = Color.RED
+	c.h = user.hash() as float / (2**32)
+	popUpLabel.clear()
+	popUpLabel.push_color(c)
+	popUpLabel.append_text("<"+escape_bbcode(user) + ">: ")
+	popUpLabel.pop()
+	popUpLabel.append_text(escape_bbcode(msg) + "\n")
 
 
 func ping(audio: AudioStream = notif):

@@ -74,10 +74,19 @@ func parseMsg(room: String, user: String, msg: String):
 		if not rooms.has(user):
 			ChatTab.newChat(room, Chat.PRIVATE)
 		rooms[user].add_message(user, msg)
+		if shouldShow(PlayTakI.activeUsername, user):
+			Notif.chatMessage(user, msg)
+	
 	else:
 		if not rooms.has(room):
 			ChatTab.newChat(room, Chat.ROOM)
 		rooms[room].add_message(user, msg)
+		var names = room.split("-")
+		if names.size() == 2 and shouldShow(names[0], names[1]):
+			Notif.chatMessage(user, msg)
+
+func shouldShow(u1, u2):
+	return (not isVisible) and ((GameLogic.gameData.playerWhiteName == u1 and GameLogic.gameData.playerBlackName == u2) or (GameLogic.gameData.playerWhiteName == u2 and GameLogic.gameData.playerBlackName == u1))
 
 
 const BOUND = 120
@@ -92,4 +101,3 @@ func _input(event):
 				if get_viewport_rect().size.x - event.position.x + event.relative.x < BOUND:
 					toggle(true)
 					get_viewport().set_input_as_handled()
-					

@@ -127,8 +127,15 @@ static func loadGLB(path: String) -> Array[Mesh]:
 
 
 static func loadPlaytak2D(path: String) -> Array[Texture2D]:
-	var img = Image.load_from_file(path)
+	var img: Image
+	if path.begins_with("res://"):
+		img = load(path).get_image()
+	else:
+		img = Image.load_from_file(path)
 	if img == null: return []
+	if img.is_compressed():
+		if img.decompress() != OK:
+			return []
 	img.fix_alpha_edges()
 	var s: Vector2i = img.get_size() / 64
 	var cap  = ImageTexture.create_from_image(img.get_region(Rect2i(s.x * 35, s.y *  1, s.x * 26, s.y * 26)))

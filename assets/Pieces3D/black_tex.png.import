@@ -2,21 +2,21 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cq24d4cwcx1cq"
-path.s3tc="res://.godot/imported/Standard_texture.png-cd71d86975023d7613e7e99294473c49.s3tc.ctex"
-path.etc2="res://.godot/imported/Standard_texture.png-cd71d86975023d7613e7e99294473c49.etc2.ctex"
+uid="uid://cxsrk3r6u77wu"
+path.s3tc="res://.godot/imported/black_tex.png-e98c8d8bf9b9a3657f4645fc26e30470.s3tc.ctex"
+path.etc2="res://.godot/imported/black_tex.png-e98c8d8bf9b9a3657f4645fc26e30470.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "21bf83440ee4dabf5b87115a19a0ed90"
+"md5": "c9ff405955a2d2c6beb4f47c72e32dc1"
 }
 
 [deps]
 
-source_file="res://assets/Pieces3D/White/Standard_texture.png"
-dest_files=["res://.godot/imported/Standard_texture.png-cd71d86975023d7613e7e99294473c49.s3tc.ctex", "res://.godot/imported/Standard_texture.png-cd71d86975023d7613e7e99294473c49.etc2.ctex"]
+source_file="res://assets/Pieces3D/black_tex.png"
+dest_files=["res://.godot/imported/black_tex.png-e98c8d8bf9b9a3657f4645fc26e30470.s3tc.ctex", "res://.godot/imported/black_tex.png-e98c8d8bf9b9a3657f4645fc26e30470.etc2.ctex"]
 
 [params]
 

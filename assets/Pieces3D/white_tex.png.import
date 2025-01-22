@@ -2,10 +2,12 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dpwfh661sk18"
-path="res://.godot/imported/white_simple_tex.png-d40ac709d33803f6d43f4b1ab3aa65b4.ctex"
+uid="uid://cq24d4cwcx1cq"
+path.s3tc="res://.godot/imported/white_tex.png-3428ded2be072503191a4a10daa31b6f.s3tc.ctex"
+path.etc2="res://.godot/imported/white_tex.png-3428ded2be072503191a4a10daa31b6f.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "21bf83440ee4dabf5b87115a19a0ed90"
@@ -13,12 +15,12 @@ generator_parameters={
 
 [deps]
 
-source_file="res://assets/Pieces3D/white_simple_tex.png"
-dest_files=["res://.godot/imported/white_simple_tex.png-d40ac709d33803f6d43f4b1ab3aa65b4.ctex"]
+source_file="res://assets/Pieces3D/white_tex.png"
+dest_files=["res://.godot/imported/white_tex.png-3428ded2be072503191a4a10daa31b6f.s3tc.ctex", "res://.godot/imported/white_tex.png-3428ded2be072503191a4a10daa31b6f.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
