@@ -10,7 +10,7 @@ var active: Control
 
 func _ready() -> void:
 	assert(start in get_children(), "start node is invalid!")
-	
+	ChatTab.toggle.connect(func(b): _draw())
 	
 	if Globals.isMobile():
 		th.default_font_size *= 4
@@ -57,3 +57,10 @@ func _draw():
 			if i == tabBar: continue
 			i.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 			i.set_offset(SIDE_BOTTOM, -tabBar.size.y)
+
+	if ChatTab.isVisible:
+		for i in get_children():
+			if i == tabBar: continue
+			i.set_offset(SIDE_RIGHT, -ChatTab.list.size.x)
+			
+			

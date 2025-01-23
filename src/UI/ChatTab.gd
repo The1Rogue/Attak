@@ -7,19 +7,23 @@ var rooms: Dictionary = {}
 @onready var reddot = $Button/Reddot
 @onready var list = $Panel/ChatList
 
+signal toggle(bool)
+
 var isVisible: bool = false
 
 func _ready() -> void:
 	reddot.hide()
-	button.toggled.connect(toggle)
+	button.toggled.connect(toggle.emit)
+	toggle.connect(setVisible)
 	get_parent().move_child.call_deferred(self, -1)
 	hide()
 
+
 func _draw():
 	list.custom_minimum_size.x = get_viewport_rect().size.y / 6
-	
 
-func toggle(visible: bool) -> void:
+
+func setVisible(visible: bool) -> void:
 	reddot.hide()
 	set_offset(SIDE_RIGHT, -list.size.x if visible else 0)
 	isVisible = visible
@@ -85,7 +89,8 @@ func parseMsg(room: String, user: String, msg: String):
 		if names.size() == 2 and shouldShow(names[0], names[1]):
 			Notif.chatMessage(user, msg)
 
-func shouldShow(u1, u2):
+
+func shouldShow(u1: String, u2: String):
 	return (not isVisible) and ((GameLogic.gameData.playerWhiteName == u1 and GameLogic.gameData.playerBlackName == u2) or (GameLogic.gameData.playerWhiteName == u2 and GameLogic.gameData.playerBlackName == u1))
 
 
@@ -95,9 +100,9 @@ func _input(event):
 		if event.relative.abs().max_axis_index() == Vector2.AXIS_X:
 			if event.relative.x > 0:
 				if get_viewport_rect().size.x - event.position.x - event.relative.x < BOUND:
-					toggle(false)
+					toggle.emit(false)
 					get_viewport().set_input_as_handled()
 			else:
 				if get_viewport_rect().size.x - event.position.x + event.relative.x < BOUND:
-					toggle(true)
+					toggle.emit(true)
 					get_viewport().set_input_as_handled()
