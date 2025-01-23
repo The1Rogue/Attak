@@ -19,6 +19,8 @@ class_name GameUI
 @export var ptnCurrent: Button
 @export var ptnLast: Button
 
+@onready var tpsButton: Button = $getButtons/TPS
+@onready var ptnButton: Button = $getButtons/PTN
 
 @export var criticalTime: int = 30
 var whiteCritical: bool = false
@@ -52,6 +54,8 @@ func _ready() -> void:
 	drawButton.toggled.connect(func(t:bool): GameLogic.drawRequest.emit(self, not t))
 	resignButton.pressed.connect(GameLogic.resign.emit)
 
+	tpsButton.pressed.connect(func(): DisplayServer.clipboard_set(GameLogic.viewedState().getTPS()))
+	ptnButton.pressed.connect(func(): DisplayServer.clipboard_set(GameLogic.getPTN()))
 
 func setup(game: GameData, startState: GameState):
 	if not self.is_node_ready():

@@ -162,3 +162,17 @@ func endGame(type: int):
 		activeState().win = type
 		Notif.ping(Notif.end)
 		Notif.message("Game Ended " + GameState.resultStrings[type], false)
+
+
+func getPTN() -> String:
+	var ptn = gameData.ptnHeader()
+	
+	for ply in history:
+		if ply.boardState.ply % 2 == 1: ptn += "\n%d." % ((ply.boardState.ply+1) / 2)
+		ptn += " %s" % ply.toPTN()
+
+	if history[-1].boardState.win != GameState.ONGOING:
+		ptn += "\n%s" % GameState.resultStrings[history[-1].boardState.win]
+	
+	return ptn
+	

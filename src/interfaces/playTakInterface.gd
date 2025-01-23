@@ -30,7 +30,7 @@ func _ready():
 	
 	add_child(http)
 	http.request_completed.connect(parseRatings)
-	http.request(ratingURL)
+	ratingFetch()
 
 
 func signInGuest() -> bool:
@@ -254,7 +254,15 @@ func _process(delta: float):
 			_:
 				print("Unparsed Message:")
 				print(packet)
-				
+
+
+func ratingFetch():
+	http.request(ratingURL)
+	# target time is 10m past the hour, + random to avoid accidental ddos
+	# last +3600 is because % can (and in this case always will) return negative
+	var offset = (600 + randi_range(5, 300) - Time.get_unix_time_from_system() as int) % 3600 + 3600
+	if offset < 300: offset += 3600 #avoid repeat in less than 5mins
+	get_tree().create_timer(offset).timeout.connect(ratingFetch)
 
 
 func parseRatings(result:int , response_code: int, header: PackedStringArray, body: PackedByteArray):
@@ -272,11 +280,6 @@ func parseRatings(result:int , response_code: int, header: PackedStringArray, bo
 					bots.append(username)
 				ratingList[username] = entry[2]
 		ratingUpdate.emit()
-	
-	# target time is 10m past the hour, + random to avoid ddos
-	# last +3600 is because % can (and in this case always will) return negative
-	var offset = (600 + randi_range(5, 300) - Time.get_unix_time_from_system() as int) % 3600 + 3600
-	get_tree().create_timer(offset).timeout.connect(func(): http.request(ratingURL)) #BUG this loop breaks if we get no response
 
 
 func startGame(data: PackedStringArray):

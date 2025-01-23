@@ -44,8 +44,21 @@ func _init(id: String, size: int, pw: int, pb: int, pwn: String, pbn: String, ti
 	self.caps = caps
 
 
-func isObserver():
+func isObserver() -> bool:
 	return playerWhite == PLAYTAK and playerBlack == PLAYTAK
 
-func isScratch():
+
+func isScratch() -> bool:
 	return playerWhite == LOCAL and playerBlack == LOCAL
+
+
+func ptnHeader() -> String:
+	return '[Site "%s"]\n[Player1 "%s"]\n[Player2 "%s"]\n[Size "%d"]\n[Komi "%s"]\n[Flats "%d"]\n[Caps "%d"]\n[Opening "swap"]' % [
+		"PlayTak.com" if playerWhite == PLAYTAK or playerBlack == PLAYTAK else "Attak",
+		playerWhiteName,
+		playerBlackName,
+		size,
+		str(komi / 2.0), #were not using format string because we want dynamic length
+		flats,
+		caps
+	]

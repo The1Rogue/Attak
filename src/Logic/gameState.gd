@@ -41,6 +41,7 @@ enum {
 	DRAW,
 	ONGOING
 }
+
 const resultStrings = [
 	"R-0",
 	"0-R",
