@@ -19,8 +19,8 @@ func _ready():
 	ptnLineRegex.compile(rPTNLine)
 	clockRegex.compile(rClock)
 	confirm.pressed.connect(create)
-	
-	
+	sizeEntry.item_selected.connect(setPieces)
+
 func create():
 	if notationEntry.text.is_empty():
 		var g = GameData.new(
@@ -117,7 +117,7 @@ func create():
 				Notif.message("Could not recognize \"%s\"" % line)
 				return
 		
-		if size == 0:
+		if size < 3 or size > 8:
 			Notif.message("Could not determine board size!")
 			return
 		
@@ -130,3 +130,9 @@ func create():
 			GameLogic.doMove(self, i)
 		
 		notationEntry.clear()
+
+
+func setPieces(idx: int):
+	var s = sizeEntry.get_item_id(idx)
+	flats.value = standardFlats[s-3]
+	caps.value = standardCaps[s-3]
