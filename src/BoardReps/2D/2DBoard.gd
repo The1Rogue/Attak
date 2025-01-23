@@ -32,7 +32,7 @@ var WhiteWall: Texture2D:
 	set(value):
 		for i in flats: if pieces[2*(caps+i)].texture == WhiteWall: 
 			pieces[2*(caps+i)].texture = value
-			pieces[2*(caps+i)].scale = pieceSize * Vector2.ONE * 16 / value.get_size()
+			pieces[2*(caps+i)].scale = pieceSize * Vector2.ONE * 16 / value.get_size().x
 		WhiteWall = value
 
 var BlackCap: Texture2D:
@@ -49,7 +49,7 @@ var BlackWall: Texture2D:
 	set(value):
 		for i in flats: if pieces[2*(caps+i)+1].texture == BlackWall: 
 			pieces[2*(caps+i)+1].texture = value
-			pieces[2*(caps+i)+1].scale = pieceSize * Vector2.ONE * 16 / value.get_size()
+			pieces[2*(caps+i)+1].scale = pieceSize * Vector2.ONE * 16 / value.get_size().x
 		BlackWall = value
 
 @export var highlightMaterial: ShaderMaterial
