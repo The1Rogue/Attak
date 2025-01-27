@@ -25,13 +25,11 @@ func send(s: String):
 	while state == THINKING or state == STARTING:
 		await get_tree().create_timer(.1).timeout
 	if state == INACTIVE: return
-	print("> " + s)
 	stdio.store_line(s)
 
 
 func askReady():
 	state = THINKING
-	print("> isready")
 	stdio.store_line("isready")
 
 
@@ -51,7 +49,6 @@ func _threadFunc():
 
 func parse(s: String):
 	var data = s.split(" ")
-	print("< " + s)
 	match Array(data):
 		["id", "name", ..]:
 			botName = " ".join(data.slice(2))
