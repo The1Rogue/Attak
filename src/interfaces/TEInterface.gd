@@ -109,7 +109,7 @@ func startConnection(executable: String) -> bool:
 
 func sendMove(origin: Node, ply: Ply):
 	if origin == self: return
-	var pos = "position tps %s moves" % startTPS
+	var pos = "position %s moves" % startTPS
 	for i in GameLogic.history:
 		pos += " %s" % i.toPTN()
 	send(pos)
@@ -133,7 +133,7 @@ func startGame(game: GameData):
 		game.playerBlackName = botName
 	
 	GameLogic.doSetup(game)
-	startTPS = GameLogic.startState.getTPS()
+	startTPS = "startpos" if GameLogic.startState.isEmpty else ("tps %s" % GameLogic.startState.getTPS())
 	GameLogic.move.connect(sendMove)
 	GameLogic.end.connect(endGame)
 	GameLogic.resign.connect(onResign)

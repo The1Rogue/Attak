@@ -19,6 +19,7 @@ var reserves: Reserves
 var highlights: Array[int]
 
 var win = ONGOING
+var isEmpty: bool = false
 
 enum {
 	WHITE = 0,
@@ -131,6 +132,7 @@ class Pile extends Resource:
 
 static func emptyState(size: int, flats: int, caps: int, komi: float) -> GameState:
 	var state = GameState.new()
+	state.isEmpty = true
 	state.size = size
 	state.flats = flats
 	state.caps = caps
@@ -179,6 +181,16 @@ static func fromTPS(tps: String, flats: int, caps: int) -> GameState:
 				count += 1
 	if count != state.size**2:
 		return null
+	
+	if state.ply == 0:
+		state.isEmpty = true
+		for x in state.board:
+			for y in x:
+				if not y.is_empty():
+					state.isEmpty = false
+					break
+	else:
+		state.isEmpty = false
 	
 	return state
 
