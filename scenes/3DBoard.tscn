@@ -1,8 +1,8 @@
 [gd_scene load_steps=14 format=3 uid="uid://c4esmjnf630vc"]
 
-[ext_resource type="Script" path="res://src/BoardReps/3D/3DBoard.gd" id="2_4p11y"]
+[ext_resource type="Script" uid="uid://h1sr5hiux18g" path="res://src/BoardReps/3D/3DBoard.gd" id="2_4p11y"]
 [ext_resource type="Texture2D" uid="uid://dak6fg4nhw1h4" path="res://assets/Squares/Standard.svg" id="3_kh5br"]
-[ext_resource type="Shader" path="res://assets/shaders/Highlight3D.gdshader" id="7_fpqoa"]
+[ext_resource type="Shader" uid="uid://b6w2qgfyj3hmb" path="res://assets/shaders/Highlight3D.gdshader" id="7_fpqoa"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ood11"]
 

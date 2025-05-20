@@ -34,6 +34,7 @@ func _process(delta: float) -> void:
 
 
 func message(msg: String, noise: bool = true):
+	print(msg)
 	popUpLabel.text = "[center]" + escape_bbcode(msg) + "[/center]"
 	popUp.show()
 	PopUpTimer = popUpLength

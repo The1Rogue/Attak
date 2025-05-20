@@ -10,7 +10,10 @@ class_name Board2D
 @export var heightOffset: float = 2
 
 var pieceSize: float: 
-	set(value): pieceSize = value; for i in pieces: i.scale = value * Vector2.ONE * 16 / i.texture.get_size()
+	set(value): 
+		for i in pieces: i.scale *= value / pieceSize
+		pieceSize = value
+		
 var sq: Texture2D:
 	set(t):
 		sq = t
@@ -18,43 +21,26 @@ var sq: Texture2D:
 		board.region_rect.size = Vector2.ONE * size * sq.get_height()
 		board.scale = Vector2.ONE * (16.0 / sq.get_height())
 
-var WhiteCap: Texture2D:
-	set(value): WhiteCap = value; for i in caps: 
-		pieces[2*i].texture = value
-		pieces[2*i].scale = pieceSize * Vector2.ONE * 16 / value.get_size()
-var WhiteFlat: Texture2D:
+var WhiteTex: Array[Texture2D]:
 	set(value):
-		for i in flats: if pieces[2*(caps+i)].texture != WhiteWall: 
-			pieces[2*(caps+i)].texture = value
-			pieces[2*(caps+i)].scale = pieceSize * Vector2.ONE * 16 / value.get_size()
-		WhiteFlat = value
-var WhiteWall: Texture2D:
+		if value.size() != 4 or null in value:
+			Notif.message("Failed to load white textures")
+			return
+		WhiteTex = value
+		if pieces.size() > 0: setState(GameLogic.viewedState())
+		
+var BlackTex: Array[Texture2D]:
 	set(value):
-		for i in flats: if pieces[2*(caps+i)].texture == WhiteWall: 
-			pieces[2*(caps+i)].texture = value
-			pieces[2*(caps+i)].scale = pieceSize * Vector2.ONE * 16 / value.get_size().x
-		WhiteWall = value
-
-var BlackCap: Texture2D:
-	set(value): BlackCap = value; for i in caps: 
-		pieces[2*i+1].texture = value
-		pieces[2*i+1].scale = pieceSize * Vector2.ONE * 16 / value.get_size()
-var BlackFlat: Texture2D:
-	set(value):
-		for i in flats: if pieces[2*(caps+i)+1].texture != BlackWall: 
-			pieces[2*(caps+i)+1].texture = value
-			pieces[2*(caps+i)+1].scale = pieceSize * Vector2.ONE * 16 / value.get_size()
-		BlackFlat = value
-var BlackWall: Texture2D:
-	set(value):
-		for i in flats: if pieces[2*(caps+i)+1].texture == BlackWall: 
-			pieces[2*(caps+i)+1].texture = value
-			pieces[2*(caps+i)+1].scale = pieceSize * Vector2.ONE * 16 / value.get_size().x
-		BlackWall = value
+		if value.size() != 4 or null in value:
+			Notif.message("Failed to load black textures")
+			return
+		BlackTex = value
+		if pieces.size() > 0: setState(GameLogic.viewedState())
 
 @export var highlightMaterial: ShaderMaterial
 
 var pieces: Array[Piece2D] = []
+
 
 func _ready():
 	super()
@@ -68,15 +54,8 @@ func resizeCam():
 
 
 func setData(data: SettingData):
-	var tex = data.white2D
-	WhiteCap = tex[0]
-	WhiteFlat = tex[1]
-	WhiteWall = tex[2]
-	
-	tex = data.black2D
-	BlackCap = tex[0]
-	BlackFlat = tex[1]
-	BlackWall = tex[2]
+	WhiteTex = data.white2D
+	BlackTex = data.black2D
 	
 	pieceSize = data.pieceScale2D
 	
@@ -119,26 +98,31 @@ func makeBoard():
 	
 	var piece
 	for i in caps:
-		piece = Piece2D.new(WhiteCap, pieceSize)
+		piece = Piece2D.new(WhiteTex[CAP], pieceSize)
 		reserves.add_child(piece)
 		pieces.append(piece)
 		putReserve(2*i)
 		
-		piece = Piece2D.new(BlackCap, pieceSize)
+		piece = Piece2D.new(BlackTex[CAP], pieceSize)
 		reserves.add_child(piece)
 		pieces.append(piece)
 		putReserve(2*i + 1)
 
 	for i in flats:
-		piece = Piece2D.new(WhiteFlat, pieceSize)
+		piece = Piece2D.new(WhiteTex[FLAT], pieceSize)
 		reserves.add_child(piece)
 		pieces.append(piece)
 		putReserve(2*(caps+i))
 		
-		piece = Piece2D.new(BlackFlat, pieceSize)
+		piece = Piece2D.new(BlackTex[FLAT], pieceSize)
 		reserves.add_child(piece)
 		pieces.append(piece)
 		putReserve(2*(caps+i) + 1)
+
+
+func setPieceState(id: int, state: int):
+	pieces[id].rotation = 0 if state != WALL else PI/4 if id%2 == 0 else -PI/4
+	pieces[id].texture = WhiteTex[state] if id%2 == 0 else BlackTex[state]
 
 
 func putPiece(id: int, v: Vector3i):
@@ -149,8 +133,12 @@ func putPiece(id: int, v: Vector3i):
 	
 	var p: Vector2
 	if v.y < 0:
-		p = Vector2((v.x - size/2.0 + .6) * 16, (size/2.0 - v.z -.5) * 16 - (v.y + h - size))
+		#pieces[id].scale = Vector2(pieceSize * 4, .9) / pieces[id].texture.get_size()
+		#pieces[id].texture = WhiteSmol if id % 2 == 0 else BlackSmol
+		p = Vector2((v.x - size/2.0 + .5 + pieceSize * .65) * 16, (size/2.0 - v.z - .5 + pieceSize * .4) * 16 - (v.y + h - size))
 	else:
+		#pieces[id].scale = pieceSize * 16 * Vector2.ONE / pieces[id].texture.get_width()
+		#if id >= 2*caps: pieces[id].texture = WhiteFlat if id % 2 == 0 else BlackFlat #TODO handle if this is a wall
 		p = Vector2((v.x - size/2.0 + .5) * 16, (size/2.0 - v.z - .5) * 16 - v.y * heightOffset)
 	
 	if pieces[id].selected: 
@@ -161,6 +149,7 @@ func putPiece(id: int, v: Vector3i):
 
 func putReserve(id: int):
 	var p: Vector2
+	pieces[id].scale = pieceSize * 16 * Vector2.ONE / pieces[id].texture.get_size()
 	if id < 2*caps:
 		p = Vector2(
 			16 * (size/2.0 + .75) * (-1 if id %2 == 1 else 1),
@@ -184,15 +173,6 @@ func highlight(id: int):
 
 func deHighlight(id: int):
 	pieces[id].material = null
-
-
-func setWall(id: int, wall: bool):
-	if id % 2 == 0:
-		pieces[id].texture = WhiteWall if wall else WhiteFlat
-		pieces[id].rotation = PI/4 if wall else 0
-	else:
-		pieces[id].texture = BlackWall if wall else BlackFlat
-		pieces[id].rotation = -PI/4 if wall else 0
 
 
 func select(id: int):

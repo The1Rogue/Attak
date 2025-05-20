@@ -181,6 +181,10 @@ func makeBoard():
 		putReserve(i)
 
 
+func setPieceState(id: int, state: int):
+	pieces[id].rotation = ROTATION[1 if state == WALL else 0]
+
+
 func putPiece(id: int, v: Vector3i):
 	var p = Vector3(v.x - size/2.0 + .5, flatHeight * v.y, size/2.0 - v.z - .5)
 	if id < caps*2:
@@ -213,10 +217,6 @@ func highlight(id: int):
 
 func deHighlight(id: int):
 	pieces[id].highlighted = false
-
-
-func setWall(id: int, wall: bool):
-	pieces[id].rotation = ROTATION[1 if wall else 0]
 
 
 func select(id: int):

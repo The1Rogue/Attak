@@ -12,10 +12,10 @@ config_version=5
 
 config/name="Attak"
 run/main_scene="res://scenes/UI/Menu.tscn"
-config/features=PackedStringArray("4.3", "GL Compatibility")
-boot_splash/image="res://assets/Attak256.png"
+config/features=PackedStringArray("4.4", "GL Compatibility")
 boot_splash/fullsize=false
 boot_splash/use_filter=false
+boot_splash/image="res://assets/Attak256.png"
 config/icon="res://assets/Attak.png"
 config/windows_native_icon="res://Attak.ico"
 

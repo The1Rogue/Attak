@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bfe32hpe0eve6"]
 
-[ext_resource type="Script" path="res://src/UI/URLButton.gd" id="1_jcigm"]
+[ext_resource type="Script" uid="uid://m8qeo2f26xe5" path="res://src/UI/URLButton.gd" id="1_jcigm"]
 
 [node name="PanelContainer" type="PanelContainer"]
 offset_left = 620.0

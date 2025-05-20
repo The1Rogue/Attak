@@ -76,7 +76,7 @@ func parseMsg(room: String, user: String, msg: String):
 	
 	if room.is_empty():
 		if not rooms.has(user):
-			ChatTab.newChat(room, Chat.PRIVATE)
+			ChatTab.newChat(user, Chat.PRIVATE)
 		rooms[user].add_message(user, msg)
 		if shouldShow(PlayTakI.activeUsername, user):
 			Notif.chatMessage(user, msg)

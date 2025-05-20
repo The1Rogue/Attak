@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://c7t0t4lbjup7v"]
 
-[ext_resource type="Script" path="res://src/UI/gameUI.gd" id="1_dr7ju"]
+[ext_resource type="Script" uid="uid://brnp1i4ne1bf5" path="res://src/UI/gameUI.gd" id="1_dr7ju"]
 [ext_resource type="Texture2D" uid="uid://c4r41rkuep21e" path="res://assets/UI/Undo.png" id="2_8r6og"]
 [ext_resource type="Texture2D" uid="uid://d2m550pgmw7ah" path="res://assets/UI/Draw.png" id="3_ij83d"]
 [ext_resource type="Texture2D" uid="uid://br4bmyueqd5rx" path="res://assets/UI/Resign.png" id="4_3jk82"]

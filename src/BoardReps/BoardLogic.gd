@@ -20,6 +20,13 @@ enum {
 	PILE
 }
 
+enum {
+	FLAT,
+	WALL,
+	CAP,
+	FLAT_OVERFLOW,
+}
+
 var selection: int
 var selectedReserve: int = -1 #piece id
 var selectedReserveType: int = -1 #pieceType
@@ -79,22 +86,29 @@ func setState(state: GameState):
 	
 	for color in 2:
 		for piece in state.reserves.caps[color]:
+			setPieceState(piece * 2 + color, CAP)
 			putReserve(piece * 2 + color)
 			
 	for color in 2:
 		for piece in state.reserves.flats[color]:
-			setWall((state.caps + piece) * 2 + color, false)
+			setPieceState((state.caps + piece) * 2 + color, FLAT)
 			putReserve((state.caps + piece) * 2 + color)
 	
 	for x in size:
 		for y in size:
 			var pile = state.board[x][y]
 			for piece in pile.size():
-				if piece != pile.size()-1:
-					setWall(pile.pieces[piece], false)
-				elif pile.type != GameState.CAP:
-					setWall(pile.pieces[piece], pile.type == GameState.WALL)
+				if piece < pile.size() - size:
+					setPieceState(pile.pieces[piece], FLAT_OVERFLOW)
+				elif piece == pile.size()-1:
+					setPieceState(pile.pieces[piece], pile.type)
+				else:
+					setPieceState(pile.pieces[piece], FLAT)
 				putPiece(pile.pieces[piece], Vector3i(x, piece, y))
+
+
+func setPieceState(id: int, state: int):
+	pass
 
 
 func putPiece(id: int, v: Vector3i):
@@ -102,10 +116,6 @@ func putPiece(id: int, v: Vector3i):
 
 
 func putReserve(id: int):
-	pass
-
-
-func setWall(id: int, wall: bool):
 	pass
 
 
@@ -128,7 +138,7 @@ func deselect(id: int):
 func deselectReserve():
 	deselect(selectedReserve)
 	if selectedReserve >= caps * 2:
-		setWall(selectedReserve, false)
+		setPieceState(selectedReserve, FLAT)
 	selectedReserve = -1
 	selectedReserveType = -1
 
@@ -181,7 +191,7 @@ func clickReserve(color: int, type: int):
 				selection = NONE
 			else:
 				selectedReserveType = GameState.WALL
-				setWall(id, true)
+				setPieceState(id, WALL)
 		
 		else:
 			deselectReserve()
