@@ -46,8 +46,8 @@ theme/custom="res://assets/Theme/baseTheme.tres"
 
 [importer_defaults]
 
-texture={
-"compress/mode": 4
+animation_library={
+&"gltf/embedded_image_handling": 3
 }
 
 [rendering]
