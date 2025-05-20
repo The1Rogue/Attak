@@ -3,12 +3,11 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://b48jn75qjhd8m"
-path="res://.godot/imported/UbuntuMono-Bold.ttf-e6109b3364699072bb0d6bae0af59c04.fontdata"
+valid=false
 
 [deps]
 
 source_file="res://assets/UbuntuMono-Bold.ttf"
-dest_files=["res://.godot/imported/UbuntuMono-Bold.ttf-e6109b3364699072bb0d6bae0af59c04.fontdata"]
 
 [params]
 

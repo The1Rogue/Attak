@@ -4,14 +4,11 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://bymn78r5guk8o"
-path="res://.godot/imported/cap.obj-4c6f55d61abbdf9726600717e987b084.mesh"
+valid=false
 
 [deps]
 
-files=["res://.godot/imported/cap.obj-4c6f55d61abbdf9726600717e987b084.mesh"]
-
 source_file="res://assets/Pieces3D/cap.obj"
-dest_files=["res://.godot/imported/cap.obj-4c6f55d61abbdf9726600717e987b084.mesh", "res://.godot/imported/cap.obj-4c6f55d61abbdf9726600717e987b084.mesh"]
 
 [params]
 

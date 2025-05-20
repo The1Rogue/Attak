@@ -3,12 +3,11 @@
 importer="mp3"
 type="AudioStreamMP3"
 uid="uid://bpj8ynej22wb0"
-path="res://.godot/imported/start.mp3-1b02ab3e2bef34ae7666568d2fce9212.mp3str"
+valid=false
 
 [deps]
 
 source_file="res://assets/Audio/start.mp3"
-dest_files=["res://.godot/imported/start.mp3-1b02ab3e2bef34ae7666568d2fce9212.mp3str"]
 
 [params]
 
