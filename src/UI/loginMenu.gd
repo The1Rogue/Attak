@@ -100,7 +100,7 @@ func onLogin(username: String):
 	button.text = "%s (%d)" % [username, rating]
 	get_parent().select(tabOnLogin)
 	
-	if username == "Guest": return
+	if username.begins_with("Guest"): return
 	
 	http.request_completed.connect(setData)
 	http.request(RATINGS_URL % username)
@@ -110,6 +110,7 @@ func onLogin(username: String):
 	http.request(GAMES_URL % username)
 	await http.request_completed
 	http.request_completed.disconnect(makeGraph)
+
 
 func onLogout():
 	button.text = "Login"

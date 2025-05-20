@@ -32,7 +32,7 @@ func setWhite2D(value):
 	if tex.size() != 3 or null in tex: return 
 	white2D = tex; white2DPath = value
 	tex.append(ImageTexture.new()) 
-	var smol = tex[0].get_image() #make smol overflow thing
+	var smol = tex[0].get_image() #make smol overflow things
 	smol.resize(tex[0].get_width() * .25, tex[0].get_height() * .125, 4)
 	tex[3].set_image(smol)
 	save(); boardUpdate.emit()
@@ -146,6 +146,15 @@ static func loadOrNew() -> SettingData:
 	else:
 		data = SettingData.new()
 		data.is2D = Globals.isMobile()
+		
+		data.setSq2D(data.sq2DPath)
+		data.setWhite2D(data.white2DPath)
+		data.setBlack2D(data.black2DPath)
+		
+		data.setSq3D(data.sq3DPath)
+		data.setWhite3D(data.white3DPath)
+		data.setBlack3D(data.black3DPath)
+	
 	return data
 
 
