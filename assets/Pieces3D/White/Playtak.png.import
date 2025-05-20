@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/Playtak.png-0f7c959dda53756d19901bad65548e9a.
 
 [params]
 
-compress/mode=4
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

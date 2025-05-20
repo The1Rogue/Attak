@@ -4,11 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://47v8goladnbm"
-valid=false
+path="res://.godot/imported/flat.obj-43b7330e9b8f99df3c9966b5439edfa3.mesh"
 
 [deps]
 
+files=["res://.godot/imported/flat.obj-43b7330e9b8f99df3c9966b5439edfa3.mesh"]
+
 source_file="res://assets/Pieces3D/flat.obj"
+dest_files=["res://.godot/imported/flat.obj-43b7330e9b8f99df3c9966b5439edfa3.mesh", "res://.godot/imported/flat.obj-43b7330e9b8f99df3c9966b5439edfa3.mesh"]
 
 [params]
 

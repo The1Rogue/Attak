@@ -4,11 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://id8dot7u0r51"
-valid=false
+path="res://.godot/imported/USTA.glb-0bc46179b84d122e7387015a59db78da.scn"
 
 [deps]
 
 source_file="res://assets/Pieces3D/Black/USTA.glb"
+dest_files=["res://.godot/imported/USTA.glb-0bc46179b84d122e7387015a59db78da.scn"]
 
 [params]
 

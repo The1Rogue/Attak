@@ -3,11 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://bp6q8ouyxxf40"
-valid=false
+path="res://.godot/imported/UbuntuMono-BoldItalic.ttf-7becf4db53d72e5b395214c92012150d.fontdata"
 
 [deps]
 
 source_file="res://assets/UbuntuMono-BoldItalic.ttf"
+dest_files=["res://.godot/imported/UbuntuMono-BoldItalic.ttf-7becf4db53d72e5b395214c92012150d.fontdata"]
 
 [params]
 

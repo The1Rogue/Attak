@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Attak"
-run/main_scene="res://scenes/UI/Menu.tscn"
+run/main_scene="uid://blnwws40ddesf"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 boot_splash/fullsize=false
 boot_splash/use_filter=false
@@ -52,6 +52,8 @@ texture={
 
 [rendering]
 
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
 textures/vram_compression/import_etc2_astc=true
 anti_aliasing/screen_space_roughness_limiter/enabled=false
 scaling_3d/scale=2.0

@@ -3,11 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://dt1agg411md3s"
-valid=false
+path="res://.godot/imported/UbuntuMono-Regular.ttf-add0e40464d7b034676681709e21c263.fontdata"
 
 [deps]
 
 source_file="res://assets/UbuntuMono-Regular.ttf"
+dest_files=["res://.godot/imported/UbuntuMono-Regular.ttf-add0e40464d7b034676681709e21c263.fontdata"]
 
 [params]
 

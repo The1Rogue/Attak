@@ -3,11 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://b7als71ollau6"
-valid=false
+path="res://.godot/imported/NotoEmoji-Regular.ttf-ff8228671995629ff560cde973cd856c.fontdata"
 
 [deps]
 
 source_file="res://assets/NotoEmoji-Regular.ttf"
+dest_files=["res://.godot/imported/NotoEmoji-Regular.ttf-ff8228671995629ff560cde973cd856c.fontdata"]
 
 [params]
 
