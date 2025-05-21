@@ -14,12 +14,22 @@ const RATINGS_URL = "https://api.playtak.com/v1/ratings/%s"
 @onready var remember: CheckBox = $Menu/Login/Remember
 @onready var confirm: Button = $Menu/Login/Button
 
+@onready var register: VBoxContainer = $Menu/Register
+@onready var nameEntry: LineEdit = $Menu/Register/User
+@onready var emailEntry: LineEdit = $Menu/Register/Email
+@onready var createAccount: Button = $Menu/Register/Button
+@onready var goLogin: Button = $Menu/Register/Back
+
+
 @onready var settings: VBoxContainer = $Menu/Settings
 @onready var logoutButton: Button = $Menu/Settings/Logout
 
 @onready var nameLabel: Label = $Menu/Settings/Name
 @onready var gamesLabel: Label = $Menu/Settings/Games
 @onready var graph: Panel = $Menu/Settings/Graph
+
+@onready var guest: Button = $Menu/Login/HBoxContainer/Guest
+@onready var goRegister: Button = $Menu/Login/HBoxContainer/Register
 
 @onready var http: HTTPRequest = HTTPRequest.new()
 
@@ -33,6 +43,15 @@ func _ready():
 	userEntry.text_submitted.connect(passEntry.grab_focus)
 	passEntry.text_submitted.connect(submit)
 	confirm.pressed.connect(submit)
+
+	guest.pressed.connect(signin.bind("Guest", ""))
+
+	goRegister.pressed.connect(func(): login.hide(); register.show())
+	goLogin.pressed.connect(func(): register.hide(); login.show())
+
+	nameEntry.text_submitted.connect(emailEntry.grab_focus)
+	emailEntry.text_submitted.connect(registerAccount)
+	createAccount.pressed.connect(registerAccount)
 
 	logoutButton.pressed.connect(PlayTakI.onLogout)
 
@@ -90,6 +109,8 @@ func submit():
 	signin(userEntry.text, passEntry.text)
 	passEntry.clear()
 
+func registerAccount():
+	PlayTakI.register(nameEntry.text, emailEntry.text)
 
 func onLogin(username: String):
 	login.hide()

@@ -35,10 +35,6 @@ func _ready():
 	ratingFetch()
 
 
-func signInGuest() -> bool:
-	return await signIn("Guest", "")
-
-
 func signIn(username: String, password: String) -> bool:
 	if active: return false #already active
 	
@@ -65,6 +61,31 @@ func signIn(username: String, password: String) -> bool:
 		return true
 	
 	Notif.message("Invalid Login!")
+	socket.close()
+	return false
+
+func register(username: String, email: String) -> bool:
+	if active: return false #already active
+	
+	socket.supported_protocols = PackedStringArray(["binary"])
+	
+	var err = socket.connect_to_url(surl if OS.has_feature("web") else url)
+	if err != OK:
+		Notif.message("Could not reach the playtak server!")
+		return false
+	
+	var packet: String = await awaitPacket() #should be welcome packet
+	packet = await awaitPacket() #should be login request
+	socket.send_text("Register %s %s" % [username, email])
+	packet = await awaitPacket() #confirmation or rejection
+
+	if packet.begins_with("Registered"):
+		Notif.message("Registered %s! check your email to login!")
+		print("successfully registered %s" % activeUsername)
+		socket.close()
+		return true
+	
+	Notif.message("Failed to register!")
 	socket.close()
 	return false
 

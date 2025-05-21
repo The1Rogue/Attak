@@ -69,6 +69,41 @@ text = " Remember Me  "
 layout_mode = 2
 text = "Login"
 
+[node name="HBoxContainer" type="HBoxContainer" parent="Login/Menu/Login"]
+layout_mode = 2
+
+[node name="Register" type="Button" parent="Login/Menu/Login/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Register"
+
+[node name="Guest" type="Button" parent="Login/Menu/Login/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Guest Login"
+
+[node name="Register" type="VBoxContainer" parent="Login/Menu"]
+visible = false
+custom_minimum_size = Vector2(168, 0)
+layout_mode = 2
+
+[node name="Back" type="Button" parent="Login/Menu/Register"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "< Back"
+
+[node name="User" type="LineEdit" parent="Login/Menu/Register"]
+layout_mode = 2
+placeholder_text = "Username"
+
+[node name="Email" type="LineEdit" parent="Login/Menu/Register"]
+layout_mode = 2
+placeholder_text = "Email"
+
+[node name="Button" type="Button" parent="Login/Menu/Register"]
+layout_mode = 2
+text = "Create Account"
+
 [node name="Settings" type="VBoxContainer" parent="Login/Menu"]
 visible = false
 layout_mode = 2
