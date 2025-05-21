@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/Ptn Ninja.svg-c24f7dbc2f929bfa49c075c244b1398
 
 [params]
 
-compress/mode=4
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

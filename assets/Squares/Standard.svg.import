@@ -3,21 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dak6fg4nhw1h4"
-path.s3tc="res://.godot/imported/Standard.svg-77d063df63131a50b40632d308402ab9.s3tc.ctex"
-path.etc2="res://.godot/imported/Standard.svg-77d063df63131a50b40632d308402ab9.etc2.ctex"
+path="res://.godot/imported/Standard.svg-77d063df63131a50b40632d308402ab9.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc", "etc2_astc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/Squares/Standard.svg"
-dest_files=["res://.godot/imported/Standard.svg-77d063df63131a50b40632d308402ab9.s3tc.ctex", "res://.godot/imported/Standard.svg-77d063df63131a50b40632d308402ab9.etc2.ctex"]
+dest_files=["res://.godot/imported/Standard.svg-77d063df63131a50b40632d308402ab9.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
