@@ -1,7 +1,6 @@
 extends Node
 
-const url = "ws://playtak.com:9999/ws"
-const surl = "wss://playtak.com/ws"
+const url = "wss://playtak.com/ws"
 const maxTimeout = 30 #in seconds
 
 var socket: WebSocketPeer = WebSocketPeer.new()
@@ -9,7 +8,7 @@ var active: bool = false
 var activeUsername: String = ""
 var activePass: String = "" #WARNING having this in ram is *not* secure, but we need it to re-establish broken connections somehow, and i dont think a playtak account is critical, so....
 
-const ratingURL = "http://playtak.com/ratinglist.json"
+const ratingURL = "https://api.playtak.com/v1/ratings"
 @onready var http = HTTPRequest.new()
 var ratingList: Dictionary = {}
 var bots = []
@@ -40,7 +39,7 @@ func signIn(username: String, password: String) -> bool:
 	
 	socket.supported_protocols = PackedStringArray(["binary"])
 	
-	var err = socket.connect_to_url(surl if OS.has_feature("web") else url)
+	var err = socket.connect_to_url(url)
 	if err != OK:
 		Notif.message("Could not reach the playtak server!")
 		return false
@@ -69,7 +68,7 @@ func register(username: String, email: String) -> bool:
 	
 	socket.supported_protocols = PackedStringArray(["binary"])
 	
-	var err = socket.connect_to_url(surl if OS.has_feature("web") else url)
+	var err = socket.connect_to_url(url)
 	if err != OK:
 		Notif.message("Could not reach the playtak server!")
 		return false
@@ -292,15 +291,14 @@ func parseRatings(result:int , response_code: int, header: PackedStringArray, bo
 		pass
 	
 	else:
-		#Array[ [" ".join(unames), activeRating, rating, gamesplayed, isBot ]   ]
-		var json: Array = JSON.parse_string(body.get_string_from_utf8())
+		# .items -> Array[ {name, rating, maxrating, ratedgames, isbot, participationrating}, .. ]
+		var json: Array = JSON.parse_string(body.get_string_from_utf8())["items"]
 		ratingList = {}
 		bots = []
 		for entry in json:
-			for username in entry[0].split(" "):
-				if entry[4] == 1:
-					bots.append(username)
-				ratingList[username] = entry[2]
+			if entry["isbot"]:
+				bots.append(entry["name"])
+			ratingList[entry["name"]] = entry["rating"]
 		ratingUpdate.emit()
 
 
