@@ -1,6 +1,8 @@
 extends Node
 
-const url = "ws://playtak.com:9999/ws" #WARNING TODO? unsecured connection?? (is it actually?)
+const url = "ws://playtak.com:9999/ws"
+const surl = "wss://playtak.com/ws"
+const maxTimeout = 30 #in seconds
 
 var socket: WebSocketPeer = WebSocketPeer.new()
 var active: bool = false
@@ -42,17 +44,16 @@ func signIn(username: String, password: String) -> bool:
 	
 	socket.supported_protocols = PackedStringArray(["binary"])
 	
-	var err = socket.connect_to_url(url)
+	var err = socket.connect_to_url(surl if OS.has_feature("web") else url)
 	if err != OK:
-		print("Unable to connect")
 		Notif.message("Could not reach the playtak server!")
 		return false
 	
 	var packet: String = await awaitPacket() #should be welcome packet
 	packet = await awaitPacket() #should be login request
-
 	socket.send_text("Login %s %s" % [username, password])
 	packet = await awaitPacket() #confirmation or rejection
+
 	
 	if packet.begins_with("Welcome"):
 		activeUsername = packet.substr(8, packet.length()-9)
@@ -63,7 +64,6 @@ func signIn(username: String, password: String) -> bool:
 		login.emit(activeUsername)
 		return true
 	
-	print("failed to login")
 	Notif.message("Invalid Login!")
 	socket.close()
 	return false
@@ -88,8 +88,9 @@ func onLogout():
 
 
 func awaitPacket() -> String:
-	while socket.get_available_packet_count() < 1:
-		await get_tree().create_timer(.1).timeout
+	for i in maxTimeout:
+		if socket.get_available_packet_count() > 0: break
+		await get_tree().create_timer(1).timeout
 		socket.poll()
 	return getPacket()
 
