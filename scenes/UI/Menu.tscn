@@ -69,17 +69,21 @@ text = " Remember Me  "
 layout_mode = 2
 text = "Login"
 
+[node name="HSeparator" type="HSeparator" parent="Login/Menu/Login"]
+layout_mode = 2
+
 [node name="HBoxContainer" type="HBoxContainer" parent="Login/Menu/Login"]
 layout_mode = 2
 
 [node name="Register" type="Button" parent="Login/Menu/Login/HBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
 text = "Register"
+
+[node name="VSeparator" type="VSeparator" parent="Login/Menu/Login/HBoxContainer"]
+layout_mode = 2
 
 [node name="Guest" type="Button" parent="Login/Menu/Login/HBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
 text = "Guest Login"
 
 [node name="Register" type="VBoxContainer" parent="Login/Menu"]
