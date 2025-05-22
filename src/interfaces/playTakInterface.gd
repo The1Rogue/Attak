@@ -91,16 +91,30 @@ func register(username: String, email: String) -> bool:
 	
 	var packet: String = await awaitPacket() #should be welcome packet
 	packet = await awaitPacket() #should be login request
+	if packet == "":
+		Notif.message("Server not responding! (1)")
+		socket.close()
+		return false
+		
 	socket.send_text("Register %s %s" % [username, email])
 	packet = await awaitPacket() #confirmation or rejection
+	if packet == "":
+		Notif.message("Server not responding! (2)")
+		socket.close()
+		return false
 
 	if packet.begins_with("Registered"):
 		Notif.message("Registered %s! check your email to login!" % username)
 		print("successfully registered %s" % username)
 		socket.close()
 		return true
-	
-	Notif.message("Failed to register!")
+		
+	if packet == "":
+		Notif.message("Server not responding! (3)")
+		socket.close()
+		return false
+		
+	Notif.message("Failed to register! (%s)" % packet)
 	socket.close()
 	return false
 
