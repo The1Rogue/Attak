@@ -95,8 +95,8 @@ func register(username: String, email: String) -> bool:
 	packet = await awaitPacket() #confirmation or rejection
 
 	if packet.begins_with("Registered"):
-		Notif.message("Registered %s! check your email to login!")
-		print("successfully registered %s" % activeUsername)
+		Notif.message("Registered %s! check your email to login!" % username)
+		print("successfully registered %s" % username)
 		socket.close()
 		return true
 	
