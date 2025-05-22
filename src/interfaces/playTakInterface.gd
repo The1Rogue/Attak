@@ -6,7 +6,7 @@ const maxTimeout = 30 #in seconds
 var socket: WebSocketPeer = WebSocketPeer.new()
 var active: bool = false
 var activeUsername: String = ""
-var activePass: String = "" #WARNING having this in ram is *not* secure, but we need it to re-establish broken connections somehow, and i dont think a playtak account is critical, so....
+var activePass: String = "" 
 
 const ratingURL = "https://api.playtak.com/v1/ratings"
 @onready var http = HTTPRequest.new()
@@ -45,7 +45,17 @@ func signIn(username: String, password: String) -> bool:
 		return false
 	
 	var packet: String = await awaitPacket() #should be welcome packet
+	if packet == "":
+		Notif.message("Server not responding! (1)")
+		socket.close()
+		return false
+	
 	packet = await awaitPacket() #should be login request
+	if packet == "":
+		Notif.message("Server not responding! (2)")
+		socket.close()
+		return false
+	
 	socket.send_text("Login %s %s" % [username, password])
 	packet = await awaitPacket() #confirmation or rejection
 
@@ -59,9 +69,15 @@ func signIn(username: String, password: String) -> bool:
 		login.emit(activeUsername)
 		return true
 	
-	Notif.message("Invalid Login!")
+	elif packet == "":
+		Notif.message("Server not responding! (3)")
+		socket.close()
+		return false
+	
+	Notif.message("Invalid Login! (%s)" % packet)
 	socket.close()
 	return false
+
 
 func register(username: String, email: String) -> bool:
 	if active: return false #already active

@@ -7,13 +7,13 @@ var points: Array[Vector2]
 var min: Vector2
 var max: Vector2
 
+func _ready():
+	draw.connect(func(): custom_minimum_size = Vector2.ONE * size.x)
+
 func _draw():
 	if points.size() == 0: return
 	var font: Font = get_theme_default_font()
 	var fSize = get_theme_default_font_size()
-	
-	size.y = size.x
-	set_deferred("custom_minimum_size", size)
 	
 	for i in points.size() - 1:
 		draw_line(points[i] * size, points[i+1] * size, Color.TURQUOISE)
@@ -33,3 +33,4 @@ func _draw():
 		textSize.y *= -1
 		textSize.x *= .5
 		draw_string(font, Vector2(v, 1.03) * size - textSize, date, 0, -1, fSize)
+	
