@@ -26,6 +26,7 @@ GameLogic="*res://src/Logic/gameLogic.gd"
 Notif="*res://scenes/PopupMsg.tscn"
 PlayTakI="*res://src/interfaces/playTakInterface.gd"
 ChatTab="*res://scenes/UI/ChatTab.tscn"
+Lock="*res://scenes/UI/Lock.tscn"
 
 [debug]
 

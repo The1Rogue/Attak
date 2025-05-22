@@ -37,23 +37,28 @@ func _ready():
 func signIn(username: String, password: String) -> bool:
 	if active: return false #already active
 	
+	Lock.show()
+	
 	socket.supported_protocols = PackedStringArray(["binary"])
 	
 	var err = socket.connect_to_url(url)
 	if err != OK:
 		Notif.message("Could not reach the playtak server!")
+		Lock.hide()
 		return false
 	
 	var packet: String = await awaitPacket() #should be welcome packet
 	if packet == "":
 		Notif.message("Server not responding! (1)")
 		socket.close()
+		Lock.hide()
 		return false
 	
 	packet = await awaitPacket() #should be login request
 	if packet == "":
 		Notif.message("Server not responding! (2)")
 		socket.close()
+		Lock.hide()
 		return false
 	
 	socket.send_text("Login %s %s" % [username, password])
@@ -67,26 +72,31 @@ func signIn(username: String, password: String) -> bool:
 		ChatTab.newChat("Global", Chat.GLOBAL)
 		print("successfully logged in as %s" % activeUsername)
 		login.emit(activeUsername)
+		Lock.hide()
 		return true
 	
 	elif packet == "":
 		Notif.message("Server not responding! (3)")
 		socket.close()
+		Lock.hide()
 		return false
 	
 	Notif.message("Invalid Login! (%s)" % packet)
 	socket.close()
+	Lock.hide()
 	return false
 
 
 func register(username: String, email: String) -> bool:
 	if active: return false #already active
 	
+	Lock.hide()
 	socket.supported_protocols = PackedStringArray(["binary"])
 	
 	var err = socket.connect_to_url(url)
 	if err != OK:
 		Notif.message("Could not reach the playtak server!")
+		Lock.hide()
 		return false
 	
 	var packet: String = await awaitPacket() #should be welcome packet
@@ -94,6 +104,7 @@ func register(username: String, email: String) -> bool:
 	if packet == "":
 		Notif.message("Server not responding! (1)")
 		socket.close()
+		Lock.hide()
 		return false
 		
 	socket.send_text("Register %s %s" % [username, email])
@@ -101,21 +112,25 @@ func register(username: String, email: String) -> bool:
 	if packet == "":
 		Notif.message("Server not responding! (2)")
 		socket.close()
+		Lock.hide()
 		return false
 
 	if packet.begins_with("Registered"):
 		Notif.message("Registered %s! check your email to login!" % username)
 		print("successfully registered %s" % username)
 		socket.close()
+		Lock.hide()
 		return true
 		
 	if packet == "":
 		Notif.message("Server not responding! (3)")
 		socket.close()
+		Lock.hide()
 		return false
 		
 	Notif.message("Failed to register! (%s)" % packet)
 	socket.close()
+	Lock.hide()
 	return false
 
 
