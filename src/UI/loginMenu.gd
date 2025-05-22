@@ -36,7 +36,6 @@ const RATINGS_URL = "https://api.playtak.com/v1/ratings/%s"
 func _ready():
 	add_child(http)
 	
-	PlayTakI.ratingUpdate.connect(updateRating)
 	PlayTakI.login.connect(onLogin)
 	PlayTakI.logout.connect(onLogout)
 	
@@ -76,6 +75,7 @@ func signin(user:String, passw: String):
 func setData(result: int, response_code: int, header: PackedStringArray, body: PackedByteArray):
 	var json: Dictionary = JSON.parse_string(body.get_string_from_utf8()) #TODO error handling
 	
+	button.text = "%s (%d)" % [json["name"], json["rating"]]
 	nameLabel.text = "%s (%d)" % [json["name"], json["rating"]]
 	nameLabel.add_theme_font_size_override(&"font_size", 160 if Globals.isMobile() else 80)
 	gamesLabel.text = "%d games played" % json["ratedgames"]
@@ -117,7 +117,6 @@ func onLogin(username: String):
 	
 	settings.show()
 	var rating = PlayTakI.ratingList.get(username, 1000)
-	
 	button.text = "%s (%d)" % [username, rating]
 	get_parent().select(tabOnLogin)
 	
@@ -138,10 +137,3 @@ func onLogout():
 	
 	settings.hide()
 	login.show()
-
-
-func updateRating():
-	if not PlayTakI.active: return
-	var rating = PlayTakI.ratingList.get(PlayTakI.activeUsername, 1000)
-	button.text = "%s (%d)" % [PlayTakI.activeUsername, rating]
-	nameLabel.text = "%s (%d)" % [PlayTakI.activeUsername, rating]

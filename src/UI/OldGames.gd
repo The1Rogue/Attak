@@ -110,9 +110,10 @@ func appendEntry(data: GameData, result: String, date: int, notation: String):
 
 
 func parseResults(result:int, response_code: int, header: PackedStringArray, body: PackedByteArray):
+	if result != HTTPRequest.RESULT_SUCCESS: return
+	
 	clear()
 	var json: Dictionary = JSON.parse_string(body.get_string_from_utf8()) #TODO error handling
-	
 	
 	maxPage = json["totalPages"]
 	pageLabel.text = " %d-%d / %d " % [(json["page"]-1) * json["perPage"] + 1, min(json["page"] * json["perPage"], json["total"]), json["total"]]

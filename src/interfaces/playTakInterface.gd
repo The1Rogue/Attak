@@ -8,7 +8,7 @@ var active: bool = false
 var activeUsername: String = ""
 var activePass: String = "" 
 
-const ratingURL = "https://api.playtak.com/v1/ratings"
+const ratingURL = "https://api.playtak.com/v1/ratings?limit=8000"
 @onready var http = HTTPRequest.new()
 var ratingList: Dictionary = {}
 var bots = []
@@ -303,19 +303,17 @@ func ratingFetch():
 
 
 func parseRatings(result:int , response_code: int, header: PackedStringArray, body: PackedByteArray):
-	if result != HTTPRequest.RESULT_SUCCESS:
-		pass
+	if result != HTTPRequest.RESULT_SUCCESS: return
 	
-	else:
-		# .items -> Array[ {name, rating, maxrating, ratedgames, isbot, participationrating}, .. ]
-		var json: Array = JSON.parse_string(body.get_string_from_utf8())["items"]
-		ratingList = {}
-		bots = []
-		for entry in json:
-			if entry["isbot"]:
-				bots.append(entry["name"])
-			ratingList[entry["name"]] = entry["rating"]
-		ratingUpdate.emit()
+	# .items -> Array[ {name, rating, maxrating, ratedgames, isbot, participationrating}, .. ]
+	var json: Array = JSON.parse_string(body.get_string_from_utf8())["items"]
+	ratingList = {}
+	bots = []
+	for entry in json:
+		if entry["isbot"]:
+			bots.append(entry["name"])
+		ratingList[entry["name"]] = entry["rating"]
+	ratingUpdate.emit()
 
 
 func startGame(data: PackedStringArray):
