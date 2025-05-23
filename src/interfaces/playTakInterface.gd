@@ -90,7 +90,7 @@ func signIn(username: String, password: String) -> bool:
 func register(username: String, email: String) -> bool:
 	if active: return false #already active
 	
-	Lock.hide()
+	Lock.show()
 	socket.supported_protocols = PackedStringArray(["binary"])
 	
 	var err = socket.connect_to_url(url)

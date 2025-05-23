@@ -24,6 +24,7 @@ func _init(name: String, type: int = ROOM):
 	
 	entryBox.set_anchors_and_offsets_preset(PRESET_BOTTOM_WIDE)
 	entryBox.placeholder_text = ">"
+	entryBox.keep_editing_on_text_submit = true
 	textBox.size_flags_vertical |= Control.SIZE_EXPAND
 	textBox.scroll_following = true
 	
