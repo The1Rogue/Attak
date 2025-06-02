@@ -21,7 +21,7 @@ func _ready():
 
 func add(seek: SeekData, id: int):
 	var b = Button.new()
-	var rating = PlayTakI.ratingList.get(seek.playerName, 1000)
+	var rating = await PlayTakI.getRating(seek.playerName)
 	b.pivot_offset.x = rating #abusing unused pivot to store metadata
 	
 	var time45 = seek.time + 45 * seek.increment
@@ -51,13 +51,12 @@ func add(seek: SeekData, id: int):
 		x.text = "remove"
 		b.add_child(x)
 		x.theme_type_variation = &"ExitButton"
-		x.pressed.connect(PlayTakI.sendSeek.bind(SeekData.new("", 0, 0, 0, 0, 0, "A", 0, 0, 0, SeekData.RATED)))
+		x.pressed.connect(PlayTakI.sendSeek.bind(SeekData.new("", false, 0, 0, 0, 0, 0, "A", 0, 0, 0, SeekData.RATED)))
 		x.set_anchors_and_offsets_preset(PRESET_CENTER_RIGHT)
 		return
 	
-	
 	b.pressed.connect(func(): accept(id))
-	var idx = bots.get_index() + 1 if seek.playerName in PlayTakI.bots else players.get_index() + 1
+	var idx = bots.get_index() + 1 if seek.isBot else players.get_index() + 1
 	while idx < get_child_count():
 		if b.pivot_offset.x > get_child(idx).pivot_offset.x:
 			move_child(b, idx)
@@ -107,7 +106,7 @@ func updateRatings():
 					move_child(b, idx)
 					break
 				idx += 1
-
+				
 	updateCounts()
 
 

@@ -13,6 +13,7 @@ enum {
 }
 
 var playerName: String
+var isBot: bool
 
 var size: int
 
@@ -31,8 +32,9 @@ var rated: int
 
 
 
-func _init(player: String, size: int, time: int, inc: int, trigger: int, extra: int, color: String, komi: int, flats: int, caps: int, rated: int):
+func _init(player: String, isBot: bool, size: int, time: int, inc: int, trigger: int, extra: int, color: String, komi: int, flats: int, caps: int, rated: int):
 	self.playerName = player
+	self.isBot = isBot
 	self.size = size
 	self.time = time
 	self.increment = inc

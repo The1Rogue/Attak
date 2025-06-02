@@ -47,7 +47,7 @@ func createStandard(index: int):
 	if not options.is_anything_selected(): return
 	var opt = OPTIONS[index if index >= 0 else options.get_selected_items()[0]] 
 	var color = ["A", "W", "B"][color.selected]
-	var seek = SeekData.new(opponent.text, opt[0], opt[1] * 60, opt[2], opt[3], opt[4] * 60, color, opt[5] * 2, opt[6], opt[7], opt[8])
+	var seek = SeekData.new(opponent.text, false, opt[0], opt[1] * 60, opt[2], opt[3], opt[4] * 60, color, opt[5] * 2, opt[6], opt[7], opt[8])
 	PlayTakI.sendSeek(seek)
 	Notif.message("Seek Created!")
 
@@ -58,6 +58,6 @@ func createCustom():
 	var caps = standardCaps[size - 3]
 	var color = ["A", "W", "B"][color.selected]
 	var t = SeekData.RATED if type.selected == 0 else SeekData.UNRATED if type.selected == 2 else SeekData.TOURNAMENT
-	var seek = SeekData.new(opponent.text, size, time.value * 60, inc.value, trigger.value, amount.value * 60, color, komi.value * 2, flats, caps, t)
+	var seek = SeekData.new(opponent.text, false, size, time.value * 60, inc.value, trigger.value, amount.value * 60, color, komi.value * 2, flats, caps, t)
 	PlayTakI.sendSeek(seek)
 	Notif.message("Seek Created!")

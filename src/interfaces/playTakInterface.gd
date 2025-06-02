@@ -1,16 +1,16 @@
 extends Node
 
 const url = "wss://playtak.com/ws"
-const maxTimeout = 30 #in seconds
+const maxTimeout = 5 #in seconds
 
 var socket: WebSocketPeer = WebSocketPeer.new()
 var active: bool = false
 var activeUsername: String = ""
 var activePass: String = "" 
 
-const ratingURL = "https://api.playtak.com/v1/ratings?limit=8000"
+const ratingURL = "https://api.playtak.com/v1/ratings/%s"
 @onready var http = HTTPRequest.new()
-var ratingList: Dictionary = {}
+var ratingList: Dictionary = {} # User [rating, lastFetch]
 var bots = []
 
 var pingtime: float = 0
@@ -30,41 +30,40 @@ func _ready():
 	GameLogic.end.connect(handleUnobserve)
 	
 	add_child(http)
-	http.request_completed.connect(parseRatings)
-	ratingFetch()
+	http.request_completed.connect(parseRatingFetch)
+	#ratingFetch()
 
 
-func signIn(username: String, password: String) -> bool:
+func getConnect():
 	if active: return false #already active
-	
-	Lock.show()
-	
 	socket.supported_protocols = PackedStringArray(["binary"])
 	
 	var err = socket.connect_to_url(url)
 	if err != OK:
 		Notif.message("Could not reach the playtak server!")
-		Lock.hide()
 		return false
 	
-	var packet: String = await awaitPacket() #should be welcome packet
-	if packet == "":
-		Notif.message("Server not responding! (1)")
-		socket.close()
-		Lock.hide()
-		return false
+	if not await expectPacket("Welcome!"): return false
+	if not await expectPacket("Login or Register"): return false
 	
-	packet = await awaitPacket() #should be login request
-	if packet == "":
-		Notif.message("Server not responding! (2)")
-		socket.close()
+	socket.send_text("Client Attak")
+	if not await expectPacket("OK"): return false
+	
+	socket.send_text("Protocol 2")
+	if not await expectPacket("OK"): return false
+	
+	return true
+
+
+func signIn(username: String, password: String) -> bool:
+	Lock.show()
+	if not await getConnect(): 
 		Lock.hide()
 		return false
 	
 	socket.send_text("Login %s %s" % [username, password])
-	packet = await awaitPacket() #confirmation or rejection
+	var packet = await awaitPacket() #confirmation or rejection
 
-	
 	if packet.begins_with("Welcome"):
 		activeUsername = packet.substr(8, packet.length()-9)
 		activePass = password
@@ -76,7 +75,7 @@ func signIn(username: String, password: String) -> bool:
 		return true
 	
 	elif packet == "":
-		Notif.message("Server not responding! (3)")
+		Notif.message("Server is not responding!")
 		socket.close()
 		Lock.hide()
 		return false
@@ -88,29 +87,16 @@ func signIn(username: String, password: String) -> bool:
 
 
 func register(username: String, email: String) -> bool:
-	if active: return false #already active
-	
 	Lock.show()
-	socket.supported_protocols = PackedStringArray(["binary"])
-	
-	var err = socket.connect_to_url(url)
-	if err != OK:
-		Notif.message("Could not reach the playtak server!")
-		Lock.hide()
-		return false
-	
-	var packet: String = await awaitPacket() #should be welcome packet
-	packet = await awaitPacket() #should be login request
-	if packet == "":
-		Notif.message("Server not responding! (1)")
-		socket.close()
+	if not await getConnect(): 
 		Lock.hide()
 		return false
 		
 	socket.send_text("Register %s %s" % [username, email])
-	packet = await awaitPacket() #confirmation or rejection
+	var packet = await awaitPacket() #confirmation or rejection
+	
 	if packet == "":
-		Notif.message("Server not responding! (2)")
+		Notif.message("Server is not responding!")
 		socket.close()
 		Lock.hide()
 		return false
@@ -121,12 +107,6 @@ func register(username: String, email: String) -> bool:
 		socket.close()
 		Lock.hide()
 		return true
-		
-	if packet == "":
-		Notif.message("Server not responding! (3)")
-		socket.close()
-		Lock.hide()
-		return false
 		
 	Notif.message("Failed to register! (%s)" % packet)
 	socket.close()
@@ -153,11 +133,26 @@ func onLogout():
 
 
 func awaitPacket() -> String:
-	for i in maxTimeout:
-		if socket.get_available_packet_count() > 0: break
-		await get_tree().create_timer(1).timeout
+	var i = 0
+	while socket.get_available_packet_count() < 1:
+		i += .2
+		await get_tree().create_timer(.2).timeout
 		socket.poll()
+		if i > maxTimeout:
+			socket.close()
+			Notif.message("Server not responding!")
+			return ""
 	return getPacket()
+
+
+func expectPacket(packet) -> bool:
+	var p = await awaitPacket()
+	if p == "": return false
+	elif p != packet:
+		Notif.message("Expected \"%s\", but server sent \"%s\"" % [packet, p])
+		socket.close()
+		return false
+	return true
 
 
 func getPacket() -> String:
@@ -276,9 +271,11 @@ func _process(delta: float):
 			["Game", var id, "Abandoned.", var player, "quit"] when id == GameLogic.gameData.id:
 				endGame(GameState.DEFAULT_WIN_WHITE if player == GameLogic.gameData.playerWhiteName else GameState.DEFAULT_WIN_BLACK)
 			
-			["Seek", "new", var id, var name, var size, var time, var inc, var color, var komi, var flats, var caps, var unrated, var tourney, var trigger, var extra, var opponent] when opponent == "" or opponent.to_lower() == activeUsername.to_lower() or name == activeUsername:
+			["Seek", "new", var id, var name, var size, var time, var inc, var color, var komi, var flats, var caps, var unrated, var tourney, var trigger, var extra, var opponent, var bot]:
+				if opponent != "0" and opponent.to_lower() != activeUsername.to_lower() and name != activeUsername:
+					break
 				var seek = SeekData.new(
-					name, size.to_int(), time.to_int(), inc.to_int(), trigger.to_int(), extra.to_int(),
+					name, bot == "1", size.to_int(), time.to_int(), inc.to_int(), trigger.to_int(), extra.to_int(),
 					color, komi.to_int(), flats.to_int(), caps.to_int(), 
 					SeekData.TOURNAMENT if tourney == "1" else SeekData.UNRATED if unrated == "1" else SeekData.RATED
 				)
@@ -289,7 +286,7 @@ func _process(delta: float):
 			
 			["Shout", var user, ..]:
 				ChatTab.parseMsg("Global", user.lstrip("<").rstrip(">"), " ".join(data.slice(2)))
-				
+
 			["Joined", "room", var room]:
 				ChatTab.newChat(room, Chat.ROOM)
 			
@@ -311,6 +308,12 @@ func _process(delta: float):
 				print(packet)
 				Notif.message(packet.substr(8))
 			
+			["Online", var count]:
+				pass #TODO
+				
+			["OnlinePlayers", ..]:
+				pass #TODO
+			
 			["NOK"]:
 				print("NOK") #TODO
 			
@@ -322,27 +325,24 @@ func _process(delta: float):
 				print(packet)
 
 
-func ratingFetch():
-	http.request(ratingURL)
-	# target time is 10m past the hour, + random to avoid accidental ddos
-	# last +3600 is because % can (and in this case always will) return negative
-	var offset = (600 + randi_range(5, 300) - Time.get_unix_time_from_system() as int) % 3600 + 3600
-	if offset < 300: offset += 3600 #avoid repeat in less than 5mins
-	get_tree().create_timer(offset).timeout.connect(ratingFetch)
-
-
-func parseRatings(result:int , response_code: int, header: PackedStringArray, body: PackedByteArray):
-	if result != HTTPRequest.RESULT_SUCCESS: return
+func getRating(user: String):
+	if user.begins_with("Guest"): return -1
 	
-	# .items -> Array[ {name, rating, maxrating, ratedgames, isbot, participationrating}, .. ]
-	var json: Array = JSON.parse_string(body.get_string_from_utf8())["items"]
-	ratingList = {}
-	bots = []
-	for entry in json:
-		if entry["isbot"]:
-			bots.append(entry["name"])
-		ratingList[entry["name"]] = entry["rating"]
-	ratingUpdate.emit()
+	if user in ratingList:
+		return ratingList[user]
+	
+	else:
+		while http.get_http_client_status() != HTTPClient.STATUS_DISCONNECTED:
+			await http.request_completed
+		http.request(ratingURL % user)
+		await http.request_completed
+		return ratingList.get(user, -1)
+
+
+func parseRatingFetch(result:int, response_code: int, header: PackedStringArray, body: PackedByteArray):
+	if result != HTTPRequest.RESULT_SUCCESS: return
+	var json = JSON.parse_string(body.get_string_from_utf8())
+	ratingList[json["name"]] = json["rating"]
 
 
 func startGame(data: PackedStringArray):
