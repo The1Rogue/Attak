@@ -5,9 +5,9 @@ env:
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
+  release:
+    types: [published]
+
 
 jobs:
   deploy:
