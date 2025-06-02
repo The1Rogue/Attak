@@ -409,20 +409,20 @@ func acceptSeek(seek: int):
 
 
 func makeGame(data: PackedStringArray) -> GameData:
-	var pWhite = GameData.PLAYTAK if data[7] == "black" else GameData.LOCAL
-	var pBlack = GameData.PLAYTAK if data[7] == "white" else GameData.LOCAL
+	var pWhite = GameData.PLAYTAK if data[6] == "black" else GameData.LOCAL
+	var pBlack = GameData.PLAYTAK if data[6] == "white" else GameData.LOCAL
 	
 	return GameData.new(
 		data[2], #id
-		data[3].to_int(), #size 
+		data[7].to_int(), #size 
 		pWhite,
 		pBlack,
-		data[4], #pw
-		data[6], #pb
+		data[3], #pw
+		data[5], #pb
 		data[8].to_int(), #time
-		0, #for *some* god forsaken reason, playtak doesnt send increment time on game start.....
-		data[12].to_int(), #triggermove
-		data[13].to_int(), #triggertime
-		data[9].to_int(),  #komi
-		data[10].to_int(), #flats
-		data[11].to_int()) #caps
+		data[9].to_int(), #increment
+		data[15].to_int(), #triggermove
+		data[16].to_int(), #triggertime
+		data[10].to_int(),  #komi
+		data[11].to_int(), #flats
+		data[12].to_int()) #caps

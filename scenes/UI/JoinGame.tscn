@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://dxpjihu0jl61k"]
+
+[ext_resource type="Script" uid="uid://d3m2487nlp8ae" path="res://src/UI/SeekList.gd" id="1_tt24m"]
+[ext_resource type="Texture2D" uid="uid://bcmk8n1vulre6" path="res://assets/UI/circleBlack.png" id="2_vme5w"]
+[ext_resource type="Texture2D" uid="uid://gixfwgwmlwtx" path="res://assets/UI/circleWhite.png" id="3_mvv6s"]
+[ext_resource type="Texture2D" uid="uid://db7kok8ipbe6h" path="res://assets/UI/circleBoth.png" id="4_dahca"]
+
+[node name="Join" type="VBoxContainer" node_paths=PackedStringArray("button")]
+visible = false
+alignment = 1
+script = ExtResource("1_tt24m")
+button = NodePath("")
+iconBlack = ExtResource("2_vme5w")
+iconWhite = ExtResource("3_mvv6s")
+iconBoth = ExtResource("4_dahca")
+
+[node name="Players" type="Label" parent="."]
+layout_mode = 2
+text = "Players:"
+
+[node name="HSeparator" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="Bots" type="Label" parent="."]
+layout_mode = 2
+text = "Bots:"

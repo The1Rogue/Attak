@@ -1,0 +1,97 @@
+[gd_scene load_steps=3 format=3 uid="uid://dc5hpvlj8furc"]
+
+[ext_resource type="Script" uid="uid://csib0fo865ujn" path="res://src/UI/loginMenu.gd" id="1_vq042"]
+[ext_resource type="Script" uid="uid://dw7xyivwxj1tv" path="res://src/UI/graph.gd" id="2_ecanc"]
+
+[node name="Login" type="VBoxContainer" node_paths=PackedStringArray("tabOnLogin", "button")]
+visible = false
+size_flags_horizontal = 4
+alignment = 1
+script = ExtResource("1_vq042")
+tabOnLogin = NodePath("")
+button = NodePath("")
+
+[node name="Menu" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Login" type="VBoxContainer" parent="Menu"]
+layout_mode = 2
+
+[node name="User" type="LineEdit" parent="Menu/Login"]
+layout_mode = 2
+placeholder_text = "Username"
+
+[node name="Pass" type="LineEdit" parent="Menu/Login"]
+layout_mode = 2
+placeholder_text = "Password"
+secret = true
+
+[node name="Remember" type="CheckBox" parent="Menu/Login"]
+layout_mode = 2
+button_pressed = true
+text = " Remember Me  "
+
+[node name="Button" type="Button" parent="Menu/Login"]
+layout_mode = 2
+text = "Login"
+
+[node name="HSeparator" type="HSeparator" parent="Menu/Login"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Menu/Login"]
+layout_mode = 2
+
+[node name="Register" type="Button" parent="Menu/Login/HBoxContainer"]
+layout_mode = 2
+text = "Register"
+
+[node name="VSeparator" type="VSeparator" parent="Menu/Login/HBoxContainer"]
+layout_mode = 2
+
+[node name="Guest" type="Button" parent="Menu/Login/HBoxContainer"]
+layout_mode = 2
+text = "Guest Login"
+
+[node name="Register" type="VBoxContainer" parent="Menu"]
+visible = false
+custom_minimum_size = Vector2(168, 0)
+layout_mode = 2
+
+[node name="Back" type="Button" parent="Menu/Register"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "< Back"
+
+[node name="User" type="LineEdit" parent="Menu/Register"]
+layout_mode = 2
+placeholder_text = "Username"
+
+[node name="Email" type="LineEdit" parent="Menu/Register"]
+layout_mode = 2
+placeholder_text = "Email"
+
+[node name="Button" type="Button" parent="Menu/Register"]
+layout_mode = 2
+text = "Create Account"
+
+[node name="Settings" type="VBoxContainer" parent="Menu"]
+visible = false
+layout_mode = 2
+
+[node name="Logout" type="Button" parent="Menu/Settings"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Logout
+"
+
+[node name="Name" type="Label" parent="Menu/Settings"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+
+[node name="Games" type="Label" parent="Menu/Settings"]
+layout_mode = 2
+
+[node name="Graph" type="Panel" parent="Menu/Settings"]
+layout_mode = 2
+script = ExtResource("2_ecanc")

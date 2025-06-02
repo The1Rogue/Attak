@@ -1,0 +1,74 @@
+[gd_scene load_steps=2 format=3 uid="uid://dmsu7yb0okn3i"]
+
+[ext_resource type="Script" uid="uid://c8mhypaw277v2" path="res://src/UI/scratch.gd" id="1_3gsv4"]
+
+[node name="Scratch" type="VBoxContainer" node_paths=PackedStringArray("sizeEntry", "flats", "caps", "notationEntry", "confirm")]
+visible = false
+alignment = 1
+script = ExtResource("1_3gsv4")
+sizeEntry = NodePath("BoxContainer/GridContainer/Size2")
+flats = NodePath("BoxContainer/GridContainer/Flats2")
+caps = NodePath("BoxContainer/GridContainer/Caps2")
+notationEntry = NodePath("BoxContainer/TextEdit")
+confirm = NodePath("Create")
+
+[node name="BoxContainer" type="BoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="BoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+columns = 2
+
+[node name="Size" type="Label" parent="BoxContainer/GridContainer"]
+layout_mode = 2
+text = "Size:"
+
+[node name="Size2" type="OptionButton" parent="BoxContainer/GridContainer"]
+layout_mode = 2
+selected = 3
+allow_reselect = true
+item_count = 6
+popup/item_0/text = "3x3"
+popup/item_0/id = 3
+popup/item_1/text = "4x4"
+popup/item_1/id = 4
+popup/item_2/text = "5x5"
+popup/item_2/id = 5
+popup/item_3/text = "6x6"
+popup/item_3/id = 6
+popup/item_4/text = "7x7"
+popup/item_4/id = 7
+popup/item_5/text = "8x8"
+popup/item_5/id = 8
+
+[node name="Caps" type="Label" parent="BoxContainer/GridContainer"]
+layout_mode = 2
+text = "Caps:"
+
+[node name="Caps2" type="SpinBox" parent="BoxContainer/GridContainer"]
+layout_mode = 2
+value = 1.0
+custom_arrow_step = 0.5
+
+[node name="Flats" type="Label" parent="BoxContainer/GridContainer"]
+layout_mode = 2
+text = "Flats:"
+
+[node name="Flats2" type="SpinBox" parent="BoxContainer/GridContainer"]
+layout_mode = 2
+max_value = 200.0
+value = 30.0
+custom_arrow_step = 0.5
+
+[node name="TextEdit" type="TextEdit" parent="BoxContainer"]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+placeholder_text = "PTN"
+
+[node name="Create" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+text = " Create "

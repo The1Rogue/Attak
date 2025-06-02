@@ -5,13 +5,7 @@ var saveData: SettingData
 
 signal experimental(bool)
 
-@export var board3D: PackedScene
-@export var board2D: PackedScene
-
-@export var boardHolder: SubViewport
-
-var board: BoardLogic
-
+@export var Board: BoardContainer
 
 func loadFull(data: SettingData):
 	experimental.emit(data.experimental)
@@ -85,14 +79,10 @@ func setBG(color: Color):
 
 func setBoard(i: int):
 	saveData.is2D = i == 0
-	if board != null:
-		boardHolder.remove_child(board)
-		board.queue_free()
-	board = (board2D if i == 0 else board3D).instantiate()
-	board.setData(saveData)
-	boardHolder.add_child(board)
+	Board.set2D(i == 0, saveData)
 	saveData.save()
 
 func updateGFX():
-	if board == null: return
-	else: board.setData(saveData)
+	
+	if Board.board == null: return
+	else: Board.board.setData(saveData)

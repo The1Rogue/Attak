@@ -1,0 +1,119 @@
+[gd_scene load_steps=3 format=3 uid="uid://7hykyeloohuo"]
+
+[ext_resource type="Script" uid="uid://ctrh8cwahg48f" path="res://src/UI/TEIMenu.gd" id="1_0tdpq"]
+[ext_resource type="Script" uid="uid://d4jmkbwi8l7r4" path="res://src/interfaces/TEInterface.gd" id="2_gk773"]
+
+[node name="TEI" type="VBoxContainer"]
+visible = false
+alignment = 1
+script = ExtResource("1_0tdpq")
+
+[node name="FileDialog" type="FileDialog" parent="."]
+auto_translate_mode = 1
+title = "Open a File"
+initial_position = 2
+size = Vector2i(1200, 800)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "/"
+
+[node name="Button" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = " Select Bot Program "
+
+[node name="GridContainer" type="GridContainer" parent="."]
+layout_mode = 2
+theme_override_constants/h_separation = 20
+columns = 4
+
+[node name="Color" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "My Color:"
+
+[node name="Color2" type="OptionButton" parent="GridContainer"]
+layout_mode = 2
+selected = 0
+allow_reselect = true
+item_count = 2
+popup/item_0/text = "White"
+popup/item_0/id = 0
+popup/item_1/text = "Black"
+popup/item_1/id = 1
+
+[node name="Size" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Size:"
+
+[node name="Size2" type="OptionButton" parent="GridContainer"]
+layout_mode = 2
+selected = 3
+allow_reselect = true
+item_count = 6
+popup/item_0/text = "3x3"
+popup/item_0/id = 3
+popup/item_1/text = "4x4"
+popup/item_1/id = 4
+popup/item_2/text = "5x5"
+popup/item_2/id = 5
+popup/item_3/text = "6x6"
+popup/item_3/id = 6
+popup/item_4/text = "7x7"
+popup/item_4/id = 7
+popup/item_5/text = "8x8"
+popup/item_5/id = 8
+
+[node name="Komi" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Komi:"
+
+[node name="Komi2" type="SpinBox" parent="GridContainer"]
+layout_mode = 2
+max_value = 4.0
+step = 0.5
+value = 2.0
+custom_arrow_step = 0.5
+
+[node name="Filler" type="Control" parent="GridContainer"]
+layout_mode = 2
+
+[node name="Filler2" type="Control" parent="GridContainer"]
+layout_mode = 2
+
+[node name="Time" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Bot Time:
+"
+
+[node name="Time2" type="SpinBox" parent="GridContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+min_value = 0.5
+step = 0.5
+value = 1.0
+suffix = "min"
+custom_arrow_step = 1.0
+
+[node name="Incr" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Increment:"
+
+[node name="Incr2" type="SpinBox" parent="GridContainer"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+step = 0.1
+suffix = "sec"
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 2
+text = "Start Game"
+
+[node name="TEI" type="Node" parent="."]
+script = ExtResource("2_gk773")

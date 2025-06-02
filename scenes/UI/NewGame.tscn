@@ -1,0 +1,189 @@
+[gd_scene load_steps=2 format=3 uid="uid://bb4r4jnwbkny1"]
+
+[ext_resource type="Script" uid="uid://ck5oei2y42uxd" path="res://src/UI/newSeek.gd" id="1_wycdn"]
+
+[node name="New" type="VBoxContainer" node_paths=PackedStringArray("opponent", "color", "options", "confirmStandard", "type", "sizeCustom", "komi", "time", "inc", "trigger", "amount", "confirmCustom")]
+visible = false
+alignment = 1
+script = ExtResource("1_wycdn")
+opponent = NodePath("Opponent_Color/Opponent")
+color = NodePath("Opponent_Color/OptionButton")
+options = NodePath("Presets")
+confirmStandard = NodePath("Button")
+type = NodePath("GridContainer/Type2")
+sizeCustom = NodePath("GridContainer/Size2")
+komi = NodePath("GridContainer/Komi2")
+time = NodePath("GridContainer/Time2")
+inc = NodePath("GridContainer/Incr2")
+trigger = NodePath("GridContainer/Trigger2")
+amount = NodePath("GridContainer/Extra2")
+confirmCustom = NodePath("Button2")
+
+[node name="Opponent_Color" type="GridContainer" parent="."]
+layout_mode = 2
+columns = 2
+
+[node name="Label" type="Label" parent="Opponent_Color"]
+layout_mode = 2
+text = "Opponent: "
+
+[node name="Opponent" type="LineEdit" parent="Opponent_Color"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Anyone"
+
+[node name="Label2" type="Label" parent="Opponent_Color"]
+layout_mode = 2
+text = "My Color:"
+
+[node name="OptionButton" type="OptionButton" parent="Opponent_Color"]
+layout_mode = 2
+selected = 0
+allow_reselect = true
+item_count = 3
+popup/item_0/text = "Random"
+popup/item_0/id = 0
+popup/item_1/text = "White"
+popup/item_1/id = 1
+popup/item_2/text = "Black"
+popup/item_2/id = 2
+
+[node name="HSeparator" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 1
+text = "Presets:"
+
+[node name="Presets" type="ItemList" parent="."]
+layout_mode = 2
+auto_height = true
+item_count = 8
+item_0/text = "Classic 5x5"
+item_1/text = "Classic 6x6"
+item_2/text = "Classic 7x7"
+item_3/text = "Blitz 5x5"
+item_4/text = "Blitz 6x6"
+item_5/text = "League Game"
+item_6/text = "Beginner Tourney"
+item_7/text = "Intermediate Tourney"
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 2
+text = "Create Seek"
+
+[node name="HSeparator2" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 1
+text = "Custom Settings:"
+
+[node name="GridContainer" type="GridContainer" parent="."]
+layout_mode = 2
+theme_override_constants/h_separation = 20
+columns = 4
+
+[node name="Type" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Game Type:"
+
+[node name="Type2" type="OptionButton" parent="GridContainer"]
+layout_mode = 2
+selected = 0
+allow_reselect = true
+item_count = 3
+popup/item_0/text = "Rated"
+popup/item_0/id = 0
+popup/item_1/text = "Tournament"
+popup/item_1/id = 1
+popup/item_2/text = "Unrated"
+popup/item_2/id = 2
+
+[node name="Size" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Size:"
+
+[node name="Size2" type="OptionButton" parent="GridContainer"]
+layout_mode = 2
+selected = 3
+allow_reselect = true
+item_count = 6
+popup/item_0/text = "3x3"
+popup/item_0/id = 3
+popup/item_1/text = "4x4"
+popup/item_1/id = 4
+popup/item_2/text = "5x5"
+popup/item_2/id = 5
+popup/item_3/text = "6x6"
+popup/item_3/id = 6
+popup/item_4/text = "7x7"
+popup/item_4/id = 7
+popup/item_5/text = "8x8"
+popup/item_5/id = 8
+
+[node name="Komi" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Komi:"
+
+[node name="Komi2" type="SpinBox" parent="GridContainer"]
+layout_mode = 2
+max_value = 4.0
+step = 0.5
+value = 2.0
+custom_arrow_step = 0.5
+
+[node name="Filler" type="Control" parent="GridContainer"]
+layout_mode = 2
+
+[node name="Filler2" type="Control" parent="GridContainer"]
+layout_mode = 2
+
+[node name="Time" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Time:
+"
+
+[node name="Time2" type="SpinBox" parent="GridContainer"]
+layout_mode = 2
+min_value = 1.0
+value = 15.0
+suffix = "min"
+
+[node name="Incr" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Increment:"
+
+[node name="Incr2" type="SpinBox" parent="GridContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+step = 5.0
+value = 10.0
+suffix = "sec"
+
+[node name="Trigger" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Extra Time Trigger:"
+
+[node name="Trigger2" type="SpinBox" parent="GridContainer"]
+layout_mode = 2
+max_value = 60.0
+step = 5.0
+prefix = "move"
+
+[node name="Extra" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Extra Time"
+
+[node name="Extra2" type="SpinBox" parent="GridContainer"]
+layout_mode = 2
+max_value = 60.0
+suffix = "min"
+
+[node name="Button2" type="Button" parent="."]
+layout_mode = 2
+text = "Create Custom Seek
+"

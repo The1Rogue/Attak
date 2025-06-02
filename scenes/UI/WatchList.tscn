@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://bc07ynx8oxnsa"]
+
+[ext_resource type="Script" uid="uid://dalumchehjfjp" path="res://src/UI/WatchList.gd" id="1_rxmgw"]
+
+[node name="Watch" type="VBoxContainer" node_paths=PackedStringArray("button")]
+visible = false
+alignment = 1
+script = ExtResource("1_rxmgw")
+button = NodePath("")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "Its Quiet...."
+horizontal_alignment = 1
