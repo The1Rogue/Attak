@@ -17,9 +17,13 @@ var pieceSize: float:
 var sq: Texture2D:
 	set(t):
 		sq = t
+		var s = t.get_width() / 15
+		board.region_rect.size = Vector2.ONE * size * s
+		board.region_rect.position.x = size % 2 * 8 * s
+		board.region_rect.position.y = [0, 8, 14][(8-size)/2] * s
+		
 		board.texture = t
-		board.region_rect.size = Vector2.ONE * size * sq.get_height()
-		board.scale = Vector2.ONE * (16.0 / sq.get_height())
+		board.scale = Vector2.ONE * (16.0/s)
 
 var WhiteTex: Array[Texture2D]:
 	set(value):
@@ -66,8 +70,12 @@ func setData(data: SettingData):
 
 func makeBoard():
 	if sq != null:
-		board.region_rect.size = Vector2.ONE * size * sq.get_height()
-		board.scale = Vector2.ONE * (16.0 / sq.get_height())
+		var w = sq.get_width() / 15
+			
+		board.region_rect.size = Vector2.ONE * size * w
+		board.region_rect.position.x = size % 2 * 8 * w
+		board.region_rect.position.y = [0, 8, 14][(8-size)/2] * w
+		board.scale = Vector2.ONE * (16.0/w)
 		
 	for i in pieces:
 		reserves.remove_child(i)
@@ -77,7 +85,6 @@ func makeBoard():
 		if i is Label: remove_child(i)
 	
 	resizeCam()
-	
 	
 	for i in size:
 		var l = Label.new()

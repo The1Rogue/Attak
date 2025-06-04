@@ -1,7 +1,7 @@
 [gd_scene load_steps=14 format=3 uid="uid://c4esmjnf630vc"]
 
 [ext_resource type="Script" uid="uid://h1sr5hiux18g" path="res://src/BoardReps/3D/3DBoard.gd" id="2_4p11y"]
-[ext_resource type="Texture2D" uid="uid://dak6fg4nhw1h4" path="res://assets/Squares/Standard.svg" id="3_kh5br"]
+[ext_resource type="Texture2D" uid="uid://bs34ojsangkoo" path="res://assets/Squares/Standard.svg" id="3_gdgp2"]
 [ext_resource type="Shader" uid="uid://b6w2qgfyj3hmb" path="res://assets/shaders/Highlight3D.gdshader" id="7_fpqoa"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ood11"]
@@ -38,13 +38,16 @@ material = SubResource("ORMMaterial3D_1i0kw")
 size = Vector3(7, 0.3, 7)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6pysb"]
-albedo_texture = ExtResource("3_kh5br")
+albedo_texture = ExtResource("3_gdgp2")
+uv1_scale = Vector3(0.4, 1, 0.333)
+uv1_offset = Vector3(0.2, 0, 0.611)
 uv1_triplanar = true
 texture_filter = 0
+point_size = 128.0
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_kwwfp"]
 material = SubResource("StandardMaterial3D_6pysb")
-size = Vector2(6, 6)
+size = Vector2(1, 1)
 
 [node name="3DBoard" type="StaticBody3D"]
 script = ExtResource("2_4p11y")
@@ -71,7 +74,7 @@ mesh = SubResource("BoxMesh_ahl31")
 skeleton = NodePath("../3DBoard")
 
 [node name="top" type="MeshInstance3D" parent="board"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.151, 0)
+transform = Transform3D(6, 0, 0, 0, 6, 0, 0, 0, 6, 0, 0.151, 0)
 mesh = SubResource("PlaneMesh_kwwfp")
 skeleton = NodePath("../../3DBoard")
 

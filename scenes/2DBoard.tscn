@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://mxvbujo17lyt"]
 
 [ext_resource type="Script" uid="uid://j5fe6vkv5e2n" path="res://src/BoardReps/2D/2DBoard.gd" id="1_485fe"]
-[ext_resource type="Texture2D" uid="uid://dak6fg4nhw1h4" path="res://assets/Squares/Standard.svg" id="3_dm71m"]
+[ext_resource type="Texture2D" uid="uid://bs34ojsangkoo" path="res://assets/Squares/Standard.svg" id="3_dm71m"]
 [ext_resource type="Shader" uid="uid://pd1djagex7vl" path="res://assets/shaders/Highlight2D.gdshader" id="9_spr7x"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_m7t6u"]
@@ -20,7 +20,7 @@ highlightMaterial = SubResource("ShaderMaterial_m7t6u")
 texture_repeat = 2
 texture = ExtResource("3_dm71m")
 region_enabled = true
-region_rect = Rect2(0, 0, 80, 80)
+region_rect = Rect2(0, 720, 540, 540)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(12, 12)

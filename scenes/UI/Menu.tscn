@@ -30,6 +30,7 @@ start = NodePath("Login")
 th = ExtResource("2_3pers")
 
 [node name="Login" parent="." node_paths=PackedStringArray("tabOnLogin", "button") instance=ExtResource("3_to38n")]
+visible = true
 layout_mode = 2
 tabOnLogin = NodePath("../Board")
 button = NodePath("../tabBar/Home/SubTabs/Profile")
@@ -39,6 +40,7 @@ layout_mode = 2
 Board = NodePath("../Board")
 
 [node name="Board" type="Container" parent="."]
+visible = false
 layout_mode = 2
 script = ExtResource("8_c5sep")
 board3D = ExtResource("4_l2ddi")
@@ -53,7 +55,7 @@ stretch = true
 handle_input_locally = false
 physics_object_picking = true
 size = Vector2i(2, 2)
-render_target_update_mode = 4
+render_target_update_mode = 0
 
 [node name="GameUI" parent="Board" instance=ExtResource("9_6h3q2")]
 layout_mode = 2

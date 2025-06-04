@@ -108,8 +108,6 @@ func _ready():
 	Piece3D.highlight = highlightMaterial
 	Piece3D.hover = hoverMaterial
 
-	#$Collider.input_event.connect(inputEvent)
-
 
 func makeBoard():
 	for i in pieces:
@@ -117,8 +115,9 @@ func makeBoard():
 		i.queue_free()
 	pieces = []
 	
-	squares.mesh.size = Vector2(size, size)
-	squares.mesh.material.uv1_offset = Vector3(.5, 0, .5) if size % 2 == 1 else Vector3.ZERO
+	squares.mesh.size = Vector2(size/6.0, size/6.0)
+	squares.mesh.material.uv1_offset = Vector3((8 * (size % 2) + size/2.0)/15, 0, ([0,8,14][(8-size)/2] + size/2.0 ) /18.0)
+	
 	board.mesh.size = Vector3(size + 1, .3, size + 1)
 	
 	for i in board.get_children():
