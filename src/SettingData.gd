@@ -106,7 +106,6 @@ func setCapHeight3D(value):
 	capHeight3D = value; save(); boardUpdate.emit()
 
 
-
 func repair():
 	var defaults = SettingData.new()
 	if sq2D == null:
