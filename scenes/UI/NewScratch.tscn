@@ -51,7 +51,6 @@ text = "Caps:"
 [node name="Caps2" type="SpinBox" parent="BoxContainer/GridContainer"]
 layout_mode = 2
 value = 1.0
-custom_arrow_step = 0.5
 
 [node name="Flats" type="Label" parent="BoxContainer/GridContainer"]
 layout_mode = 2
@@ -61,7 +60,6 @@ text = "Flats:"
 layout_mode = 2
 max_value = 200.0
 value = 30.0
-custom_arrow_step = 0.5
 
 [node name="TextEdit" type="TextEdit" parent="BoxContainer"]
 custom_minimum_size = Vector2(256, 256)

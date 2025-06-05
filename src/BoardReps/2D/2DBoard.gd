@@ -183,6 +183,8 @@ func putReserve(id: int):
 		p = Vector2(p.y, p.x)
 		if playAbleColor == BLACK_MASK:
 			p.y *= -1
+		p += Vector2(-3,3)
+		
 	pieces[id].setPosition(p)
 
 
