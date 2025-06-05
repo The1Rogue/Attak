@@ -6,8 +6,6 @@ const savePath = "user://settings.res"
 const playtakCap = preload("res://assets/Pieces3D/cap.obj")
 const playtakFlat = preload("res://assets/Pieces3D/flat.obj")
 
-static var DA: DirAccess = DirAccess.open("res://")
-
 signal boardUpdate
 
 @export_category("Global")
@@ -111,11 +109,11 @@ func setCapHeight3D(value):
 
 func repair():
 	var defaults = SettingData.new()
-	if not DA.file_exists(sq2DPath):
+	if sq2D == null:
 		sq2DPath = defaults.sq2DPath
 	
-	if not DA.file_exists(sq3DPath):
-		sq2DPath = defaults.sq3DPath
+	if sq3D == null:
+		sq3DPath = defaults.sq3DPath
 	
 	var meshes = white3D
 	if meshes.size() != 2 or null in meshes:
