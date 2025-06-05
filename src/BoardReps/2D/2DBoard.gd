@@ -8,12 +8,14 @@ class_name Board2D
 
 @export var selectionHeight: float = 8
 @export var heightOffset: float = 2
+var portrait = false
+
 
 var pieceSize: float: 
 	set(value): 
 		for i in pieces: i.scale *= value / pieceSize
 		pieceSize = value
-		
+
 var sq: Texture2D:
 	set(t):
 		sq = t
@@ -32,7 +34,7 @@ var WhiteTex: Array[Texture2D]:
 			return
 		WhiteTex = value
 		if pieces.size() > 0: setState(GameLogic.viewedState())
-		
+
 var BlackTex: Array[Texture2D]:
 	set(value):
 		if value.size() != 4 or null in value:
@@ -52,8 +54,14 @@ func _ready():
 
 
 func resizeCam():
-	var sizeLimit = Vector2(size * 16 + 48, size * 16 + 18)
-	var z: Vector2 = cam.get_viewport_rect().size / sizeLimit
+	var c = cam.get_viewport_rect().size
+	
+	if (c.y > c.x) != portrait:
+		portrait = c.y > c.x
+		setState.call_deferred(GameLogic.viewedState())
+		
+	var sizeLimit = Vector2(size * 16 + 18, size * 16 + 48) if portrait else Vector2(size * 16 + 48, size * 16 + 18)
+	var z: Vector2 = c / sizeLimit
 	cam.zoom = Vector2.ONE * min(z.x, z.y)
 
 
@@ -170,7 +178,11 @@ func putReserve(id: int):
 			16 * (size/2.0 - (id/2 - caps) * (size-1) / (caps+flats - 1.0))
 		)
 		pieces[id].z_index = (id/2 - caps)
-		
+	
+	if portrait:
+		p = Vector2(p.y, p.x)
+		if playAbleColor == BLACK_MASK:
+			p.y *= -1
 	pieces[id].setPosition(p)
 
 
@@ -206,8 +218,15 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 		else:
 			if event.button_index == MOUSE_BUTTON_LEFT:
-				var color = 0 if v.x > 0 else 1
-				var type = GameState.FLAT if v.y > 16 * (size/2.0 - .5 - (size-1.0) * flats / (flats+caps)) else GameState.CAP
+				var color
+				var type
+				if portrait:
+					color = 0 if v.y > 0 != (playAbleColor==BLACK_MASK) else 1
+					type = GameState.FLAT if v.x > 16 * (size/2.0 - .5 - (size-1.0) * flats / (flats+caps)) else GameState.CAP
+				else:
+					color = 0 if v.x > 0 else 1
+					type = GameState.FLAT if v.y > 16 * (size/2.0 - .5 - (size-1.0) * flats / (flats+caps)) else GameState.CAP
+					
 				if type == GameState.CAP and GameLogic.activeState().reserves.caps[color] == 0: return
 				elif type == GameState.FLAT and GameLogic.activeState().reserves.flats[color] == 0: return
 				clickReserve(color, type)

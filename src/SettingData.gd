@@ -126,11 +126,11 @@ func repair():
 		black3DPath = defaults.black3DPath
 
 	var texs = white2D
-	if texs.size() != 3 or null in texs:
+	if texs.size() != 4 or null in texs:
 		white2DPath = defaults.white2DPath
 	
 	texs = black2D
-	if texs.size() != 3 or null in texs:
+	if texs.size() != 4 or null in texs:
 		black2DPath = defaults.black2DPath
 
 

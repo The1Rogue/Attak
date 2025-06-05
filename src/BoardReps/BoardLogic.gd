@@ -88,8 +88,7 @@ func setState(state: GameState):
 		for piece in state.reserves.caps[color]:
 			setPieceState(piece * 2 + color, CAP)
 			putReserve(piece * 2 + color)
-			
-	for color in 2:
+
 		for piece in state.reserves.flats[color]:
 			setPieceState((state.caps + piece) * 2 + color, FLAT)
 			putReserve((state.caps + piece) * 2 + color)
