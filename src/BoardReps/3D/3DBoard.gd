@@ -235,6 +235,8 @@ func _input_event(camera: Camera3D, event: InputEvent, event_position: Vector3, 
 				var tile = vecToTile(event_position)
 				if tile.x >= 0 and tile.x < size and tile.y >= 0 and tile.y < size:
 					clickTile(tile)
+				else:
+					rightClickReserve()
 			
 			elif event.button_index == MOUSE_BUTTON_RIGHT:
 				var tile = vecToTile(event_position)

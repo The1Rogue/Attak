@@ -171,9 +171,13 @@ func deselectPile(state: GameState):
 func clickReserve(color: int, type: int):
 	if not (canPlay() and GameLogic.viewIsLast()): return
 	var c = GameLogic.currentPly()
-	if (color != c % 2) != (c < 2): return #correct color + swap opening
-	if type == GameState.CAP and c < 2: return #only flats for first move
-	
+	if (color != c % 2) != (c < 2): #correct color + swap opening
+		rightClickReserve() #deselect
+		return 
+	if type == GameState.CAP and c < 2: #only flats for first move
+		rightClickReserve() #deselect
+		return 
+		
 	var state = GameLogic.activeState()
 	var id = (state.reserves.caps[color]-1) * 2 + color if type == GameState.CAP else (caps + state.reserves.flats[color]-1) * 2 + color
 	

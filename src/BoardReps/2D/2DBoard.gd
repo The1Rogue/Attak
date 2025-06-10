@@ -220,14 +220,25 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 		else:
 			if event.button_index == MOUSE_BUTTON_LEFT:
-				var color
-				var type
+				var color = -1
+				var type = -1
 				if portrait:
-					color = 0 if v.y > 0 != (playAbleColor==BLACK_MASK) else 1
+					if v.y > -8 * size - 23 and v.y < -8 * size - 7: 
+						color = 0 if (playAbleColor==BLACK_MASK) else 1
+					elif v.y > 8 * size + 1 and v.y < 8 * size + 17:
+						color = 1 if (playAbleColor==BLACK_MASK) else 0
 					type = GameState.FLAT if v.x > 16 * (size/2.0 - .5 - (size-1.0) * flats / (flats+caps)) else GameState.CAP
+				
 				else:
-					color = 0 if v.x > 0 else 1
+					if v.x > -8 * size - 20 and v.x < -8 * size - 4: 
+						color = 1
+					elif v.x > 8 * size + 4 and v.x < 8 * size + 20:
+						color = 0
 					type = GameState.FLAT if v.y > 16 * (size/2.0 - .5 - (size-1.0) * flats / (flats+caps)) else GameState.CAP
+				
+				if color == -1:
+					rightClickReserve() #deselect if click outside board
+					return 
 					
 				if type == GameState.CAP and GameLogic.activeState().reserves.caps[color] == 0: return
 				elif type == GameState.FLAT and GameLogic.activeState().reserves.flats[color] == 0: return
