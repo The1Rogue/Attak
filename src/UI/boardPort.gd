@@ -32,6 +32,10 @@ func _draw():
 	if Globals.isMobile():
 		UI.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 		Board.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
+		
+		Board.set_anchor_and_offset(SIDE_TOP, 0, $GameUI/MobilePTN.position.y + $GameUI/MobilePTN/HBoxContainer.size.y)
+		Board.set_anchor_and_offset(SIDE_BOTTOM, 1, $GameUI/MobilePTN.position.y + $GameUI/MobilePTN.size.y - size.y)
+		
 		$GameUI/MobilePTN.show()
 		$GameUI/DesktopPTN.hide()
 		
