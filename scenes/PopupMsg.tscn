@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://ckswv2j2c1el7"]
+[gd_scene load_steps=8 format=3 uid="uid://ckswv2j2c1el7"]
 
 [ext_resource type="Script" uid="uid://bc04msh4hblm4" path="res://src/PopupMsg.gd" id="1_fsurt"]
 [ext_resource type="AudioStream" uid="uid://ldoi1rp6n3uc" path="res://assets/Audio/move.mp3" id="2_v1lt1"]
@@ -6,6 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://b4iq1l0gsxhlw" path="res://assets/Audio/end.mp3" id="4_qwjny"]
 [ext_resource type="AudioStream" uid="uid://bemdkj8eexdkx" path="res://assets/Audio/time.mp3" id="5_wo0o2"]
 [ext_resource type="AudioStream" uid="uid://cijet7eej75xk" path="res://assets/Audio/notify.mp3" id="6_5sg0s"]
+[ext_resource type="Script" uid="uid://m8qeo2f26xe5" path="res://src/UI/URLButton.gd" id="7_bas15"]
 
 [node name="Popup" type="CanvasLayer"]
 script = ExtResource("1_fsurt")
@@ -15,7 +16,7 @@ end = ExtResource("4_qwjny")
 time = ExtResource("5_wo0o2")
 notif = ExtResource("6_5sg0s")
 
-[node name="Panel" type="PanelContainer" parent="."]
+[node name="Notif" type="PanelContainer" parent="."]
 custom_minimum_size = Vector2(300, 0)
 anchors_preset = -1
 anchor_left = 0.5
@@ -26,7 +27,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 4
 
-[node name="Label" type="RichTextLabel" parent="Panel"]
+[node name="Label" type="RichTextLabel" parent="Notif"]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 32
 bbcode_enabled = true
@@ -34,3 +35,50 @@ fit_content = true
 scroll_active = false
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="GameEnd" type="PanelContainer" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameEnd"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="HSeparator3" type="HSeparator" parent="GameEnd/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="RichTextLabel" parent="GameEnd/VBoxContainer"]
+layout_mode = 2
+text = "Game over R-0
+ player wins with a road "
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+
+[node name="HSeparator2" type="HSeparator" parent="GameEnd/VBoxContainer"]
+layout_mode = 2
+
+[node name="URLButton" type="Button" parent="GameEnd/VBoxContainer"]
+layout_mode = 2
+text = "
+Open in PTN Ninja
+
+"
+script = ExtResource("7_bas15")
+metadata/_custom_type_script = "uid://m8qeo2f26xe5"
+
+[node name="GameID" type="Button" parent="GameEnd/VBoxContainer"]
+layout_mode = 2
+text = "
+Copy Game ID
+
+"
+
+[node name="HSeparator" type="HSeparator" parent="GameEnd/VBoxContainer"]
+layout_mode = 2

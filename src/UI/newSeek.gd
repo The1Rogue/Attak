@@ -16,7 +16,7 @@ const OPTIONS = [
 	
 	[6, 15, 10, 35, 5, 2, 30, 1, SeekData.TOURNAMENT],# league
 	[6, 15, 10, 0, 0, 0, 30, 1, SeekData.TOURNAMENT],# beginner
-	[6, 15, 10, 0, 0, 2, 30, 1, SeekData.TOURNAMENT],# intermediate (does intermediate not have extra time at trigger?)
+	[6, 15, 10, 0, 0, 2, 30, 1, SeekData.TOURNAMENT],# intermediate
 ]
 @export var opponent: LineEdit
 @export var color: OptionButton

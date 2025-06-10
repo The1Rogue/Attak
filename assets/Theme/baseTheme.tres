@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=22 format=3 uid="uid://3w4qd4ooj08t"]
+[gd_resource type="Theme" load_steps=23 format=3 uid="uid://3w4qd4ooj08t"]
 
 [ext_resource type="StyleBox" uid="uid://c7bkligpe61xk" path="res://assets/Theme/ButtonActive.tres" id="1_wdenm"]
 [ext_resource type="StyleBox" uid="uid://b5qu7ymxg2nrv" path="res://assets/Theme/ButtonInActive.tres" id="2_ikfa3"]
@@ -39,9 +39,13 @@ content_margin_right = 5.0
 content_margin_bottom = 5.0
 bg_color = Color(0.223529, 0.301961, 0.619608, 1)
 
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_slwbp"]
+color = Color(0.654232, 0.654232, 0.654232, 1)
+thickness = 2
+
 [resource]
 default_font = ExtResource("5_odh5y")
-default_font_size = 20
+default_font_size = 25
 Button/styles/disabled = ExtResource("1_wdenm")
 Button/styles/focus = SubResource("StyleBoxEmpty_0hnp4")
 Button/styles/hover = ExtResource("1_wdenm")
@@ -66,6 +70,8 @@ GameUIButton/styles/hover = ExtResource("5_pgtts")
 GameUIButton/styles/hover_pressed = ExtResource("5_pgtts")
 GameUIButton/styles/normal = ExtResource("6_gngfm")
 GameUIButton/styles/pressed = ExtResource("5_pgtts")
+HSeparator/constants/separation = 10
+HSeparator/styles/separator = SubResource("StyleBoxLine_slwbp")
 HighlightButton/base_type = &"GameUIButton"
 HighlightButton/styles/normal = ExtResource("7_8g5o4")
 LabelBlack/base_type = &"Label"

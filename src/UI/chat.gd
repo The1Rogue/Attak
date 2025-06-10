@@ -14,6 +14,11 @@ enum {
 	PRIVATE
 }
 
+static func color(u: String):
+	var c = Color.RED
+	c.h = u.hash() as float / MAXINT 
+	return c
+
 func _init(name: String, type: int = ROOM):
 	size_flags_vertical |= Control.SIZE_EXPAND
 	self.room = name.lstrip("<").rstrip(">")
@@ -56,9 +61,7 @@ func send(msg: String):
 
 
 func add_message(user: String, message: String):
-	var c = Color.RED
-	c.h = user.hash() as float / MAXINT
-	textBox.push_color(c)
+	textBox.push_color(color(user))
 	textBox.append_text("<"+escape_bbcode(user) + ">: ")
 	textBox.pop()
 	textBox.append_text(escape_bbcode(message) + "\n")

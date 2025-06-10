@@ -160,8 +160,7 @@ func endGame(type: int):
 	end.emit(type)
 	if type != GameState.ONGOING:
 		activeState().win = type
-		Notif.ping(Notif.end)
-		Notif.message("Game Ended " + GameState.resultStrings[type], false)
+		Notif.endGame(type)
 
 
 func getPTN() -> String:

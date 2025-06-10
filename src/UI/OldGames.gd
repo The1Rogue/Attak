@@ -121,7 +121,7 @@ func parseResults(result:int, response_code: int, header: PackedStringArray, bod
 	for entry in json["items"]:
 		#TODO rating (and rating-change)
 		#TODO timestamp formatting?
-		var data: GameData = GameData.new(str(entry["id"]), entry["size"], GameData.LOCAL, GameData.LOCAL, 
+		var data: GameData = GameData.new(str(int(entry["id"])), entry["size"], GameData.LOCAL, GameData.LOCAL, 
 		entry["player_white"], entry["player_black"], entry["timertime"], entry["timerinc"], entry["extra_time_trigger"], entry["extra_time_amount"], 
 		entry["komi"], entry["pieces"], entry["capstones"])
 		appendEntry(data, entry["result"], entry["date"] / 1000 + tz, entry["notation"])

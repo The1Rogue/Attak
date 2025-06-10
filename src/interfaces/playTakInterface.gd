@@ -354,7 +354,7 @@ func startGame(data: PackedStringArray):
 	GameLogic.undoRequest.connect(sendUndo)
 	GameLogic.resign.connect(resign)
 	
-	var opponent = data[4] if data[7] == "black" else data[6]
+	var opponent = data[3] if data[6] == "black" else data[5]
 	if not opponent in ChatTab.rooms:
 		ChatTab.newChat(opponent, Chat.PRIVATE)
 
