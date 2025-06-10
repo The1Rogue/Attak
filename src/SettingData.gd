@@ -10,6 +10,11 @@ signal boardUpdate
 
 @export_category("Global")
 @export var experimental: bool = false
+@export var fullScreen: bool = false:
+	set(v):
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN if v else DisplayServer.WINDOW_MODE_WINDOWED)
+		fullScreen = v
+		save()
 @export var bgColor: Color = Color("222a61")
 @export var is2D: bool = false
 

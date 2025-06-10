@@ -33,6 +33,9 @@ func _draw():
 		UI.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 		Board.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 		
+		if $GameUI/MobilePTN.position.y == 0: #UI doesnt have a proper size yet, redraw when we know the size of it
+			queue_redraw.call_deferred()
+		
 		Board.set_anchor_and_offset(SIDE_TOP, 0, $GameUI/MobilePTN.position.y + $GameUI/MobilePTN/HBoxContainer.size.y)
 		Board.set_anchor_and_offset(SIDE_BOTTOM, 1, $GameUI/MobilePTN.position.y + $GameUI/MobilePTN.size.y - size.y)
 		

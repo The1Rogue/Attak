@@ -1,18 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://bi8rfuogagio7"]
+[gd_scene load_steps=4 format=3 uid="uid://bi8rfuogagio7"]
 
 [ext_resource type="Script" uid="uid://c0ctwbjjskack" path="res://src/UI/Settings.gd" id="1_ghuma"]
-[ext_resource type="PackedScene" uid="uid://c4esmjnf630vc" path="res://scenes/3DBoard.tscn" id="2_q4o7v"]
-[ext_resource type="PackedScene" uid="uid://mxvbujo17lyt" path="res://scenes/2DBoard.tscn" id="3_ks2vq"]
 [ext_resource type="Script" uid="uid://dr7mwqvmekkfp" path="res://src/UI/fileOption.gd" id="4_1hw8f"]
 [ext_resource type="Script" uid="uid://c0h72clryfemj" path="res://src/UI/RangeOption.gd" id="5_hat0o"]
 
-[node name="Settings" type="VBoxContainer" node_paths=PackedStringArray("boardHolder")]
+[node name="Settings" type="VBoxContainer"]
 visible = false
 alignment = 1
 script = ExtResource("1_ghuma")
-board3D = ExtResource("2_q4o7v")
-board2D = ExtResource("3_ks2vq")
-boardHolder = NodePath("")
 
 [node name="GridContainer" type="GridContainer" parent="."]
 layout_mode = 2
@@ -23,6 +18,14 @@ layout_mode = 2
 text = "Enable Experimental Features:"
 
 [node name="EXP" type="CheckButton" parent="GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+
+[node name="FullSLabel" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "FullScreen:"
+
+[node name="FullS" type="CheckButton" parent="GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 

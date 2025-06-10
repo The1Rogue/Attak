@@ -15,6 +15,9 @@ func loadFull(data: SettingData):
 func _ready() -> void:
 	saveData = SettingData.loadOrNew()
 	
+	$"GridContainer/FullS".set_pressed_no_signal(saveData.fullScreen)
+	$"GridContainer/FullS".toggled.connect(func(v): saveData.fullScreen = v)
+	
 	$"GridContainer/EXP".set_pressed_no_signal(saveData.experimental)
 	$"GridContainer/EXP".toggled.connect(setEXP)
 	
