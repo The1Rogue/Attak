@@ -7,7 +7,7 @@ extends Node
 
 @onready var endMenu: PanelContainer = $GameEnd
 @onready var endText: RichTextLabel = $GameEnd/VBoxContainer/Label
-@onready var endLink: URLButton = $GameEnd/VBoxContainer/URLButton
+@onready var endLink: Button = $GameEnd/VBoxContainer/NinjaLink
 @onready var endRematch: Button = $GameEnd/VBoxContainer/Rematch
 @onready var endID: Button = $GameEnd/VBoxContainer/GameID
 
@@ -33,6 +33,7 @@ func _ready():
 	popUp.custom_minimum_size.x = 300 * s
 	
 	endID.pressed.connect(func(): DisplayServer.clipboard_set(GameLogic.gameData.id))
+	endLink.pressed.connect(func(): OS.shell_open("https://ptn.ninja/%s" % GameLogic.getPTN().replace("\n", " ")))
 	endMenu.gui_input.connect(func(e): if e is InputEventMouseButton: endMenu.hide())
 	endRematch.pressed.connect(sendRematch)
 
@@ -68,12 +69,13 @@ func ping(audio: AudioStream = notif):
 
 
 func endGame(type: int):
-	endText.text = " Game over %s \n" % GameState.resultStrings[type]
+	endText.clear()
+	endText.append_text(" Game over %s \n" % GameState.resultStrings[type])
 	
 	if type == GameState.DRAW:
-		endText.text += " Game was drawn "
+		endText.append_text(" Game was drawn ")
 	elif type == GameState.ONGOING:
-		endText.text += " Game is ongoing? (please report a bug) "
+		endText.append_text(" Game is ongoing? (please report a bug) ")
 	else:
 		var p = GameLogic.gameData.playerWhiteName if type%2==0 else GameLogic.gameData.playerBlackName
 		endText.push_color(Chat.color(p))
@@ -81,7 +83,6 @@ func endGame(type: int):
 		endText.pop()
 		endText.append_text(" wins " + ["with a road ", "with flats ", "by default "][type/2])
 	
-	endLink.URL = "https://playtak.com/games/%s/ninjaviewer" % GameLogic.gameData.id
 	endRematch.disabled = false
 	endRematch.visible = (GameLogic.gameData.playerBlack == GameData.PLAYTAK and GameLogic.gameData.playerWhite == GameData.LOCAL) or (GameLogic.gameData.playerBlack == GameData.LOCAL and GameLogic.gameData.playerWhite == GameData.PLAYTAK)
 	endMenu.show()

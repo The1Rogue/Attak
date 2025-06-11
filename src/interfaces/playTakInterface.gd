@@ -194,7 +194,6 @@ func _process(delta: float):
 	var packet
 	while socket.get_available_packet_count():
 		packet = getPacket()
-		print(packet)
 		var data = packet.replace("#", " ").split(" ") #TODO BUG this will replace #'s in messages
 		match Array(data):
 			["GameList", "Add", var id, var pw, var pb, var size, var time, var inc, var komi, var flats, var caps, var unrated, var tournament, var triggerMove, var triggerAmount]:
@@ -280,7 +279,6 @@ func _process(delta: float):
 			["Seek", "new", var id, var name, var size, var time, var inc, var color, var komi, var flats, var caps, var unrated, var tourney, var trigger, var extra, var opponent, var bot]:
 				if opponent != "0" and opponent.to_lower() != activeUsername.to_lower() and name != activeUsername:
 					break
-				print(bot)
 				var seek = SeekData.new(
 					name, bot == "1", size.to_int(), time.to_int(), inc.to_int(), trigger.to_int(), extra.to_int(),
 					color, komi.to_int(), flats.to_int(), caps.to_int(), 
@@ -422,12 +420,10 @@ func sendRematch():
 		"Rematch %s %d %d %d %s %d %d %d %d %d %d %d %s" % [d.id, d.size, d.time, d.increment, c, d.komi, d.flats, d.caps, 
 		1 if d.rated == SeekData.UNRATED else 0, 1 if d.rated == SeekData.TOURNAMENT else 0, d.triggerMove, d.triggerTime, opp]
 	)
-	print("sent rematch")
 
 
 func acceptSeek(seek: int):
 	socket.send_text("Accept " + str(seek))
-	print("sent accept")
 
 
 func makeGame(data: PackedStringArray) -> GameData:

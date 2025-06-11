@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://ckswv2j2c1el7"]
+[gd_scene load_steps=7 format=3 uid="uid://ckswv2j2c1el7"]
 
 [ext_resource type="Script" uid="uid://bc04msh4hblm4" path="res://src/PopupMsg.gd" id="1_fsurt"]
 [ext_resource type="AudioStream" uid="uid://ldoi1rp6n3uc" path="res://assets/Audio/move.mp3" id="2_v1lt1"]
@@ -6,7 +6,6 @@
 [ext_resource type="AudioStream" uid="uid://b4iq1l0gsxhlw" path="res://assets/Audio/end.mp3" id="4_qwjny"]
 [ext_resource type="AudioStream" uid="uid://bemdkj8eexdkx" path="res://assets/Audio/time.mp3" id="5_wo0o2"]
 [ext_resource type="AudioStream" uid="uid://cijet7eej75xk" path="res://assets/Audio/notify.mp3" id="6_5sg0s"]
-[ext_resource type="Script" uid="uid://m8qeo2f26xe5" path="res://src/UI/URLButton.gd" id="7_bas15"]
 
 [node name="Popup" type="CanvasLayer"]
 script = ExtResource("1_fsurt")
@@ -64,14 +63,12 @@ horizontal_alignment = 1
 [node name="HSeparator2" type="HSeparator" parent="GameEnd/VBoxContainer"]
 layout_mode = 2
 
-[node name="URLButton" type="Button" parent="GameEnd/VBoxContainer"]
+[node name="NinjaLink" type="Button" parent="GameEnd/VBoxContainer"]
 layout_mode = 2
 text = "
 Open in PTN Ninja
 
 "
-script = ExtResource("7_bas15")
-metadata/_custom_type_script = "uid://m8qeo2f26xe5"
 
 [node name="GameID" type="Button" parent="GameEnd/VBoxContainer"]
 layout_mode = 2

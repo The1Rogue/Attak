@@ -55,12 +55,13 @@ func isScratch() -> bool:
 
 
 func ptnHeader() -> String:
-	return '[Site "%s"]\n[Player1 "%s"]\n[Player2 "%s"]\n[Size "%d"]\n[Komi "%s"]\n[Flats "%d"]\n[Caps "%d"]\n[Opening "swap"]' % [
+	return '[Site "%s"]\n[Player1 "%s"]\n[Player2 "%s"]\n[Size "%d"]\n[Komi "%.*f"]\n[Flats "%d"]\n[Caps "%d"]\n[Opening "swap"]' % [
 		"playtak.com" if playerWhite == PLAYTAK or playerBlack == PLAYTAK else "Attak",
 		playerWhiteName,
 		playerBlackName,
 		size,
-		str(komi / 2.0), #were not using format string because we want dynamic length
+		komi % 2, #komi decimal places
+		komi / 2.0, #actual komi value
 		flats,
 		caps
 	]
