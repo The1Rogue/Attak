@@ -48,4 +48,3 @@ func _draw():
 		Board.set_anchor_and_offset(SIDE_RIGHT, 1, -UI.size.x)
 		$GameUI/MobilePTN.hide()
 		$GameUI/DesktopPTN.show()
-		

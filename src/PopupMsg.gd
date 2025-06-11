@@ -8,6 +8,7 @@ extends Node
 @onready var endMenu: PanelContainer = $GameEnd
 @onready var endText: RichTextLabel = $GameEnd/VBoxContainer/Label
 @onready var endLink: URLButton = $GameEnd/VBoxContainer/URLButton
+@onready var endRematch: Button = $GameEnd/VBoxContainer/Rematch
 @onready var endID: Button = $GameEnd/VBoxContainer/GameID
 
 
@@ -33,6 +34,7 @@ func _ready():
 	
 	endID.pressed.connect(func(): DisplayServer.clipboard_set(GameLogic.gameData.id))
 	endMenu.gui_input.connect(func(e): if e is InputEventMouseButton: endMenu.hide())
+	endRematch.pressed.connect(sendRematch)
 
 func _process(delta: float) -> void:
 	if PopUpTimer > 0:
@@ -77,8 +79,15 @@ func endGame(type: int):
 		endText.push_color(Chat.color(p))
 		endText.append_text(escape_bbcode(p))
 		endText.pop()
-		endText.append_text(" wins with " + ("a road " if type < 2 else "flats "))
+		endText.append_text(" wins " + ["with a road ", "with flats ", "by default "][type/2])
 	
 	endLink.URL = "https://playtak.com/games/%s/ninjaviewer" % GameLogic.gameData.id
+	endRematch.disabled = false
+	endRematch.visible = (GameLogic.gameData.playerBlack == GameData.PLAYTAK and GameLogic.gameData.playerWhite == GameData.LOCAL) or (GameLogic.gameData.playerBlack == GameData.LOCAL and GameLogic.gameData.playerWhite == GameData.PLAYTAK)
 	endMenu.show()
 	ping(end)
+
+func sendRematch():
+	endRematch.disabled = true
+	ping()
+	PlayTakI.sendRematch()

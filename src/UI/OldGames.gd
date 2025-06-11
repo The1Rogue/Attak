@@ -123,7 +123,7 @@ func parseResults(result:int, response_code: int, header: PackedStringArray, bod
 		#TODO timestamp formatting?
 		var data: GameData = GameData.new(str(int(entry["id"])), entry["size"], GameData.LOCAL, GameData.LOCAL, 
 		entry["player_white"], entry["player_black"], entry["timertime"], entry["timerinc"], entry["extra_time_trigger"], entry["extra_time_amount"], 
-		entry["komi"], entry["pieces"], entry["capstones"])
+		entry["komi"], entry["pieces"], entry["capstones"], SeekData.UNRATED) #TODO get rating type from entry
 		appendEntry(data, entry["result"], entry["date"] / 1000 + tz, entry["notation"])
 
 

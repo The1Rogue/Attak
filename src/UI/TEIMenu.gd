@@ -58,7 +58,7 @@ func start():
 		playerName if colorEntry.get_selected_id() == GameState.WHITE else tei.botName,
 		playerName if colorEntry.get_selected_id() == GameState.BLACK else tei.botName,
 		timeEntry.value * 60, incEntry.value, 0, 0, komiEntry.value * 2, 
-		NewSeek.standardFlats[size-3], NewSeek.standardCaps[size-3]
+		NewSeek.standardFlats[size-3], NewSeek.standardCaps[size-3], SeekData.UNRATED
 	)
 	
 	tei.startGame(game)

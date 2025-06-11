@@ -8,7 +8,7 @@ enum { #TODO unused?
 var timerWhite: Timer
 var timerBlack: Timer
 
-var gameData: GameData = GameData.new("", 5, GameData.LOCAL, GameData.LOCAL, "Player White", "Player Black", 0, 0, 0, 0, 0, 21, 1)
+var gameData: GameData = GameData.new("", 5, GameData.LOCAL, GameData.LOCAL, "Player White", "Player Black", 0, 0, 0, 0, 0, 21, 1, SeekData.UNRATED)
 
 var startState: GameState = GameState.emptyState(5, 21, 1, 0)
 var history: Array[Ply]

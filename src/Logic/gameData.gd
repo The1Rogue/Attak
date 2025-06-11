@@ -28,7 +28,9 @@ var increment: int
 var triggerMove: int
 var triggerTime: int
 
-func _init(id: String, size: int, pw: int, pb: int, pwn: String, pbn: String, time: int, increment: int, trigger: int, extra: int, komi: int, flats: int, caps: int):
+var rated: int
+
+func _init(id: String, size: int, pw: int, pb: int, pwn: String, pbn: String, time: int, increment: int, trigger: int, extra: int, komi: int, flats: int, caps: int, rated: int):
 	self.id = id
 	self.size = size
 	self.playerWhite = pw
@@ -42,7 +44,7 @@ func _init(id: String, size: int, pw: int, pb: int, pwn: String, pbn: String, ti
 	self.komi = komi
 	self.flats = flats
 	self.caps = caps
-
+	self.rated = rated
 
 func isObserver() -> bool:
 	return playerWhite == PLAYTAK and playerBlack == PLAYTAK
@@ -54,7 +56,7 @@ func isScratch() -> bool:
 
 func ptnHeader() -> String:
 	return '[Site "%s"]\n[Player1 "%s"]\n[Player2 "%s"]\n[Size "%d"]\n[Komi "%s"]\n[Flats "%d"]\n[Caps "%d"]\n[Opening "swap"]' % [
-		"PlayTak.com" if playerWhite == PLAYTAK or playerBlack == PLAYTAK else "Attak",
+		"playtak.com" if playerWhite == PLAYTAK or playerBlack == PLAYTAK else "Attak",
 		playerWhiteName,
 		playerBlackName,
 		size,

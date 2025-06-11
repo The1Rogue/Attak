@@ -31,7 +31,8 @@ func create():
 			"Player Black",
 			0, 0, 0, 0, 0,
 			flats.value,
-			caps.value
+			caps.value,
+			SeekData.UNRATED
 		)
 		GameLogic.doSetup(g)
 		
@@ -124,7 +125,7 @@ func create():
 		if flats == -1: flats = standardFlats[size-3]
 		if caps == -1: caps = standardCaps[size-3]
 		
-		GameLogic.doSetup(GameData.new("", size, GameData.LOCAL, GameData.LOCAL, pw, pb, time, inc, trigger, extra, komi, flats, caps), startState)
+		GameLogic.doSetup(GameData.new("", size, GameData.LOCAL, GameData.LOCAL, pw, pb, time, inc, trigger, extra, komi, flats, caps, SeekData.UNRATED), startState)
 		
 		for i in plyList:
 			GameLogic.doMove(self, i)

@@ -80,5 +80,12 @@ Copy Game ID
 
 "
 
+[node name="Rematch" type="Button" parent="GameEnd/VBoxContainer"]
+layout_mode = 2
+text = "
+Rematch
+
+"
+
 [node name="HSeparator" type="HSeparator" parent="GameEnd/VBoxContainer"]
 layout_mode = 2

@@ -163,7 +163,6 @@ func _process(delta: float):
 	if not active: return
 	
 	var nt = Time.get_unix_time_from_system()
-	
 	socket.poll()
 
 	var state = socket.get_ready_state()
@@ -184,17 +183,18 @@ func _process(delta: float):
 			if not await signIn(u, activePass):
 				Notif.message("Disconnected Unexpectedly!", false)
 				return
-	
+				
 	pingtime += nt - t
 	if pingtime >= 30:
 		socket.send_text("PING")
-		pingtime -= 30
+		pingtime = 0.0
 	
 	t = nt
 	
 	var packet
 	while socket.get_available_packet_count():
 		packet = getPacket()
+		print(packet)
 		var data = packet.replace("#", " ").split(" ") #TODO BUG this will replace #'s in messages
 		match Array(data):
 			["GameList", "Add", var id, var pw, var pb, var size, var time, var inc, var komi, var flats, var caps, var unrated, var tournament, var triggerMove, var triggerAmount]:
@@ -202,7 +202,7 @@ func _process(delta: float):
 					id, size.to_int(),
 					GameData.PLAYTAK, GameData.PLAYTAK, pw, pb, 
 					time.to_int(), inc.to_int(), triggerMove.to_int(), triggerAmount.to_int(),
-					komi.to_int(), flats.to_int(), caps.to_int()
+					komi.to_int(), flats.to_int(), caps.to_int(), SeekData.ratingType(unrated, tournament)
 				)
 				addGame.emit(game, id.to_int())
 			
@@ -211,7 +211,10 @@ func _process(delta: float):
 			
 			["Observe", var id, var pw, var pb, var size, var time, var inc, var komi, var flats, var caps, var unrated, var tournament, var triggerMove, var triggerAmount]:
 				var game = GameData.new(
-					id, size.to_int(), GameData.PLAYTAK, GameData.PLAYTAK, pw, pb, time.to_int(), inc.to_int(), triggerMove.to_int(), triggerAmount.to_int(), komi.to_int(), flats.to_int(), caps.to_int()
+					id, size.to_int(), 
+					GameData.PLAYTAK, GameData.PLAYTAK, pw, pb, 
+					time.to_int(), inc.to_int(), triggerMove.to_int(), triggerAmount.to_int(), 
+					komi.to_int(), flats.to_int(), caps.to_int(), SeekData.ratingType(unrated, tournament)
 				)
 				GameLogic.doSetup(game)
 				var players=[pw,pb]
@@ -224,6 +227,9 @@ func _process(delta: float):
 			
 			["Game", "Start", ..]:
 				startGame(data)
+			
+			["Accept", "Rematch", var id]:
+				acceptSeek(int(id))
 			
 			["Game", var id, "P", var sq, ..] when id == GameLogic.gameData.id:
 				var type = Place.TYPE.FLAT if data.size() == 4 else Place.TYPE.WALL if data[4] == "W" else Place.TYPE.CAP
@@ -269,11 +275,12 @@ func _process(delta: float):
 				GameLogic.doUndo()
 			
 			["Game", var id, "Abandoned.", var player, "quit"] when id == GameLogic.gameData.id:
-				endGame(GameState.DEFAULT_WIN_WHITE if player == GameLogic.gameData.playerWhiteName else GameState.DEFAULT_WIN_BLACK)
+				endGame(GameState.DEFAULT_WIN_BLACK if player == GameLogic.gameData.playerWhiteName else GameState.DEFAULT_WIN_WHITE)
 			
 			["Seek", "new", var id, var name, var size, var time, var inc, var color, var komi, var flats, var caps, var unrated, var tourney, var trigger, var extra, var opponent, var bot]:
 				if opponent != "0" and opponent.to_lower() != activeUsername.to_lower() and name != activeUsername:
 					break
+				print(bot)
 				var seek = SeekData.new(
 					name, bot == "1", size.to_int(), time.to_int(), inc.to_int(), trigger.to_int(), extra.to_int(),
 					color, komi.to_int(), flats.to_int(), caps.to_int(), 
@@ -404,8 +411,23 @@ func sendSeek(seek: SeekData):
 		1 if seek.rated == SeekData.UNRATED else 0, 1 if seek.rated == SeekData.TOURNAMENT else 0, seek.triggerMove, seek.triggerTime, seek.playerName])
 
 
+func sendRematch():
+	var d = GameLogic.gameData
+	var opp = d.playerWhiteName if d.playerWhite == d.PLAYTAK else d.playerBlackName
+	var c = "W" if d.playerWhite == d.PLAYTAK else "B"
+	assert(d.playerBlack == d.LOCAL or d.playerWhite == d.LOCAL, "CANT REMATCH A GAME YOURE NOT A PART OF!")
+	assert(d.playerBlack == d.PLAYTAK or d.playerWhite == d.PLAYTAK, "CANT REMATCH A NON-PLAYTAK GAME!")
+	
+	socket.send_text( 
+		"Rematch %s %d %d %d %s %d %d %d %d %d %d %d %s" % [d.id, d.size, d.time, d.increment, c, d.komi, d.flats, d.caps, 
+		1 if d.rated == SeekData.UNRATED else 0, 1 if d.rated == SeekData.TOURNAMENT else 0, d.triggerMove, d.triggerTime, opp]
+	)
+	print("sent rematch")
+
+
 func acceptSeek(seek: int):
 	socket.send_text("Accept " + str(seek))
+	print("sent accept")
 
 
 func makeGame(data: PackedStringArray) -> GameData:
@@ -425,4 +447,7 @@ func makeGame(data: PackedStringArray) -> GameData:
 		data[16].to_int(), #triggertime
 		data[10].to_int(),  #komi
 		data[11].to_int(), #flats
-		data[12].to_int()) #caps
+		data[12].to_int(), #caps
+		SeekData.ratingType(data[13], data[14])
+		)
+		

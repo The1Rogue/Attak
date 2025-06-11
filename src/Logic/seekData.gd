@@ -11,6 +11,9 @@ enum {
 	RATED,
 	TOURNAMENT
 }
+static func ratingType(u, t):
+	return SeekData.TOURNAMENT if t else SeekData.UNRATED if u else SeekData.RATED
+
 
 var playerName: String
 var isBot: bool

@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=23 format=3 uid="uid://3w4qd4ooj08t"]
+[gd_resource type="Theme" load_steps=24 format=3 uid="uid://3w4qd4ooj08t"]
 
 [ext_resource type="StyleBox" uid="uid://c7bkligpe61xk" path="res://assets/Theme/ButtonActive.tres" id="1_wdenm"]
 [ext_resource type="StyleBox" uid="uid://b5qu7ymxg2nrv" path="res://assets/Theme/ButtonInActive.tres" id="2_ikfa3"]
@@ -42,6 +42,11 @@ bg_color = Color(0.223529, 0.301961, 0.619608, 1)
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_slwbp"]
 color = Color(0.654232, 0.654232, 0.654232, 1)
 thickness = 2
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_nhtxf"]
+color = Color(0.654902, 0.654902, 0.654902, 1)
+thickness = 2
+vertical = true
 
 [resource]
 default_font = ExtResource("5_odh5y")
@@ -91,3 +96,4 @@ PlyButton/colors/font_disabled_color = Color(0.831373, 0.831373, 0.831373, 1)
 TabButton/base_type = &"Button"
 TabButton/font_sizes/font_size = 36
 VBoxContainer/constants/separation = 5
+VSeparator/styles/separator = SubResource("StyleBoxLine_nhtxf")
