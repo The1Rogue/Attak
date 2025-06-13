@@ -293,13 +293,12 @@ func _process(delta: float):
 				ChatTab.parseMsg("Global", user.lstrip("<").rstrip(">"), " ".join(data.slice(2)))
 
 			["Joined", "room", var room]:
+				print("joined room %s" % room)
 				ChatTab.newChat(room, Chat.ROOM)
 			
-			["Left", "room", var room]:
-				pass #not sure if this even ever happens, playtak doesnt seem to handle it 
-				#well perhaps i was stupid for writing that ^
-				#because i realize that we probably *should* tell playtak that we left the room, so we dont get messages from it
-			
+			["Left", "room", var room]:  #this is in the api docs, but it *never* gets called seemingly
+				ChatTab.remove(room)
+				
 			["ShoutRoom", var room, var user, ..]:
 				ChatTab.parseMsg(room, user.lstrip("<").rstrip(">"), " ".join(data.slice(3)))
 				
@@ -447,3 +446,7 @@ func makeGame(data: PackedStringArray) -> GameData:
 		SeekData.ratingType(data[13], data[14])
 		)
 		
+
+func leavechat(room: String):
+	ChatTab.remove(room)
+	socket.send_text("LeaveRoom %s" % room)

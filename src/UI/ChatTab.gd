@@ -46,6 +46,23 @@ func newChat(name: String, type: int = Chat.ROOM):
 	button.text = name
 	button.pressed.connect(select.bind(chat))
 	
+	if type != Chat.GLOBAL: #add close button
+		var closeB = Button.new()
+		closeB.text = " X "
+		closeB.theme_type_variation = &"ExitButton"
+		closeB.set_anchors_and_offsets_preset(Control.PRESET_RIGHT_WIDE)
+		closeB.hide()
+		button.add_child(closeB)
+		button.mouse_entered.connect(closeB.show)
+		button.mouse_exited.connect(closeB.hide)
+		closeB.mouse_entered.connect(closeB.show)
+		closeB.mouse_exited.connect(closeB.hide)
+		
+		if type == Chat.ROOM:
+			closeB.pressed.connect(PlayTakI.leavechat.bind(name))
+		else:
+			closeB.pressed.connect(remove.bind(name))
+	
 	list.add_child(button)
 	list.add_child(chat)
 	chat.hide()
@@ -53,7 +70,7 @@ func newChat(name: String, type: int = Chat.ROOM):
 	select(chat)
 
 
-func remove(room):
+func remove(room: String):
 	var idx = rooms[room].get_index()
 	list.remove_child(list.get_child(idx - 1))
 	list.remove_child(rooms[room])

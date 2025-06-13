@@ -58,7 +58,7 @@ func add(seek: SeekData, id: int):
 	b.pressed.connect(func(): accept(id))
 	var idx = bots.get_index() + 1 if seek.isBot else players.get_index() + 1
 	while idx < get_child_count():
-		if b.pivot_offset.x > get_child(idx).pivot_offset.x:
+		if b.pivot_offset.x > get_child(idx).pivot_offset.x or idx == bots.get_index() - 1:
 			move_child(b, idx)
 			break
 		idx += 1

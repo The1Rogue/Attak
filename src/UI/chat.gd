@@ -37,12 +37,13 @@ func _init(name: String, type: int = ROOM):
 	add_child(entryBox)
 	entryBox.text_submitted.connect(send)
 	
-	
 	if Globals.isMobile():
 		var c = Control.new()
 		add_child(c)
 		entryBox.focus_entered.connect(addKeyboardBuffer)
 		entryBox.focus_exited.connect(removeKeyboardBuffer)
+	
+
 
 
 static func escape_bbcode(bbcode_text):
