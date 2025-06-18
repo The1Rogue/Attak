@@ -60,6 +60,56 @@ render_target_update_mode = 0
 [node name="GameUI" parent="Board" instance=ExtResource("9_6h3q2")]
 layout_mode = 2
 
+[node name="End" type="PanelContainer" parent="Board"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Board/End"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="HSeparator3" type="HSeparator" parent="Board/End/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="RichTextLabel" parent="Board/End/VBoxContainer"]
+layout_mode = 2
+text = "Game over R-0
+ player wins with a road "
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+
+[node name="HSeparator2" type="HSeparator" parent="Board/End/VBoxContainer"]
+layout_mode = 2
+
+[node name="NinjaLink" type="Button" parent="Board/End/VBoxContainer"]
+layout_mode = 2
+text = "
+Open in PTN Ninja
+
+"
+
+[node name="GameID" type="Button" parent="Board/End/VBoxContainer"]
+layout_mode = 2
+text = "
+Copy Game ID
+
+"
+
+[node name="Rematch" type="Button" parent="Board/End/VBoxContainer"]
+layout_mode = 2
+text = "
+Rematch
+
+"
+
+[node name="HSeparator" type="HSeparator" parent="Board/End/VBoxContainer"]
+layout_mode = 2
+
 [node name="New" parent="." instance=ExtResource("7_8semy")]
 layout_mode = 2
 

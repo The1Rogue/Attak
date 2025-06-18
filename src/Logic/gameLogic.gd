@@ -157,10 +157,10 @@ func endGame(type: int):
 	timerBlack.paused = true
 	
 	active = false
-	end.emit(type)
 	if type != GameState.ONGOING:
 		activeState().win = type
-		Notif.endGame(type)
+	
+	end.emit(type)
 
 
 func getPTN() -> String:
