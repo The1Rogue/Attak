@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://d2m550pgmw7ah" path="res://assets/UI/Draw.png" id="3_ij83d"]
 [ext_resource type="Texture2D" uid="uid://br4bmyueqd5rx" path="res://assets/UI/Resign.png" id="4_3jk82"]
 
-[node name="GameUI" type="VBoxContainer" node_paths=PackedStringArray("WhiteName", "WhiteTime", "BlackName", "BlackTime", "undoButton", "drawButton", "resignButton", "leftButton", "rightButton", "gameInfo", "ptnDisplay", "ptnCurrent", "ptnLast")]
+[node name="GameUI" type="VBoxContainer" node_paths=PackedStringArray("WhiteName", "WhiteTime", "BlackName", "BlackTime", "undoButton", "drawButton", "resignButton", "leftButton", "rightButton", "gameInfo", "ptnDisplay", "ptnCurrent", "ptnFirst", "ptnLast")]
 custom_minimum_size = Vector2(120, 0)
 anchors_preset = 15
 anchor_right = 1.0
@@ -27,6 +27,7 @@ rightButton = NodePath("MobilePTN/HBoxContainer/Next")
 gameInfo = NodePath("GameInfo")
 ptnDisplay = NodePath("DesktopPTN/PtnDisplay")
 ptnCurrent = NodePath("MobilePTN/HBoxContainer/Current")
+ptnFirst = NodePath("MobilePTN/HBoxContainer/First")
 ptnLast = NodePath("MobilePTN/HBoxContainer/Last")
 
 [node name="PlayerWhite" type="Label" parent="."]
@@ -118,6 +119,12 @@ grow_horizontal = 2
 grow_vertical = 0
 alignment = 1
 
+[node name="First" type="Button" parent="MobilePTN/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"PlyButton"
+text = "<<"
+
 [node name="Prev" type="Button" parent="MobilePTN/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -126,9 +133,8 @@ text = "<"
 [node name="Current" type="Button" parent="MobilePTN/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_type_variation = &"PlyButton"
 disabled = true
-text = "0. -"
+text = "0"
 
 [node name="Next" type="Button" parent="MobilePTN/HBoxContainer"]
 layout_mode = 2

@@ -17,6 +17,7 @@ class_name GameUI
 @export var gameInfo: Label
 @export var ptnDisplay: GridContainer
 @export var ptnCurrent: Button
+@export var ptnFirst: Button
 @export var ptnLast: Button
 
 @onready var tpsButton: Button = $getButtons/TPS
@@ -44,6 +45,8 @@ func _ready() -> void:
 		leftButton.pressed.connect(func(): if GameLogic.view > 0: GameLogic.setView(GameLogic.view - 1))
 	if rightButton != null:
 		rightButton.pressed.connect(func(): if GameLogic.view < GameLogic.history.size(): GameLogic.setView(GameLogic.view + 1))
+	ptnFirst.pressed.connect(GameLogic.setView.bind(0))
+	
 	
 	GameLogic.undoRequest.connect(undoRequest)
 	GameLogic.drawRequest.connect(drawRequest)
@@ -130,16 +133,16 @@ func addPly(origin: Node, ply: Ply):
 
 func view(state: GameState):
 	var startPly = GameLogic.startState.ply
+	ptnCurrent.text = str(((state.ply + 1) /2))
 	if currentButton != null:
 		currentButton.disabled = false
 	if state.ply == startPly:
-		ptnCurrent.text = " %d. - " % ((state.ply + 1) /2)
 		currentButton = null
 	else:
 		var button = (state.ply + 1) / 2 + state.ply - 1 - startPly / 2 + startPly % 2 - startPly
 		currentButton = ptnDisplay.get_child(button)
 		currentButton.disabled = true
-		ptnCurrent.text = " %d. %s " % [(state.ply + 1) /2, currentButton.text]
+		#ptnCurrent.text = " %d. %s " % [(state.ply + 1) /2, currentButton.text]
 		await get_tree().process_frame #incase the button was just added this frame
 		ptnDisplay.get_parent().ensure_control_visible(currentButton)
 
