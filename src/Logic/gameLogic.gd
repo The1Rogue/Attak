@@ -159,8 +159,7 @@ func endGame(type: int):
 	active = false
 	if type != GameState.ONGOING:
 		activeState().win = type
-	
-	end.emit(type)
+		end.emit(type)
 
 
 func getPTN() -> String:

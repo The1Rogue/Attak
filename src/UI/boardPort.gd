@@ -52,13 +52,15 @@ func _draw():
 		if $GameUI/MobilePTN.position.y == 0: #UI doesnt have a proper size yet, redraw when we know the size of it
 			queue_redraw.call_deferred()
 		
-		Board.set_anchor_and_offset(SIDE_TOP, 0, $GameUI/MobilePTN.position.y + $GameUI/MobilePTN/HBoxContainer.size.y)
-		Board.set_anchor_and_offset(SIDE_BOTTOM, 1, $GameUI/MobilePTN.position.y + $GameUI/MobilePTN.size.y - size.y)
-		
+		Board.set_anchor_and_offset(SIDE_TOP, 0, $GameUI/MobilePTN.position.y)
+		Board.set_anchor_and_offset(SIDE_BOTTOM, 1, $GameUI/MobilePTN/HBoxContainer.global_position.y - size.y)
+		$GameUI/GameInfo.hide()
 		$GameUI/MobilePTN.show()
 		$GameUI/DesktopPTN.hide()
 		
 	else:
+		var s = $GameUI.size
+		draw_rect(Rect2(size.x - s.x, 0, s.x, size.y), Color(0,0,0,.5))
 		UI.set_anchors_and_offsets_preset(PRESET_RIGHT_WIDE)
 		Board.set_anchor_and_offset(SIDE_RIGHT, 1, -UI.size.x)
 		$GameUI/MobilePTN.hide()
@@ -66,13 +68,12 @@ func _draw():
 
 
 func endGame(type: int):
+	if type == GameState.ONGOING: return
 	EndText.clear()
 	EndText.append_text(" Game over %s \n" % GameState.resultStrings[type])
 	
 	if type == GameState.DRAW:
 		EndText.append_text(" Game was drawn ")
-	elif type == GameState.ONGOING:
-		EndText.append_text(" Game is ongoing? (please report a bug) ")
 	else:
 		var p = GameLogic.gameData.playerWhiteName if type%2==0 else GameLogic.gameData.playerBlackName
 		EndText.push_color(Chat.color(p))

@@ -39,6 +39,9 @@ func _ready():
 	PlayTakI.login.connect(onLogin)
 	PlayTakI.logout.connect(onLogout)
 	
+	JsInterface.setUser.connect(func(v): userEntry.text = v)
+	JsInterface.setPass.connect(func(v): passEntry.text = v)
+	
 	userEntry.text_submitted.connect(passEntry.grab_focus)
 	passEntry.text_submitted.connect(submit)
 	confirm.pressed.connect(submit)

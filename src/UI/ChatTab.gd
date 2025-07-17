@@ -13,20 +13,22 @@ var isVisible: bool = false
 
 func _ready() -> void:
 	reddot.hide()
-	button.toggled.connect(toggle.emit)
-	toggle.connect(setVisible)
+	button.toggled.connect(setVisible)
+	#toggle.connect(setVisible)
 	get_parent().move_child.call_deferred(self, -1)
 	hide()
 
 
 func _draw():
 	list.custom_minimum_size.x = get_viewport_rect().size.y / 6
+	setVisible.call_deferred(isVisible) #resets offset
 
 
 func setVisible(visible: bool) -> void:
 	reddot.hide()
 	set_offset(SIDE_RIGHT, -list.size.x if visible else 0)
 	isVisible = visible
+	toggle.emit(isVisible)
 
 
 func select(chat: Chat):
@@ -76,6 +78,7 @@ func remove(room: String):
 	list.remove_child(rooms[room])
 	rooms[room].queue_free()
 	rooms.erase(room)
+	queue_redraw()
 
 
 func clear():
@@ -117,9 +120,9 @@ func _input(event):
 		if event.relative.abs().max_axis_index() == Vector2.AXIS_X:
 			if event.relative.x > 0:
 				if get_viewport_rect().size.x - event.position.x - event.relative.x < BOUND:
-					toggle.emit(false)
+					setVisible(false)
 					get_viewport().set_input_as_handled()
 			else:
 				if get_viewport_rect().size.x - event.position.x + event.relative.x < BOUND:
-					toggle.emit(true)
+					setVisible(true)
 					get_viewport().set_input_as_handled()

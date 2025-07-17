@@ -57,6 +57,7 @@ func _ready() -> void:
 	tpsButton.pressed.connect(func(): DisplayServer.clipboard_set(GameLogic.viewedState().getTPS()))
 	ptnButton.pressed.connect(func(): DisplayServer.clipboard_set(GameLogic.getPTN()))
 
+
 func setup(game: GameData, startState: GameState):
 	if not self.is_node_ready():
 		await self.ready

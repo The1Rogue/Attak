@@ -45,7 +45,8 @@ func select(node: Control) -> void:
 
 func _draw():
 	if tabBar.vertical:
-		tabBar.set_anchors_and_offsets_preset(PRESET_LEFT_WIDE)
+		tabBar.set_anchors_and_offsets_preset(PRESET_TOP_LEFT)
+		draw_rect(Rect2i(0, 0, tabBar.size.x, size.y), Color(0, 0, 0, .5))
 		for i in get_children():
 			if i == tabBar: continue
 			i.set_anchors_and_offsets_preset(PRESET_FULL_RECT)

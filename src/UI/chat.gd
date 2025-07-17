@@ -26,29 +26,26 @@ func _init(name: String, type: int = ROOM):
 	
 	textBox = RichTextLabel.new()
 	entryBox = LineEdit.new()
+	var sendButton = Button.new()
 	
 	entryBox.set_anchors_and_offsets_preset(PRESET_BOTTOM_WIDE)
 	entryBox.placeholder_text = ">"
 	entryBox.keep_editing_on_text_submit = true
 	textBox.size_flags_vertical |= Control.SIZE_EXPAND
 	textBox.scroll_following = true
-	
+	sendButton.text = "Send"
+	sendButton.set_anchors_and_offsets_preset(PRESET_TOP_WIDE)
+	sendButton.position.y = entryBox.size.y
+
 	add_child(textBox)
 	add_child(entryBox)
+	entryBox.add_child(sendButton)
 	entryBox.text_submitted.connect(send)
-	
-	if Globals.isMobile():
-		var c = Control.new()
-		add_child(c)
-		entryBox.focus_entered.connect(addKeyboardBuffer)
-		entryBox.focus_exited.connect(removeKeyboardBuffer)
-	
-
+	sendButton.pressed.connect(func(): send(entryBox.text))
 
 
 static func escape_bbcode(bbcode_text):
 	return bbcode_text.replace("[", "[lb]")
-
 
 func send(msg: String):
 	match type:
@@ -60,18 +57,11 @@ func send(msg: String):
 			PlayTakI.socket.send_text("Tell " + room + " " + msg)
 	entryBox.clear()
 
-
 func add_message(user: String, message: String):
 	textBox.push_color(color(user))
 	textBox.append_text("<"+escape_bbcode(user) + ">: ")
 	textBox.pop()
 	textBox.append_text(escape_bbcode(message) + "\n")
 
-
-func addKeyboardBuffer():
-	await get_tree().create_timer(.5).timeout
-	get_child(-1).custom_minimum_size.y = DisplayServer.virtual_keyboard_get_height() / get_viewport_transform().get_scale().y
-
-
-func removeKeyboardBuffer():
-	get_child(-1).custom_minimum_size.y = 0
+func _process(delta: float) -> void:
+	entryBox.global_position.y = get_viewport_rect().size.y - 2*entryBox.size.y - (DisplayServer.virtual_keyboard_get_height() / get_viewport_transform().get_scale().y if Globals.isMobile() else 0) 

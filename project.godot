@@ -27,6 +27,7 @@ Notif="*res://scenes/PopupMsg.tscn"
 PlayTakI="*res://src/interfaces/playTakInterface.gd"
 ChatTab="*res://scenes/UI/ChatTab.tscn"
 Lock="*res://scenes/UI/Lock.tscn"
+JsInterface="*res://src/JSInterface.gd"
 
 [debug]
 

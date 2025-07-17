@@ -44,6 +44,7 @@ var BlackTex: Array[Texture2D]:
 		if pieces.size() > 0: setState(GameLogic.viewedState())
 
 @export var highlightMaterial: ShaderMaterial
+@export var LabelSets: LabelSettings
 
 var pieces: Array[Piece2D] = []
 
@@ -60,7 +61,7 @@ func resizeCam():
 		portrait = c.y > c.x
 		setState.call_deferred(GameLogic.viewedState())
 		
-	var sizeLimit = Vector2(size * 16 + 18, size * 16 + 48) if portrait else Vector2(size * 16 + 48, size * 16 + 18)
+	var sizeLimit = Vector2(size * 16 + 2, size * 16 + 30) if portrait else Vector2(size * 16 + 30, size * 16 + 2)
 	var z: Vector2 = c / sizeLimit
 	cam.zoom = Vector2.ONE * min(z.x, z.y)
 
@@ -96,19 +97,18 @@ func makeBoard():
 	
 	for i in size:
 		var l = Label.new()
-		var s = l.get_theme_default_font().get_char_size(i+49, 32) * .1
-		l.text = char(i+49)
-		l.add_theme_font_size_override(&"font_size", 32)
-		l.scale = Vector2.ONE * .2
-		l.position = Vector2(-16 * size/2.0 - 2, 16 * (size/2.0 - i - .5)) - s
+		l.text = char(i + 49)
+		l.label_settings = LabelSets
+		l.scale = Vector2.ONE * .1
+		l.position = Vector2(.5 - 16 * size/2.0, 16 * (size/2.0 - i - 1))
 		add_child(l)
-
+		
 		l = Label.new()
-		s = l.get_theme_default_font().get_char_size(i+49, 32) * .1
+		var s = l.get_theme_default_font().get_char_size(i+49, 32) * .1
 		l.text = char(i + 65)
-		l.add_theme_font_size_override(&"font_size", 32)
-		l.scale = Vector2.ONE * .2
-		l.position = Vector2(- 16 * (size/2.0 - i - .5), 16 * size/2.0 + 4) - s
+		l.label_settings = LabelSets
+		l.scale = Vector2.ONE * .1
+		l.position = Vector2(-16 * (size/2.0 - i - 1), 16 * size/2.0) - s
 		add_child(l)
 	
 	var piece
@@ -167,15 +167,15 @@ func putReserve(id: int):
 	pieces[id].scale = pieceSize * 16 * Vector2.ONE / pieces[id].texture.get_size()
 	if id < 2*caps:
 		p = Vector2(
-			16 * (size/2.0 + .75) * (-1 if id %2 == 1 else 1),
-			16 * (size/2.0 - .75 - (id/2 + flats) * (size-1) / (caps+flats - 1.0))
+			16 * (size/2.0 + .5) * (-1 if id %2 == 1 else 1),
+			16 * (size/2.0 - .75 - (id/2 + flats) * (size-1) / float(caps+flats))
 		)
 		pieces[id].z_index = (id/2 + flats)
-		
+	
 	else:
 		p = Vector2(
-			16 * (size/2.0 + .75) * (-1 if id %2 == 1 else 1),
-			16 * (size/2.0 - (id/2 - caps) * (size-1) / (caps+flats - 1.0))
+			16 * (size/2.0 + .5) * (-1 if id %2 == 1 else 1),
+			16 * (size/2.0 - (id/2 - caps) * (size-1) / float(caps+flats) - pieceSize/2) 
 		)
 		pieces[id].z_index = (id/2 - caps)
 	
@@ -183,8 +183,7 @@ func putReserve(id: int):
 		p = Vector2(p.y, p.x)
 		if playAbleColor == BLACK_MASK:
 			p.y *= -1
-		p += Vector2(-3,3)
-		
+	
 	pieces[id].setPosition(p)
 
 

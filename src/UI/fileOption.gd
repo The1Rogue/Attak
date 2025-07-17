@@ -17,23 +17,29 @@ func _ready() -> void:
 
 	add_child(Control.new())
 
+
 	customButton = Button.new()
 	customButton.text = "Select Custom"
 	add_child(customButton)
 	customButton.hide()
 	
-	var p = FileDialog.new()
-	p.file_selected.connect(selectCustom)
-	p.dir_selected.connect(selectCustom)
-	p.file_mode = FileDialog.FILE_MODE_OPEN_FILE
-	p.access = FileDialog.ACCESS_FILESYSTEM
-	p.initial_position = Window.WINDOW_INITIAL_POSITION_CENTER_MAIN_WINDOW_SCREEN
-	p.size = get_viewport_rect().size / 2
-	
-	customButton.pressed.connect(p.show)
-	customButton.add_child(p)
-	p.hide()
-	
+	if OS.get_name() != "web":
+		var p = FileDialog.new()
+		p.file_selected.connect(selectCustom)
+		p.dir_selected.connect(selectCustom)
+		p.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+		p.access = FileDialog.ACCESS_FILESYSTEM
+		p.initial_position = Window.WINDOW_INITIAL_POSITION_CENTER_MAIN_WINDOW_SCREEN
+		p.size = get_viewport_rect().size / 2
+		
+		customButton.pressed.connect(p.show)
+		customButton.add_child(p)
+		p.hide()
+		
+	else:
+		pass
+		#customButton.pressed.connect()
+		
 	
 	for i in DirAccess.get_files_at(path):
 		if not i.ends_with(".import"): continue
@@ -60,3 +66,7 @@ func setNoSignal(value: Variant):
 	optionButton.selected = options.find(value.trim_prefix(path)) + 1
 	if optionButton.selected == 0:
 		customButton.show()
+
+
+func getCustomFile():
+	pass
