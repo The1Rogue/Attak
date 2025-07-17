@@ -142,7 +142,6 @@ func view(state: GameState):
 		var button = (state.ply + 1) / 2 + state.ply - 1 - startPly / 2 + startPly % 2 - startPly
 		currentButton = ptnDisplay.get_child(button)
 		currentButton.disabled = true
-		#ptnCurrent.text = " %d. %s " % [(state.ply + 1) /2, currentButton.text]
 		await get_tree().process_frame #incase the button was just added this frame
 		ptnDisplay.get_parent().ensure_control_visible(currentButton)
 

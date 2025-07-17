@@ -42,6 +42,10 @@ func select(chat: Chat):
 
 func newChat(name: String, type: int = Chat.ROOM):
 	show()
+	if rooms.has(name): 
+		select(rooms[name])
+		return
+		
 	var chat = Chat.new(name, type)
 	var button = Button.new()
 	
@@ -82,11 +86,8 @@ func remove(room: String):
 
 
 func clear():
-	for chat in rooms.keys():
-		remove(chat)
-		#rooms[chat].remove()
-	#rooms.clear()
 	hide()
+	setVisible(false)
 
 
 func parseMsg(room: String, user: String, msg: String):
@@ -116,6 +117,7 @@ func shouldShow(u1: String, u2: String):
 
 const BOUND = 120
 func _input(event):
+	if not visible: return
 	if event is InputEventScreenDrag:
 		if event.relative.abs().max_axis_index() == Vector2.AXIS_X:
 			if event.relative.x > 0:
