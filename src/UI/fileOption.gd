@@ -8,6 +8,9 @@ var options: Array[String] = []
 
 var customButton: Button
 
+var callbackFile = JavaScriptBridge.create_callback(parseFile) if OS.has_feature("web") else null
+
+
 func _ready() -> void:
 	super()
 	
@@ -54,10 +57,6 @@ func select(i: int):
 	if i != 0:
 		loadPath(path + options[i-1])
 
-#
-#func selectCustom(custom: String):
-	#setSetting.emit(custom)
-
 
 func setNoSignal(value: Variant):
 	assert(value is String)
@@ -65,11 +64,6 @@ func setNoSignal(value: Variant):
 	optionButton.selected = options.find(value) + 1
 	if optionButton.selected == 0:
 		customButton.show()
-
-
-#func getCustomFile():
-	#JsInterface.setFile.connect(setSetting.emit, CONNECT_ONE_SHOT)
-	#JsInterface.openFile()/
 
 
 func loadPath(path: String):
@@ -118,4 +112,61 @@ func loadPath(path: String):
 
 
 func getJSFile():
-	pass
+	var window = JavaScriptBridge.get_interface("window")
+	window.readFile(callbackFile)
+	window.input.click()
+
+
+func parseFile(args):
+	args = args[0].split(",")
+	var type = args[0].split(";")
+	
+	var data = args[1]
+	if type[1] == "base64":
+		data = Marshalls.base64_to_raw(data)
+	else:
+		Notif.message("Unsupported Encoding: %s" % type[1])
+		return
+	
+	if type[0].begins_with("data:model/"):
+		if not type[0] == "data:model/gltf-binary":
+			Notif.message("Unsupported Model Type")
+			return
+		var doc = GLTFDocument.new()
+		var state = GLTFState.new()
+		var error = doc.append_from_buffer(data, "", state)
+		if error != OK:
+			Notif.message("Failed to load custom model")
+			return
+		data = doc.generate_scene(state)
+		data = [data.get_node("Cap"), data.get_node("Flat")]
+		if null in data:
+			Notif.message("Model does not include 'Cap' and/or 'Flat'")
+			return
+		setSetting.emit([[data[0].mesh, data[1].mesh], "custom"])
+	
+	elif type[0].begins_with("data:image/"):
+		var img = Image.new()
+		if type[0] == "data:image/bmp":
+			img.load_bmp_from_buffer(data)
+		elif type[0] == "data:image/jpg":
+			img.load_jpg_from_buffer(data)
+		elif type[0] == "data:image/ktx":
+			img.load_ktx_from_buffer(data)
+		elif type[0] == "data:image/png":
+			img.load_png_from_buffer(data)
+		elif type[0] == "data:image/svg+xml":
+			img.load_svg_from_buffer(data)
+		elif type[0] == "data:image/tga":
+			img.load_tga_from_buffer(data)
+		elif type[0] == "data:image/webp":
+			img.load_webp_from_buffer(data)
+		else:
+			Notif.message("Unsupported Image Type %s" % type[0].substr(11))
+			return
+		
+		setSetting.emit([img, "custom"])
+	
+	else:
+		Notif.message("Cant recognize File")
+		return
