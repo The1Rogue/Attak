@@ -64,8 +64,8 @@ func add_message(user: String, message: String):
 	textBox.append_text(escape_bbcode(message) + "\n")
 
 func _process(delta: float) -> void:
-	
 	var onkeyboard = get_viewport_rect().size.y - 2*entryBox.size.y - (DisplayServer.virtual_keyboard_get_height() / get_viewport_transform().get_scale().y if Globals.isMobile() else 0) 
 	var onrest = global_position.y + size.y - 2*entryBox.size.y
 	
 	entryBox.global_position.y = min(onkeyboard, onrest)
+	textBox.size.y = entryBox.global_position.y - textBox.global_position.y

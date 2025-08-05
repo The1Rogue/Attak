@@ -22,12 +22,12 @@ const playtakFlat = preload("res://assets/Pieces3D/flat.obj")
 	set(value): 
 		flatH = value
 		save(); update.emit()
-		
+
 @export var capH: float = .65:
 	set(value): 
 		capH = value
 		save(); update.emit()
-		
+
 @export var wall: int = 45:
 	set(value): 
 		wall = value
@@ -50,7 +50,6 @@ func setWhite(value):
 		white.assign(value[0])
 	save(); update.emit()
 
-
 @export var blackName: String
 @export var black: Array[Mesh]
 func setBlack(value):
@@ -60,7 +59,6 @@ func setBlack(value):
 	elif value[0] is Array:
 		black.assign(value[0])
 	save(); update.emit()
-
 
 func getScene():
 	var s = scene.instantiate()
@@ -79,7 +77,6 @@ func getScene():
 	
 	s.get_child(4).setNoSignal(wall)
 	s.get_child(4).setSetting.connect(func(value): wall = value; save())
-
 	
 	s.get_child(5).setNoSignal(size)
 	s.get_child(5).setSetting.connect(func(value): size = value; save())
