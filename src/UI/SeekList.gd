@@ -68,10 +68,10 @@ func add(seek: SeekData, id: int):
 
 func remove(id: int):
 	if id in seeks:
-		var idx = seeks[id].get_index()
-		updateCounts()
+		#var idx = seeks[id].get_index()
 		remove_child(seeks[id])
 		seeks.erase(id)
+		updateCounts()
 
 
 func clear():

@@ -10,7 +10,7 @@ var active: Control
 
 func _ready() -> void:
 	assert(start in get_children(), "start node is invalid!")
-	ChatTab.toggle.connect(func(b): _draw())
+	ChatTab.toggle.connect(func(_b): queue_redraw())
 	
 	if Globals.isMobile():
 		th.default_font_size *= 4

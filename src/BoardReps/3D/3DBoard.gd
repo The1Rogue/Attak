@@ -3,22 +3,22 @@ class_name Board3D
 
 const SELECTIONHEIGHT = 1
 
-var pieceSize: float = .9:
-	set(value): pieceSize = value; for i in pieces: i.scale = Vector3(value, i.scale.y, value)
-var capHeight: float = 1.2:
-	set(value): 
-		capHeight = value
-		for i in 2*caps: 
-			pieces[i].scale.y = value
-		setState(GameLogic.viewedState())
-var flatHeight: float = .2:
-	set(value): 
-		flatHeight = value
-		for i in 2*flats: 
-			pieces[2*caps + i].scale.y = value
-		setState(GameLogic.viewedState())
-
-var ROTATION = [Vector3.ZERO, Vector3(PI/2, PI/4, 0)]
+#var settings.size: float = .9:
+	#set(value): settings.size = value; for i in pieces: i.scale = Vector3(value, i.scale.y, value)
+#var settings.capH: float = 1.2:
+	#set(value): 
+		#settings.capH = value
+		#for i in 2*caps: 
+			#pieces[i].scale.y = value
+		#setState(GameLogic.viewedState())
+#var settings.flatH: float = .2:
+	#set(value): 
+		#settings.flatH = value
+		#for i in 2*flats: 
+			#pieces[2*caps + i].scale.y = value
+		#setState(GameLogic.viewedState())
+#
+#var ROTATION = [Vector3.ZERO, Vector3(PI/2, PI/4, 0)]
 
 var pieces: Array[Piece3D]
 @onready var board = $board
@@ -40,27 +40,27 @@ var I0: Vector2
 
 @onready var pieceHolder = $Pieces
 
-var whiteFlatMesh: Mesh:
-	set(value): 
-		whiteFlatMesh = value
-		for i in flats:
-			pieces[2 * (i+caps)].mesh.mesh = value
-var whiteCapMesh: Mesh:
-	set(value): 
-		whiteCapMesh = value
-		for i in caps:
-			pieces[2 * i].mesh.mesh = value
-
-var blackFlatMesh: Mesh:
-	set(value): 
-		blackFlatMesh = value
-		for i in flats:
-			pieces[2 * (i+caps) + 1].mesh.mesh = value
-var blackCapMesh: Mesh:
-	set(value): 
-		blackCapMesh = value
-		for i in caps:
-			pieces[2 * i + 1].mesh.mesh = value
+#var settings.white[1]: Mesh:
+	#set(value): 
+		#settings.white[1] = value
+		#for i in flats:
+			#pieces[2 * (i+caps)].mesh.mesh = value
+#var whiteCapMesh: Mesh:
+	#set(value): 
+		#whiteCapMesh = value
+		#for i in caps:
+			#pieces[2 * i].mesh.mesh = value
+#
+#var settings.black[1]: Mesh:
+	#set(value): 
+		#settings.black[1] = value
+		#for i in flats:
+			#pieces[2 * (i+caps) + 1].mesh.mesh = value
+#var blackCapMesh: Mesh:
+	#set(value): 
+		#blackCapMesh = value
+		#for i in caps:
+			#pieces[2 * i + 1].mesh.mesh = value
 
 @export var flatShape: Shape3D
 @export var capShape: Shape3D
@@ -72,41 +72,35 @@ var blackCapMesh: Mesh:
 func vecToTile(vec: Vector3) -> Vector2i:
 	return Vector2i(vec.x + size/2.0, size/2.0 - vec.z)
 
-
-func setData(data: SettingData):
-	if not self.is_node_ready():
-		await self.ready
-	
-	pieceSize = data.pieceSize3D
-	capHeight = data.capHeight3D
-	flatHeight = data.flatHeight3D
-	
-	var meshes = data.white3D
-	whiteCapMesh = meshes[0]
-	whiteFlatMesh = meshes[1]
-	
-	meshes = data.black3D
-	blackCapMesh = meshes[0]
-	blackFlatMesh = meshes[1]
-	
-	squares.mesh.material.albedo_texture = data.sq3D
-	for i in 2*caps:
-		pieces[i].scale = Vector3(data.pieceSize3D, data.capHeight3D, data.pieceSize3D)
-	
-	for i in 2*flats:
-		pieces[i + 2*caps].scale = Vector3(data.pieceSize3D, data.flatHeight3D, data.pieceSize3D)
-		
-	ROTATION[1] = data.wallRotation3D
-	Cam.fov = data.FOV3D
-	
-	setState(GameLogic.viewedState())
-
-
 func _ready():
+	settings = BoardSettings.loadOrNew(Settings3D)
+	settings.update.connect(updateSettings)
 	super()
 	
 	Piece3D.highlight = highlightMaterial
 	Piece3D.hover = hoverMaterial
+
+func updateSettings():
+	for i in caps:
+		pieces[2 * i].mesh.mesh = settings.white[0]
+		pieces[2*i+1].mesh.mesh = settings.black[0]
+		
+	
+	for i in flats:
+		pieces[2 * (caps+i)].mesh.mesh = settings.white[1]
+		pieces[2*(caps+i)+1].mesh.mesh = settings.black[1]
+	
+	squares.mesh.material.albedo_texture = settings.sq
+	for i in 2*caps:
+		pieces[i].scale = Vector3(settings.size, settings.capH, settings.size)
+	
+	for i in 2*flats:
+		pieces[i + 2*caps].scale = Vector3(settings.size, settings.flatH, settings.size)
+		
+	#ROTATION[1] = settings.wallRotation3D
+	Cam.fov = settings.fov
+	
+	setState(GameLogic.viewedState())
 
 
 func makeBoard():
@@ -155,25 +149,25 @@ func makeBoard():
 		board.add_child(l)
 	
 	for cap in caps:
-		pieces.append(Piece3D.new(whiteCapMesh, capShape, cap*2))
+		pieces.append(Piece3D.new(settings.white[0], capShape, cap*2))
 		pieceHolder.add_child(pieces[-1])
-		pieces[-1].scale = Vector3(pieceSize, capHeight, pieceSize)
+		pieces[-1].scale = Vector3(settings.size, settings.capH, settings.size)
 		pieces[-1].click.connect(clickPiece)
 		
-		pieces.append(Piece3D.new(blackCapMesh, capShape, cap*2 + 1))
+		pieces.append(Piece3D.new(settings.black[0], capShape, cap*2 + 1))
 		pieceHolder.add_child(pieces[-1])
-		pieces[-1].scale = Vector3(pieceSize, capHeight, pieceSize)
+		pieces[-1].scale = Vector3(settings.size, settings.capH, settings.size)
 		pieces[-1].click.connect(clickPiece)
 	
 	for flat in flats:
-		pieces.append(Piece3D.new(whiteFlatMesh, flatShape, (flat + caps)*2))
+		pieces.append(Piece3D.new(settings.white[1], flatShape, (flat + caps)*2))
 		pieceHolder.add_child(pieces[-1])
-		pieces[-1].scale = Vector3(pieceSize, flatHeight, pieceSize)
+		pieces[-1].scale = Vector3(settings.size, settings.flatH, settings.size)
 		pieces[-1].click.connect(clickPiece)
 		
-		pieces.append(Piece3D.new(blackFlatMesh, flatShape, (flat + caps)*2 + 1))
+		pieces.append(Piece3D.new(settings.black[1], flatShape, (flat + caps)*2 + 1))
 		pieceHolder.add_child(pieces[-1])
-		pieces[-1].scale = Vector3(pieceSize, flatHeight, pieceSize)
+		pieces[-1].scale = Vector3(settings.size, settings.flatH, settings.size)
 		pieces[-1].click.connect(clickPiece)
 
 	for i in (caps+flats) * 2:
@@ -181,17 +175,17 @@ func makeBoard():
 
 
 func setPieceState(id: int, state: int):
-	pieces[id].rotation = ROTATION[1 if state == WALL else 0]
+	pieces[id].rotation = Vector3(PI/2, settings.wall, 0) if state == WALL else Vector3.ZERO
 
 
 func putPiece(id: int, v: Vector3i):
-	var p = Vector3(v.x - size/2.0 + .5, flatHeight * v.y, size/2.0 - v.z - .5)
+	var p = Vector3(v.x - size/2.0 + .5, settings.flatH * v.y, size/2.0 - v.z - .5)
 	if id < caps*2:
-		p.y += capHeight / 2
-	elif pieces[id].rotation == ROTATION[1]:
-		p.y += pieceSize / 2
+		p.y += settings.capH / 2
+	elif pieces[id].rotation == Vector3(PI/2, settings.wall, 0):
+		p.y += settings.size / 2
 	else:
-		p.y += flatHeight / 2
+		p.y += settings.flatH / 2
 	
 	if pieces[id].selected: p.y += SELECTIONHEIGHT
 	pieces[id].setPosition(p)
@@ -201,10 +195,10 @@ func putReserve(id: int):
 	var x = (size/2.0 + 1.5) * (-1 if id % 2 == 1 else 1)
 	var y; var z
 	if id < caps*2:
-		y = capHeight / 2
+		y = settings.capH / 2
 		z = (1 + id/2 * 1.5) * (-1 if id % 2 == 0 else 1)
 	else:
-		y = flatHeight * (((id-2*caps)/2) % 10 + .5)
+		y = settings.flatH * (((id-2*caps)/2) % 10 + .5)
 		z = (1 + (id-2*caps)/20) * (-1 if id % 2 == 1 else 1)
 		
 	pieces[id].setPosition(Vector3(x, y, z))

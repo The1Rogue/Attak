@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=3 uid="uid://drc3eed42s8sn"]
+
+[ext_resource type="Script" uid="uid://dr7mwqvmekkfp" path="res://src/UI/fileOption.gd" id="1_vdi1t"]
+[ext_resource type="Script" uid="uid://c0h72clryfemj" path="res://src/UI/RangeOption.gd" id="2_vao1j"]
+
+[node name="2D Board" type="VBoxContainer"]
+metadata/_tab_index = 0
+
+[node name="Squares" type="GridContainer" parent="."]
+layout_mode = 2
+script = ExtResource("1_vdi1t")
+path = "res://assets/Squares/"
+label = "Squares"
+
+[node name="White" type="GridContainer" parent="."]
+layout_mode = 2
+script = ExtResource("1_vdi1t")
+path = "res://assets/Pieces2D/White/"
+label = "White Pieces"
+
+[node name="Black" type="GridContainer" parent="."]
+layout_mode = 2
+script = ExtResource("1_vdi1t")
+path = "res://assets/Pieces2D/Black/"
+label = "Black Pieces"
+
+[node name="PieceSize" type="GridContainer" parent="."]
+layout_mode = 2
+script = ExtResource("2_vao1j")
+min = 0.3
+max = 1.0
+increment = 0.01
+label = "Piece Size"

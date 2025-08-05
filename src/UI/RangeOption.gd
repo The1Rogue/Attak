@@ -29,17 +29,12 @@ func _ready():
 	add_child(marker)
 	
 	add_child(slider)
-	slider.value_changed.connect(select)
-
-
-
-
-func select(value: float):
-	marker.text = format % slider.value
-	setSetting.emit(value)
+	slider.value_changed.connect(func(v): marker.text = format % v)
+	slider.drag_ended.connect(func(v): setSetting.emit(slider.value))
 
 
 func setNoSignal(value: Variant):
 	assert(value is float or value is int)
+	if not is_node_ready(): await ready
 	slider.set_value_no_signal(value)
 	marker.text = format % slider.value

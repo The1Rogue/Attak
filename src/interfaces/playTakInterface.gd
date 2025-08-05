@@ -123,11 +123,8 @@ func onLogout():
 	while socket.get_ready_state() != WebSocketPeer.STATE_CLOSED:
 		await get_tree().create_timer(.1).timeout
 		socket.poll()
-
-	
 	
 	logout.emit()
-	ChatTab.clear()
 	
 	activeUsername = ""
 
@@ -164,7 +161,7 @@ func _process(delta: float):
 	
 	var nt = Time.get_unix_time_from_system()
 	socket.poll()
-
+	
 	var state = socket.get_ready_state()
 	if state != WebSocketPeer.STATE_OPEN:
 		var u = activeUsername
@@ -179,7 +176,7 @@ func _process(delta: float):
 				Notif.message("You were disconnected")
 				return
 		else:
-			print("websocket closed with code %d, reason: %d | trying to reconnect" % [socket.get_close_code(), socket.get_close_reason()])
+			print("websocket closed with code %s, reason: %s | trying to reconnect" % [socket.get_close_code(), socket.get_close_reason()])
 			if not await signIn(u, activePass):
 				Notif.message("Disconnected Unexpectedly!", false)
 				return

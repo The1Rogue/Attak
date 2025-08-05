@@ -17,6 +17,7 @@ func _ready() -> void:
 	#toggle.connect(setVisible)
 	get_parent().move_child.call_deferred(self, -1)
 	hide()
+	PlayTakI.logout.connect(clear)
 
 
 func _draw():

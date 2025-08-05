@@ -27,6 +27,9 @@ enum {
 	FLAT_OVERFLOW,
 }
 
+#@export var settingsFile: String
+var settings: BoardSettings
+
 var selection: int
 var selectedReserve: int = -1 #piece id
 var selectedReserveType: int = -1 #pieceType
@@ -39,15 +42,12 @@ var drops: Array[int] = []
 var direction: Vector2i = Vector2i.ZERO 
 
 
-func setData(data: SettingData):
-	pass
-
-
 func _ready():
 	GameLogic.viewState.connect(setState)
 	GameLogic.setup.connect(setup)
 	setup(GameLogic.gameData, null)
 	setState(GameLogic.viewedState())
+
 
 
 func setup(game: GameData, startState: GameState):

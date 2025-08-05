@@ -17,14 +17,14 @@ class_name BoardContainer
 @onready var boardHolder = $Board/SubViewport
 var board: BoardLogic
 
-func set2D(v: bool, save: SettingData):
+func set2D(v: bool):
 	if not is_node_ready(): await ready
 	if board != null:
 		boardHolder.remove_child(board)
 		board.queue_free()
 	board = (board2D if v else board3D).instantiate()
-	board.setData(save)
 	boardHolder.add_child(board)
+	return board
 
 
 func _ready() -> void:

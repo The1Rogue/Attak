@@ -1,136 +1,72 @@
 [gd_scene load_steps=4 format=3 uid="uid://bi8rfuogagio7"]
 
 [ext_resource type="Script" uid="uid://c0ctwbjjskack" path="res://src/UI/Settings.gd" id="1_ghuma"]
-[ext_resource type="Script" uid="uid://dr7mwqvmekkfp" path="res://src/UI/fileOption.gd" id="4_1hw8f"]
-[ext_resource type="Script" uid="uid://c0h72clryfemj" path="res://src/UI/RangeOption.gd" id="5_hat0o"]
+[ext_resource type="PackedScene" uid="uid://drc3eed42s8sn" path="res://scenes/Settings2D.tscn" id="2_5dgb1"]
+[ext_resource type="PackedScene" uid="uid://b0xh2kmd4od7e" path="res://scenes/Settings3D.tscn" id="3_fawbi"]
 
-[node name="Settings" type="VBoxContainer"]
-visible = false
-alignment = 1
+[node name="AspectRatioContainer" type="AspectRatioContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
 script = ExtResource("1_ghuma")
 
-[node name="GridContainer" type="GridContainer" parent="."]
+[node name="Settings" type="VBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="Settings"]
 layout_mode = 2
 columns = 2
 
-[node name="EXPLabel" type="Label" parent="GridContainer"]
+[node name="EXPLabel" type="Label" parent="Settings/GridContainer"]
 layout_mode = 2
 text = "Enable Experimental Features:"
 
-[node name="EXP" type="CheckButton" parent="GridContainer"]
+[node name="EXP" type="CheckButton" parent="Settings/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 
-[node name="FullSLabel" type="Label" parent="GridContainer"]
+[node name="FullSLabel" type="Label" parent="Settings/GridContainer"]
 layout_mode = 2
 text = "FullScreen:"
 
-[node name="FullS" type="CheckButton" parent="GridContainer"]
+[node name="FullS" type="CheckButton" parent="Settings/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 
-[node name="BGLabel" type="Label" parent="GridContainer"]
+[node name="BGLabel" type="Label" parent="Settings/GridContainer"]
 layout_mode = 2
 text = "Background Color: "
 
-[node name="BG" type="ColorPickerButton" parent="GridContainer"]
+[node name="BG" type="ColorPickerButton" parent="Settings/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 edit_alpha = false
 
-[node name="Board" type="TabContainer" parent="."]
+[node name="BoardLabel" type="Label" parent="Settings/GridContainer"]
 layout_mode = 2
-tab_alignment = 1
-current_tab = 1
+text = "Board:"
 
-[node name="2D Board" type="VBoxContainer" parent="Board"]
+[node name="Board" type="OptionButton" parent="Settings/GridContainer"]
+layout_mode = 2
+selected = 0
+item_count = 2
+popup/item_0/text = "2D"
+popup/item_0/id = 0
+popup/item_1/text = "3D"
+popup/item_1/id = 1
+
+[node name="BoardSettings" type="Panel" parent="Settings"]
+layout_mode = 2
+
+[node name="Board" type="TabContainer" parent="Settings"]
 visible = false
 layout_mode = 2
-metadata/_tab_index = 0
+tab_alignment = 1
+current_tab = 0
 
-[node name="Squares" type="GridContainer" parent="Board/2D Board"]
+[node name="2D Board" parent="Settings/Board" instance=ExtResource("2_5dgb1")]
 layout_mode = 2
-script = ExtResource("4_1hw8f")
-path = "res://assets/Squares/"
-label = "Squares"
 
-[node name="White" type="GridContainer" parent="Board/2D Board"]
+[node name="3D Board" parent="Settings/Board" instance=ExtResource("3_fawbi")]
+visible = false
 layout_mode = 2
-script = ExtResource("4_1hw8f")
-path = "res://assets/Pieces2D/White/"
-label = "White Pieces"
-
-[node name="Black" type="GridContainer" parent="Board/2D Board"]
-layout_mode = 2
-script = ExtResource("4_1hw8f")
-path = "res://assets/Pieces2D/Black/"
-label = "Black Pieces"
-
-[node name="PieceSize" type="GridContainer" parent="Board/2D Board"]
-layout_mode = 2
-script = ExtResource("5_hat0o")
-min = 0.3
-max = 1.0
-increment = 0.01
-label = "Piece Size"
-
-[node name="3D Board" type="VBoxContainer" parent="Board"]
-layout_mode = 2
-metadata/_tab_index = 1
-
-[node name="FOV" type="GridContainer" parent="Board/3D Board"]
-layout_mode = 2
-script = ExtResource("5_hat0o")
-min = 10.0
-max = 90.0
-increment = 1.0
-label = "FOV"
-
-[node name="Squares" type="GridContainer" parent="Board/3D Board"]
-layout_mode = 2
-script = ExtResource("4_1hw8f")
-path = "res://assets/Squares/"
-label = "Squares"
-
-[node name="White" type="GridContainer" parent="Board/3D Board"]
-layout_mode = 2
-script = ExtResource("4_1hw8f")
-path = "res://assets/Pieces3D/White/"
-label = "White Pieces"
-
-[node name="Black" type="GridContainer" parent="Board/3D Board"]
-layout_mode = 2
-script = ExtResource("4_1hw8f")
-path = "res://assets/Pieces3D/Black/"
-label = "Black Pieces"
-
-[node name="WallAngle" type="GridContainer" parent="Board/3D Board"]
-layout_mode = 2
-script = ExtResource("5_hat0o")
-max = 90.0
-increment = 1.0
-label = "Wall Angle"
-
-[node name="PieceSize" type="GridContainer" parent="Board/3D Board"]
-layout_mode = 2
-script = ExtResource("5_hat0o")
-min = 0.3
-max = 1.0
-increment = 0.01
-label = "Piece Size"
-
-[node name="FlatHeight" type="GridContainer" parent="Board/3D Board"]
-layout_mode = 2
-script = ExtResource("5_hat0o")
-min = 0.05
-max = 0.5
-increment = 0.01
-label = "Piece Height"
-
-[node name="CapHeight" type="GridContainer" parent="Board/3D Board"]
-layout_mode = 2
-script = ExtResource("5_hat0o")
-min = 0.4
-max = 2.0
-increment = 0.01
-label = "Cap Height"

@@ -23,10 +23,10 @@ func _ready() -> void:
 	add_child(customButton)
 	customButton.hide()
 	
-	if OS.get_name() != "web":
+	if not OS.has_feature("web"):
 		var p = FileDialog.new()
-		p.file_selected.connect(selectCustom)
-		p.dir_selected.connect(selectCustom)
+		p.file_selected.connect(loadPath)
+		p.use_native_dialog = true
 		p.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 		p.access = FileDialog.ACCESS_FILESYSTEM
 		p.initial_position = Window.WINDOW_INITIAL_POSITION_CENTER_MAIN_WINDOW_SCREEN
@@ -37,8 +37,7 @@ func _ready() -> void:
 		p.hide()
 		
 	else:
-		pass
-		#customButton.pressed.connect()
+		customButton.pressed.connect(getJSFile)
 		
 	
 	for i in DirAccess.get_files_at(path):
@@ -52,21 +51,71 @@ func _ready() -> void:
 
 func select(i: int):
 	customButton.visible = i == 0
-	
 	if i != 0:
-		setSetting.emit(path + options[i-1])
+		loadPath(path + options[i-1])
 
-
-func selectCustom(custom: String):
-	setSetting.emit(custom)
+#
+#func selectCustom(custom: String):
+	#setSetting.emit(custom)
 
 
 func setNoSignal(value: Variant):
 	assert(value is String)
-	optionButton.selected = options.find(value.trim_prefix(path)) + 1
+	if not is_node_ready(): await ready
+	optionButton.selected = options.find(value) + 1
 	if optionButton.selected == 0:
 		customButton.show()
 
 
-func getCustomFile():
+#func getCustomFile():
+	#JsInterface.setFile.connect(setSetting.emit, CONNECT_ONE_SHOT)
+	#JsInterface.openFile()/
+
+
+func loadPath(path: String):
+	var data
+	var suffix = path.split(".")[-1]
+	if suffix in ["glb", "gltf"]:
+		if path.begins_with("res://"):
+			data = load(path).instantiate()
+		else:
+			var doc = GLTFDocument.new()
+			var state = GLTFState.new()
+			var error = doc.append_from_file(path, state)
+			if error != OK:
+				Notif.message("Failed to load '%s'" % path)
+				return
+			data = doc.generate_scene(state)
+		data = [data.get_node("Cap"), data.get_node("Flat")]
+		if null in data:
+			Notif.message("%s does not include 'Cap' and/or 'Flat'" % path)
+			return
+		data = [data[0].mesh, data[1].mesh]
+		
+	elif suffix in ["jpg", "ktx", "png", "svg", "tga", "webp", "bmp"]:
+		if path.begins_with("res://"):
+			data = load(path).get_image()
+		else:
+			data = Image.load_from_file(path)
+		
+		if data == null: 
+			Notif.message("Failed to load '%s'" % path)
+			return
+		if data.is_compressed():
+			if data.decompress() != OK:
+				Notif.message("Failed to load '%s'" % path)
+				return
+		data.fix_alpha_edges()
+		
+	else:
+		Notif.message("Unsupported file type '%s'" % suffix)
+		return
+		
+	if data == null:
+		Notif.message("Failed to load '%s'" % path)
+	else:
+		setSetting.emit([data, path.split("/")[-1]])
+
+
+func getJSFile():
 	pass
