@@ -33,14 +33,19 @@ const RATINGS_URL = "https://api.playtak.com/v1/ratings/%s"
 
 @onready var http: HTTPRequest = HTTPRequest.new()
 
+var callbackUser = JavaScriptBridge.create_callback(func(args): userEntry.text = args[0].target.value) if OS.has_feature("web") else null
+var callbackPass = JavaScriptBridge.create_callback(func(args): passEntry.text = args[0].target.value) if OS.has_feature("web") else null
+
+
 func _ready():
 	add_child(http)
 	
 	PlayTakI.login.connect(onLogin)
 	PlayTakI.logout.connect(onLogout)
 	
-	JsInterface.setUser.connect(func(v): userEntry.text = v)
-	JsInterface.setPass.connect(func(v): passEntry.text = v)
+	if OS.has_feature("web"):
+		JavaScriptBridge.get_interface("username").oninput = callbackUser
+		JavaScriptBridge.get_interface("password").oninput = callbackPass
 	
 	userEntry.text_submitted.connect(passEntry.grab_focus)
 	passEntry.text_submitted.connect(submit)
